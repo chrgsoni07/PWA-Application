@@ -1,6 +1,6 @@
 import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import Items from '../src/component/Items/Items';
+import Items from './component/Items/Items';
 import NavigationBar from './component/Navbar/NavigationBar';
 
 function App() {
