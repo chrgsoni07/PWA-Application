@@ -1,5 +1,5 @@
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import Items from './component/Items/Items';
+import Items from './component/Items';
 import NavigationBar from './component/Navbar/NavigationBar';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Customers from './component/Customers';
