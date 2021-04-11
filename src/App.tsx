@@ -4,6 +4,7 @@ import NavigationBar from './component/Navbar/NavigationBar';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Customers from './component/Customers';
 import Bills from './component/Bills';
+import Rates from './component/Rates';
 
 function App() {
   return (
@@ -15,6 +16,9 @@ function App() {
         </Route>
         <Route path="/bills">
           <Bills />
+        </Route>
+        <Route path="/rates">
+          <Rates />
         </Route>
         <Route path="/">
           <Items />
