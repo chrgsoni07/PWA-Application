@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-class MyVerticallyCenteredModal extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+type Props = {
+  show: boolean;
+  onHide: () => void;
+};
 
-render() { 
+const AddRatesModal: FC<Props> = (props) => {
   return (
     <Modal
-      {...this.props}
+      {...props}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -28,11 +28,10 @@ render() {
         </p>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={this.props.onHide}>Close</Button>
+        <Button onClick={props.onHide}>Close</Button>
       </Modal.Footer>
     </Modal>
   );
-}
-}
+};
 
-export default MyVerticallyCenteredModal;
+export default AddRatesModal;
