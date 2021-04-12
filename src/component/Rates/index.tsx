@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
-import { Card, Button, Table, Modal, ButtonGroup } from 'react-bootstrap';
+import { useState } from 'react';
+import { Card, Button, Table } from 'react-bootstrap';
 import AddRatesModal from './AddRatesModal';
 
 const Rates = () => {
   const [modalShow, setModalShow] = useState(false);
+
+  const tableData = [
+    { id: 1, gold: 47500, silver: 67500, date: '11-04-2021' },
+    { id: 2, gold: 47200, silver: 67200, date: '10-04-2021' },
+    { id: 3, gold: 46500, silver: 67500, date: '09-04-2021' },
+    { id: 4, gold: 46200, silver: 66900, date: '08-04-2021' },
+  ];
   return (
     <>
       <Card>
@@ -41,30 +48,14 @@ const Rates = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>47500</td>
-                <td>67500</td>
-                <td>11-04-2021</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>47200</td>
-                <td>67200</td>
-                <td>10-04-2021</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>46500</td>
-                <td>67500</td>
-                <td>09-04-2021</td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td>46200</td>
-                <td>66900</td>
-                <td>08-04-2021</td>
-              </tr>
+              {tableData.map((d) => (
+                <tr>
+                  <td>{d.id}</td>
+                  <td>{d.gold}</td>
+                  <td>{d.silver}</td>
+                  <td>{d.date}</td>
+                </tr>
+              ))}
             </tbody>
           </Table>
         </Card.Body>

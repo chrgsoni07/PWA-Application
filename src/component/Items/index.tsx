@@ -1,37 +1,30 @@
 import React from 'react';
-import {
-  Col,
-  Nav,
-  Row,
-  Tab,
-  Tabs,
-  Table,
-  Card,
-  Container,
-  Button,
-} from 'react-bootstrap';
+import { Col, Nav, Row, Tab, Tabs, Table, Card, Button } from 'react-bootstrap';
 
 const Items = () => {
+  const goldItems = ['Jhumki', 'Haar', 'Mangal Sutra', 'Anguthi'];
+  const silverPerPriceItems = ['Anguthi', 'Pendil', 'Chandrama'];
+  const silverPerWeightItems = ['Payjab', 'Bicchi', 'Chain', 'Gugru'];
   return (
     <>
-      <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+      <Tab.Container id="left-tabs-example" defaultActiveKey="gold">
         <Row>
           <Col sm={1}>
             <Nav variant="pills" className="flex-column">
               <Nav.Item>
-                <Nav.Link eventKey="first">Gold</Nav.Link>
+                <Nav.Link eventKey="gold">Gold</Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link eventKey="second">Silver</Nav.Link>
+                <Nav.Link eventKey="silver">Silver</Nav.Link>
               </Nav.Item>
             </Nav>
           </Col>
           <Col sm={11}>
             <Tab.Content>
-              <Tab.Pane eventKey="first">
+              <Tab.Pane eventKey="gold">
                 <Card>
                   <Card.Body>
-                    <Button variant="primary">ADD</Button>{' '}
+                    <Button variant="primary">ADD</Button>
                     <Table striped bordered hover>
                       <thead>
                         <tr>
@@ -40,28 +33,18 @@ const Items = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>Jhumki</td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Haar</td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td>Mangal Sutra</td>
-                        </tr>
-                        <tr>
-                          <td>4</td>
-                          <td>Anguthi</td>
-                        </tr>
+                        {goldItems.map((item, idx) => (
+                          <tr>
+                            <td>{idx}</td>
+                            <td>{item}</td>
+                          </tr>
+                        ))}
                       </tbody>
                     </Table>
                   </Card.Body>
                 </Card>
               </Tab.Pane>
-              <Tab.Pane eventKey="second">
+              <Tab.Pane eventKey="silver">
                 <Card>
                   <Card.Body>
                     <Tabs
@@ -72,7 +55,7 @@ const Items = () => {
                         eventKey="silverItemPerPiece"
                         title="Items per piece"
                       >
-                        <Button variant="primary">ADD</Button>{' '}
+                        <Button variant="primary">ADD</Button>
                         <Table striped bordered hover>
                           <thead>
                             <tr>
@@ -81,18 +64,12 @@ const Items = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td>1</td>
-                              <td>Anguthi</td>
-                            </tr>
-                            <tr>
-                              <td>2</td>
-                              <td>Pendil</td>
-                            </tr>
-                            <tr>
-                              <td>3</td>
-                              <td>Chandrama</td>
-                            </tr>
+                            {silverPerPriceItems.map((item, idx) => (
+                              <tr>
+                                <td>{idx}</td>
+                                <td>{item}</td>
+                              </tr>
+                            ))}
                           </tbody>
                         </Table>
                       </Tab>
@@ -109,22 +86,12 @@ const Items = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td>1</td>
-                              <td>Payjab</td>
-                            </tr>
-                            <tr>
-                              <td>2</td>
-                              <td>Bicchi</td>
-                            </tr>
-                            <tr>
-                              <td>3</td>
-                              <td>Chain</td>
-                            </tr>
-                            <tr>
-                              <td>4</td>
-                              <td>Gugru</td>
-                            </tr>
+                            {silverPerWeightItems.map((item, idx) => (
+                              <tr>
+                                <td>{idx}</td>
+                                <td>{item}</td>
+                              </tr>
+                            ))}
                           </tbody>
                         </Table>
                       </Tab>
