@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';
 
 type Props = {
   show: boolean;
@@ -16,18 +16,25 @@ const AddRatesModal: FC<Props> = (props) => {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Modal heading
+          Add gold and silver rates
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h4>Centered Modal</h4>
-        <p>
-          Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-          dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-          consectetur ac, vestibulum at eros.
-        </p>
+        <div className="container">
+          <Form>
+            <Form.Group controlId="formGroupGoldRate">
+              <Form.Label>Gold Rate (10 g)</Form.Label>
+              <Form.Control type="number" placeholder="Enter gold rate" />
+            </Form.Group>
+            <Form.Group controlId="formGroupSilverRate">
+              <Form.Label>Silver Rate (1 kg)</Form.Label>
+              <Form.Control type="number" placeholder="Enter silver rate" />
+            </Form.Group>
+          </Form>
+        </div>
       </Modal.Body>
       <Modal.Footer>
+        <Button >Save</Button>
         <Button onClick={props.onHide}>Close</Button>
       </Modal.Footer>
     </Modal>

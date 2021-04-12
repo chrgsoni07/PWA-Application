@@ -1,12 +1,19 @@
 import React from 'react';
+import { useState } from 'react';
 import { Col, Nav, Row, Tab, Tabs, Table, Card, Button } from 'react-bootstrap';
+import AddItemModal from './AddItemModal';
 
 const Items = () => {
+
+  const [modalShow, setModalShow] = useState(false);
+
   const goldItems = ['Jhumki', 'Haar', 'Mangal Sutra', 'Anguthi'];
   const silverPerPriceItems = ['Anguthi', 'Pendil', 'Chandrama'];
   const silverPerWeightItems = ['Payjab', 'Bicchi', 'Chain', 'Gugru'];
   return (
     <>
+      <AddItemModal show={modalShow} onHide={() => setModalShow(false)} />
+
       <Tab.Container id="left-tabs-example" defaultActiveKey="gold">
         <Row>
           <Col sm={1}>
@@ -24,7 +31,7 @@ const Items = () => {
               <Tab.Pane eventKey="gold">
                 <Card>
                   <Card.Body>
-                    <Button variant="primary">ADD</Button>
+                  <Button variant="primary" onClick={() => setModalShow(true)}>ADD</Button>
                     <Table striped bordered hover>
                       <thead>
                         <tr>
@@ -55,7 +62,7 @@ const Items = () => {
                         eventKey="silverItemPerPiece"
                         title="Items per piece"
                       >
-                        <Button variant="primary">ADD</Button>
+                        <Button variant="primary" onClick={() => setModalShow(true)}>ADD</Button>
                         <Table striped bordered hover>
                           <thead>
                             <tr>
@@ -77,7 +84,7 @@ const Items = () => {
                         eventKey="silverItemsOnWeight"
                         title="Items on  weight"
                       >
-                        <Button variant="primary">ADD</Button>
+                        <Button variant="primary" onClick={() => setModalShow(true)}>ADD</Button>
                         <Table striped bordered hover>
                           <thead>
                             <tr>
