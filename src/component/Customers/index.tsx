@@ -1,7 +1,72 @@
-import { FormEvent, useState } from "react";
 import { Form, Col, Row, Table } from "react-bootstrap";
 import { Button } from "primereact/button";
+import React, { useState, useEffect, useRef, FormEvent } from "react";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
+import { Toolbar } from "primereact/toolbar";
+import { InputText } from "primereact/inputtext";
+
 const Customers = () => {
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [globalFilter, setGlobalFilter] = useState([]);
+
+  const actionBodyTemplate = (rowData: any) => {
+    return (
+      <React.Fragment>
+        <Button
+          icon="pi pi-pencil"
+          className="p-button-rounded p-button-success p-mr-2"
+          onClick={() => editProduct(rowData)}
+        />
+        <Button
+          icon="pi pi-trash"
+          className="p-button-rounded p-button-warning"
+          onClick={() => confirmDeleteProduct(rowData)}
+        />
+      </React.Fragment>
+    );
+  };
+
+  const leftToolbarTemplate = () => {
+    return (
+      <React.Fragment>
+        <Button
+          label="New"
+          icon="pi pi-plus"
+          className="p-button-success p-mr-2"
+          onClick={openNew}
+        />
+        <Button
+          label="Delete"
+          icon="pi pi-trash"
+          className="p-button-danger"
+          onClick={confirmDeleteSelected}
+          disabled={!selectedProducts || !selectedProducts.length}
+        />
+      </React.Fragment>
+    );
+  };
+
+  const header = (
+    <div className="table-header">
+      <h5 className="p-m-0">Manage Products</h5>
+      <span className="p-input-icon-left">
+        <i className="pi pi-search" />
+        {/* TODO for search */}
+        <InputText type="search" placeholder="Search..." />
+      </span>
+    </div>
+  );
+
+  const confirmDeleteSelected = () => {};
+
+  const openNew = () => {};
+
+  const editProduct = (rowData: any) => {};
+
+  const confirmDeleteProduct = (rowData: any) => {};
+
   const tableData = [
     {
       id: 1,
@@ -86,26 +151,29 @@ const Customers = () => {
       </Form>
 
       <hr />
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Customer name</th>
-            <th>Place</th>
-            <th>Moblie no</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tableData.map((d) => (
-            <tr>
-              <td>{d.id}</td>
-              <td>{d.customerName}</td>
-              <td>{d.place}</td>
-              <td>{d.mobileNo}</td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <div className="card">
+        <Toolbar className="p-mb-4" left={leftToolbarTemplate}></Toolbar>
+        <DataTable
+          value={tableData}
+          selection={selectedProduct}
+          onSelectionChange={(e) => setSelectedProduct(e.value)}
+          paginator
+          rows={10}
+          rowsPerPageOptions={[5, 10, 25]}
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+          globalFilter={globalFilter}
+          header={header}
+          selectionMode="single"
+          dataKey="id"
+        >
+          <Column field="id" header="Id"></Column>
+          <Column field="customerName" header="Customer name"></Column>
+          <Column field="place" header="Place"></Column>
+          <Column field="mobileNo" header="Mobile no"></Column>
+          <Column body={actionBodyTemplate}></Column>
+        </DataTable>
+      </div>
     </div>
   );
 };
