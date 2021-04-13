@@ -1,6 +1,7 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { useState } from "react";
-import { Col, Nav, Row, Tab, Tabs, Table, Card, Button } from "react-bootstrap";
+import { Col, Nav, Row, Tab, Tabs, Table, Card } from "react-bootstrap";
+import { Button } from "primereact/button";
 import AddItemModal from "./AddItemModal";
 
 const Items = () => {
@@ -30,12 +31,7 @@ const Items = () => {
               <Tab.Pane eventKey="gold">
                 <Card>
                   <Card.Body>
-                    <Button
-                      variant="primary"
-                      onClick={() => setModalShow(true)}
-                    >
-                      ADD
-                    </Button>
+                    <Button label="Add" onClick={() => setModalShow(true)} />
                     <DataTable items={goldItems} />
                   </Card.Body>
                 </Card>
@@ -52,11 +48,9 @@ const Items = () => {
                         title="Items per piece"
                       >
                         <Button
-                          variant="primary"
+                          label="Add"
                           onClick={() => setModalShow(true)}
-                        >
-                          ADD
-                        </Button>
+                        />
                         <DataTable items={silverPerPriceItems} />
                       </Tab>
                       <Tab
@@ -64,11 +58,9 @@ const Items = () => {
                         title="Items on  weight"
                       >
                         <Button
-                          variant="primary"
+                          label="Add"
                           onClick={() => setModalShow(true)}
-                        >
-                          ADD
-                        </Button>
+                        />
                         <DataTable items={silverPerWeightItems} />
                       </Tab>
                     </Tabs>

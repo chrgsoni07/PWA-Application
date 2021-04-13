@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
-import { Button, Form, Col, Row, Table } from "react-bootstrap";
-
+import { Form, Col, Row, Table } from "react-bootstrap";
+import { Button } from "primereact/button";
 const Customers = () => {
   const tableData = [
     {
@@ -82,7 +82,7 @@ const Customers = () => {
           </Col>
         </Row>
 
-        <Button type="submit">Submit form</Button>
+        <Button type="submit" label="Submit form" />
       </Form>
 
       <hr />

@@ -1,7 +1,7 @@
 import { Dialog } from "primereact/dialog";
 import { FC } from "react";
-import { Button, Form } from "react-bootstrap";
-
+import { Form } from "react-bootstrap";
+import { Button } from "primereact/button";
 type Props = {
   show: boolean;
   onHide: () => void;
@@ -16,8 +16,8 @@ const AddItemModal: FC<Props> = (props) => {
       style={{ width: "50vw" }}
       footer={
         <>
-          <Button>Save</Button>
-          <Button onClick={props.onHide}>Close</Button>
+          <Button label="Save" />
+          <Button label="Close" onClick={props.onHide} />
         </>
       }
       onHide={props.onHide}
