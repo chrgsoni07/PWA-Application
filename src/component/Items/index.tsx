@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { useState } from "react";
 import { Col, Nav, Row, Tab, Tabs, Table, Card, Button } from "react-bootstrap";
 import AddItemModal from "./AddItemModal";
@@ -36,22 +36,7 @@ const Items = () => {
                     >
                       ADD
                     </Button>
-                    <Table striped bordered hover>
-                      <thead>
-                        <tr>
-                          <th>#</th>
-                          <th>Item</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {goldItems.map((item, idx) => (
-                          <tr>
-                            <td>{idx}</td>
-                            <td>{item}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </Table>
+                    <DataTable items={goldItems} />
                   </Card.Body>
                 </Card>
               </Tab.Pane>
@@ -72,22 +57,7 @@ const Items = () => {
                         >
                           ADD
                         </Button>
-                        <Table striped bordered hover>
-                          <thead>
-                            <tr>
-                              <th>#</th>
-                              <th>Item</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {silverPerPriceItems.map((item, idx) => (
-                              <tr>
-                                <td>{idx}</td>
-                                <td>{item}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </Table>
+                        <DataTable items={silverPerPriceItems} />
                       </Tab>
                       <Tab
                         eventKey="silverItemsOnWeight"
@@ -99,22 +69,7 @@ const Items = () => {
                         >
                           ADD
                         </Button>
-                        <Table striped bordered hover>
-                          <thead>
-                            <tr>
-                              <th>#</th>
-                              <th>Item</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {silverPerWeightItems.map((item, idx) => (
-                              <tr>
-                                <td>{idx}</td>
-                                <td>{item}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </Table>
+                        <DataTable items={silverPerWeightItems} />
                       </Tab>
                     </Tabs>
                   </Card.Body>
@@ -129,3 +84,24 @@ const Items = () => {
 };
 
 export default Items;
+
+const DataTable: FC<{ items: string[] }> = ({ items }) => {
+  return (
+    <Table striped bordered hover>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Item</th>
+        </tr>
+      </thead>
+      <tbody>
+        {items.map((item, idx) => (
+          <tr>
+            <td>{idx}</td>
+            <td>{item}</td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  );
+};
