@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { Dialog } from "primereact/dialog";
 type Props = {
   show: boolean;
@@ -14,10 +14,10 @@ const AddRatesModal: FC<Props> = (props) => {
       visible={props.show}
       style={{ width: "50vw" }}
       footer={
-        <Modal.Footer>
+        <>
           <Button>Save</Button>
           <Button onClick={props.onHide}>Close</Button>
-        </Modal.Footer>
+        </>
       }
       onHide={props.onHide}
     >

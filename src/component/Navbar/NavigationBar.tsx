@@ -1,35 +1,18 @@
-import React from 'react';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import { Form, FormControl, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import Navbar from "react-bootstrap/Navbar";
+import { Link, useHistory } from "react-router-dom";
+import { Menubar } from "primereact/menubar";
+import { MenuItem } from "primereact/components/menuitem/MenuItem";
 
 const NavigationBar = () => {
+  const history = useHistory();
+  const items: MenuItem[] | undefined = [
+    { label: "Item", command: () => history.push("/") },
+    { label: "Customers", command: () => history.push("/customers") },
+    { label: "Bills", command: () => history.push("/bills") },
+    { label: "Gold/Silver Rate", command: () => history.push("/rates") },
+  ];
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-      <Navbar.Brand href="#home">R K Jewellers</Navbar.Brand>
-      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-      <Navbar.Collapse id="responsive-navbar-nav">
-        <Nav className="mr-auto">
-          <Nav.Link>
-            <Link to="/">Items</Link>
-          </Nav.Link>
-          <Nav.Link>
-            <Link to="/customers">Customers</Link>
-          </Nav.Link>
-          <Nav.Link>
-            <Link to="/bills">Bills</Link>
-          </Nav.Link>
-          <Nav.Link>
-            <Link to="/rates">Gold/Silver Rate</Link>
-          </Nav.Link>
-        </Nav>
-        <Form inline>
-          <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-          <Button variant="outline-primary">Search</Button>
-        </Form>
-      </Navbar.Collapse>
-    </Navbar>
+    <Menubar start={<Navbar.Brand>R K Jewellers</Navbar.Brand>} model={items} />
   );
 };
 
