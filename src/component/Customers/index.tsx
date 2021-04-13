@@ -1,31 +1,31 @@
-import React, { FormEvent, useState } from 'react';
-import { Modal, Button, Form, Col, Row, Table } from 'react-bootstrap';
+import { FormEvent, useState } from "react";
+import { Button, Form, Col, Row, Table } from "react-bootstrap";
 
 const Customers = () => {
   const tableData = [
     {
       id: 1,
-      customerName: 'Mangilal ji Soni',
-      place: 'Dhamniya',
-      mobileNo: '+91-784-874-6144',
+      customerName: "Mangilal ji Soni",
+      place: "Dhamniya",
+      mobileNo: "+91-784-874-6144",
     },
     {
       id: 2,
-      customerName: 'Bherulal ji Gayri',
-      place: 'Liliya',
-      mobileNo: '+91-784-477-7541',
+      customerName: "Bherulal ji Gayri",
+      place: "Liliya",
+      mobileNo: "+91-784-477-7541",
     },
     {
       id: 3,
-      customerName: 'Shambhulal ji Dhakad',
-      place: 'Khor',
-      mobileNo: '+91-784-754-8745',
+      customerName: "Shambhulal ji Dhakad",
+      place: "Khor",
+      mobileNo: "+91-784-754-8745",
     },
     {
       id: 4,
-      customerName: 'Shantilal ji Dhakad',
-      place: 'Jawad',
-      mobileNo: '+91-784-874-7850',
+      customerName: "Shantilal ji Dhakad",
+      place: "Jawad",
+      mobileNo: "+91-784-874-7850",
     },
   ];
 
