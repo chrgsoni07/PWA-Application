@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
+import React, { FC } from "react";
+import { Modal, Button, Form } from "react-bootstrap";
 
 type Props = {
   show: boolean;
@@ -34,7 +34,7 @@ const AddRatesModal: FC<Props> = (props) => {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button >Save</Button>
+        <Button>Save</Button>
         <Button onClick={props.onHide}>Close</Button>
       </Modal.Footer>
     </Modal>
