@@ -118,7 +118,8 @@ const ItemsPanel: FC<Props> = ({ items, updateItems }) => {
       updateItems(newItems);
     } else {
       // call API to retrieve new ID
-      updateItems([...items, selectedItem]);
+
+      updateItems([...items, { ...selectedItem, id: `${items.length + 1}` }]);
     }
     setSubmitted(true);
     hideDialog();
