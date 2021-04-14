@@ -13,6 +13,8 @@ import {
   silverPerWeightItems as mockSilverPerWeightItems,
 } from "./mockData";
 
+import { createNextState } from "@reduxjs/toolkit";
+
 const Items = () => {
   const confirmDeleteSelected = () => {};
 
@@ -57,14 +59,17 @@ type Props = {
   updateItems: (items: ItemType[]) => void;
 };
 const ItemsPanel: FC<Props> = ({ items, updateItems }) => {
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [goldItem, setGoldItem] = useState("");
+  const [selectedItem, setSelectedItem] = useState<ItemType>({
+    id: "",
+    name: "",
+  });
   const [submitted, setSubmitted] = useState(false);
-  const [newGoldItemDialog, setNewGoldItemDialog] = useState(false);
-  const editProduct = (rowData: any) => {
-    console.log(rowData);
+  const [showDialog, setShowDialog] = useState(false);
+  const editItem = (rowData: any) => {
+    setShowDialog(true);
+    setSelectedItem(rowData);
   };
-  const confirmDeleteProduct = (rowData: any) => {};
+  const confirmDeleteItem = (rowData: any) => {};
 
   const actionBodyTemplate = (rowData: any) => {
     return (
@@ -72,21 +77,21 @@ const ItemsPanel: FC<Props> = ({ items, updateItems }) => {
         <Button
           icon="pi pi-pencil"
           className="p-button-rounded p-button-success p-mr-2"
-          onClick={() => editProduct(rowData)}
+          onClick={() => editItem(rowData)}
         />
         <Button
           icon="pi pi-trash"
           className="p-button-rounded p-button-warning"
-          onClick={() => confirmDeleteProduct(rowData)}
+          onClick={() => confirmDeleteItem(rowData)}
         />
       </>
     );
   };
 
   const openNew = () => {
-    setGoldItem("");
+    setSelectedItem({ id: "", name: "" });
     setSubmitted(false);
-    setNewGoldItemDialog(true);
+    setShowDialog(true);
   };
 
   const leftToolbarTemplate = () => {
@@ -102,15 +107,29 @@ const ItemsPanel: FC<Props> = ({ items, updateItems }) => {
     );
   };
   const saveNewGoldItem = () => {
+    if (selectedItem?.id) {
+      const newItems = createNextState(items, (draft) =>
+        draft.forEach((i) => {
+          if (i.id === selectedItem?.id) {
+            i.name = selectedItem.name;
+          }
+        })
+      );
+      updateItems(newItems);
+    } else {
+      // call API to retrieve new ID
+      updateItems([...items, selectedItem]);
+    }
     setSubmitted(true);
+    hideDialog();
   };
 
   const hideDialog = () => {
     setSubmitted(false);
-    setNewGoldItemDialog(false);
+    setShowDialog(false);
   };
 
-  const productDialogFooter = (
+  const itemDialogFooter = (
     <>
       <Button
         label="Cancel"
@@ -133,13 +152,13 @@ const ItemsPanel: FC<Props> = ({ items, updateItems }) => {
         <Toolbar className="p-mb-4" left={leftToolbarTemplate}></Toolbar>
         <DataTable
           value={items}
-          selection={selectedProduct}
-          onSelectionChange={(e) => setSelectedProduct(e.value)}
+          selection={selectedItem}
+          onSelectionChange={(e) => setSelectedItem(e.value)}
           paginator
           rows={10}
           rowsPerPageOptions={[5, 10, 25]}
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} items"
           selectionMode="single"
           dataKey="id"
         >
@@ -150,25 +169,28 @@ const ItemsPanel: FC<Props> = ({ items, updateItems }) => {
       </div>
       <Dialog
         header="Add new gold item"
-        visible={newGoldItemDialog}
+        visible={showDialog}
         style={{ width: "450px" }}
         modal
         className="p-fluid"
-        footer={productDialogFooter}
+        footer={itemDialogFooter}
         onHide={hideDialog}
       >
         <div className="p-field">
           <label htmlFor="name">Name</label>
           <InputText
             id="name"
-            value={goldItem}
+            onChange={(e) =>
+              setSelectedItem({ ...selectedItem, name: e.currentTarget.value })
+            }
+            value={selectedItem?.name}
             required
             autoFocus
             className={classNames({
-              "p-invalid": submitted && !goldItem,
+              "p-invalid": submitted && !selectedItem?.name,
             })}
           />
-          {submitted && !goldItem && (
+          {submitted && !selectedItem?.name && (
             <small className="p-error">Name is required.</small>
           )}
         </div>
