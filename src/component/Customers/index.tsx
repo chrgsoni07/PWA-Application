@@ -1,4 +1,4 @@
-import { Form, Col, Row, Table } from "react-bootstrap";
+import { Form, Col, Row } from "react-bootstrap";
 import { Button } from "primereact/button";
 import React, { useState, useEffect, useRef, FormEvent } from "react";
 import { DataTable } from "primereact/datatable";
