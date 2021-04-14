@@ -7,12 +7,13 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import classNames from "classnames";
 import { createNextState } from "@reduxjs/toolkit";
+import { ItemType } from "./types";
 
-type ItemType = { id: string; name: string };
 type Props = {
   items: ItemType[];
   updateItems: (items: ItemType[]) => void;
 };
+
 const ItemsPanel: FC<Props> = ({ items, updateItems }) => {
   const [selectedItem, setSelectedItem] = useState<ItemType>({
     id: "",
