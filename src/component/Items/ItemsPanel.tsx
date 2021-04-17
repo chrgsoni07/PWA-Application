@@ -10,8 +10,13 @@ import { createNextState } from "@reduxjs/toolkit";
 import { ItemType } from "./types";
 import { db } from "../../firebase";
 
+const categoryMap = {
+  goldItems: "Gold",
+  silverPerPriceItems: "Silver per price",
+  silverPerWeightItems: "Silver per weight",
+};
 type Props = {
-  category: string;
+  category: "goldItems" | "silverPerPriceItems" | "silverPerWeightItems";
 };
 
 const ItemsPanel: FC<Props> = ({ category }) => {
@@ -74,9 +79,9 @@ const ItemsPanel: FC<Props> = ({ category }) => {
       const allItems: ItemType[] = [];
       querySnapshot.forEach((item) => {
         console.log(item.id);
-        var goldItemDetail = item.data();
-        console.log(JSON.stringify(goldItemDetail));
-        allItems.push({ name: goldItemDetail.name, id: item.id });
+        const itemData = item.data();
+        console.log(JSON.stringify(itemData));
+        allItems.push({ name: itemData.name, id: item.id });
       });
       setItems(allItems);
     });
@@ -94,7 +99,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
       </>
     );
   };
-  const saveNewGoldItem = () => {
+  const saveNewItem = () => {
     if (selectedItem?.id) {
       const newItems = createNextState(items, (draft) =>
         draft.forEach((i) => {
@@ -157,7 +162,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
         label="Save"
         icon="pi pi-check"
         className="p-button-text"
-        onClick={saveNewGoldItem}
+        onClick={saveNewItem}
       />
     </>
   );
@@ -189,7 +194,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
         </DataTable>
       </div>
       <Dialog
-        header="Add new gold item"
+        header={`Add new ${categoryMap[category]} item`}
         visible={showDialog}
         style={{ width: "450px" }}
         modal
