@@ -25,15 +25,14 @@ const Items = () => {
     var goldItemCollection = db.collection("goldItems");
 
     goldItemCollection.get().then((querySnapshot) => {
+      const allGoldItems: ItemType[] = [];
       querySnapshot.forEach((goldItem) => {
         console.log(goldItem.id);
         var goldItemDetail = goldItem.data();
         console.log(JSON.stringify(goldItemDetail));
-        setGoldItems([
-          ...goldItems,
-          { name: goldItemDetail.name, id: goldItem.id },
-        ]);
+        allGoldItems.push({ name: goldItemDetail.name, id: goldItem.id });
       });
+      setGoldItems(allGoldItems);
     });
   }, []);
 
