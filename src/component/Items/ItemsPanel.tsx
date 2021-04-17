@@ -28,7 +28,22 @@ const ItemsPanel: FC<Props> = ({ category }) => {
     setSelectedItem(rowData);
   };
 
-  const confirmDeleteItem = (rowData: any) => {};
+  const confirmDeleteItem = (rowData: ItemType) => {
+    db.collection(category)
+      .doc(rowData.id)
+      .delete()
+      .then(() => {
+        console.log("Document successfully deleted!");
+        setItems(
+          createNextState(items, (draft) =>
+            draft.filter((i) => i.id !== rowData.id)
+          )
+        );
+      })
+      .catch((error) => {
+        console.error("Error removing document: ", error);
+      });
+  };
 
   const actionBodyTemplate = (rowData: any) => {
     return (
@@ -88,25 +103,37 @@ const ItemsPanel: FC<Props> = ({ category }) => {
           }
         })
       );
-
+      editItemToFireStore();
       setItems(newItems);
     } else {
       // call API to retrieve new ID
       saveItemToFireStore();
-      setItems([...items, { ...selectedItem, id: `${items.length + 1}` }]);
     }
     setSubmitted(true);
     hideDialog();
   };
 
-  const saveItemToFireStore = () => {
+  const editItemToFireStore = () => {
     db.collection(category)
-      .doc()
+      .doc(selectedItem.id)
       .set({
         name: selectedItem.name,
       })
-      .then(function () {
-        console.log("Document successfully written!");
+      .then(() => {
+        console.log("Document successfully updated!");
+      })
+      .catch(function () {
+        console.error("Error writing document: ");
+      });
+  };
+  const saveItemToFireStore = () => {
+    db.collection(category)
+      .add({
+        name: selectedItem.name,
+      })
+      .then((i) => {
+        console.log("Document successfully written with ID", i.id);
+        setItems([...items, { ...selectedItem, id: i.id }]);
       })
       .catch(function () {
         console.error("Error writing document: ");
