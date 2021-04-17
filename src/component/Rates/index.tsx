@@ -4,11 +4,52 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toolbar } from "primereact/toolbar";
 import { Card } from "primereact/card";
+import { Dialog } from "primereact/dialog";
+import { InputText } from "primereact/inputtext";
 import React, { useState, useEffect, useRef, FormEvent } from "react";
+import { RateType } from "./types";
+import { db } from "../../firebase";
+import classNames from "classnames";
+import { createNextState } from "@reduxjs/toolkit";
 
 const Rates = () => {
   const [modalShow, setModalShow] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [rates, setRates] = useState<RateType[]>([]);
+  const [selectedItem, setSelectedItem] = useState<RateType>({
+    id: "",
+    silverRate: "",
+    goldRate: "",
+    date: "",
+  });
+  const [submitted, setSubmitted] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+  var [date, setDate] = useState(new Date());
+
+  const editSelectedRate = (rowData: any) => {
+    setShowDialog(true);
+    setSelectedItem(rowData);
+  };
+
+  useEffect(() => {
+    const collection = db.collection("goldSilverRates");
+
+    collection.get().then((querySnapshot) => {
+      const allRates: RateType[] = [];
+      querySnapshot.forEach((rate) => {
+        console.log(rate.id);
+        const rateData = rate.data();
+        console.log(JSON.stringify(rateData));
+        allRates.push({
+          silverRate: rateData.silveRate,
+          goldRate: rateData.goldRate,
+          date: rateData.date,
+          id: rate.id,
+        });
+      });
+      setRates(allRates);
+    });
+  }, []);
 
   const actionBodyTemplate = (rowData: any) => {
     return (
@@ -16,12 +57,12 @@ const Rates = () => {
         <Button
           icon="pi pi-pencil"
           className="p-button-rounded p-button-success p-mr-2"
-          onClick={() => editProduct(rowData)}
+          onClick={() => editSelectedRate(rowData)}
         />
         <Button
           icon="pi pi-trash"
           className="p-button-rounded p-button-warning"
-          onClick={() => confirmDeleteProduct(rowData)}
+          onClick={() => confirmDeleteSelected(rowData)}
         />
       </React.Fragment>
     );
@@ -40,20 +81,108 @@ const Rates = () => {
     );
   };
 
-  const confirmDeleteSelected = () => {};
+  const confirmDeleteSelected = (rowData: RateType) => {
+    db.collection("goldSilverRates")
+      .doc(rowData.id)
+      .delete()
+      .then(() => {
+        console.log("Document successfully deleted!");
+        setRates(
+          createNextState(rates, (draft) =>
+            draft.filter((i) => i.id !== rowData.id)
+          )
+        );
+      })
+      .catch((error) => {
+        console.error("Error removing document: ", error);
+      });
+  };
 
-  const openNew = () => {};
+  const openNew = () => {
+    setSelectedItem({
+      id: "",
+      silverRate: "",
+      goldRate: "",
+      date: date.toLocaleDateString(),
+    });
+    setSubmitted(false);
+    setShowDialog(true);
+  };
 
-  const editProduct = (rowData: any) => {};
+  const hideDialog = () => {
+    setSubmitted(false);
+    setShowDialog(false);
+  };
 
-  const confirmDeleteProduct = (rowData: any) => {};
+  const saveNewRate = () => {
+    if (selectedItem?.id) {
+      editRateToFireStore();
+    } else {
+      saveRateToFireStore();
+    }
+    setSubmitted(true);
+    hideDialog();
+  };
 
-  const tableData = [
-    { id: 1, gold: 47500, silver: 67500, date: "11-04-2021" },
-    { id: 2, gold: 47200, silver: 67200, date: "10-04-2021" },
-    { id: 3, gold: 46500, silver: 67500, date: "09-04-2021" },
-    { id: 4, gold: 46200, silver: 66900, date: "08-04-2021" },
-  ];
+  const editRateToFireStore = () => {
+    db.collection("goldSilverRates")
+      .doc(selectedItem.id)
+      .set({
+        silverRate: selectedItem.silverRate,
+        goldRate: selectedItem.goldRate,
+        date: selectedItem.date,
+      })
+      .then(() => {
+        console.log("Document successfully updated!");
+        const newRates = createNextState(rates, (draft) =>
+          draft.forEach((i) => {
+            if (i.id === selectedItem?.id) {
+              i.silverRate = selectedItem.silverRate;
+              i.goldRate = selectedItem.goldRate;
+              i.date = selectedItem.date;
+            }
+          })
+        );
+        setRates(newRates);
+      })
+      .catch(function () {
+        console.error("Error writing document: ");
+      });
+  };
+
+  const saveRateToFireStore = () => {
+    db.collection("goldSilverRates")
+      .add({
+        silveRate: selectedItem.silverRate,
+        goldRate: selectedItem.goldRate,
+        date: selectedItem.date,
+      })
+      .then((i) => {
+        console.log("Document successfully written with ID", i.id);
+        setRates([...rates, { ...selectedItem, id: i.id }]);
+      })
+      .catch(function () {
+        console.error("Error writing document: ");
+      });
+  };
+
+  const itemDialogFooter = (
+    <>
+      <Button
+        label="Cancel"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={hideDialog}
+      />
+      <Button
+        label="Save"
+        icon="pi pi-check"
+        className="p-button-text"
+        onClick={saveNewRate}
+      />
+    </>
+  );
+
   return (
     <>
       <Card>
@@ -79,7 +208,7 @@ const Rates = () => {
         <div className="card">
           <Toolbar className="p-mb-4" left={leftToolbarTemplate}></Toolbar>
           <DataTable
-            value={tableData}
+            value={rates}
             selection={selectedProduct}
             onSelectionChange={(e) => setSelectedProduct(e.value)}
             paginator
@@ -91,12 +220,65 @@ const Rates = () => {
             dataKey="id"
           >
             <Column field="id" header="Id"></Column>
-            <Column field="gold" header="Gold (10 gram)"></Column>
-            <Column field="silver" header="Silver (1 kg)"></Column>
+            <Column field="goldRate" header="Gold (10 gram)"></Column>
+            <Column field="silverRate" header="Silver (1 kg)"></Column>
             <Column field="date" header="Date"></Column>
             <Column body={actionBodyTemplate}></Column>
           </DataTable>
         </div>
+
+        <Dialog
+          header={"Add new rate"}
+          visible={showDialog}
+          style={{ width: "450px" }}
+          modal
+          className="p-fluid"
+          footer={itemDialogFooter}
+          onHide={hideDialog}
+        >
+          <div className="p-field">
+            <label htmlFor="silverRate">Silver rate</label>
+            <InputText
+              id="silverRate"
+              onChange={(e) =>
+                setSelectedItem({
+                  ...selectedItem,
+                  silverRate: e.currentTarget.value,
+                })
+              }
+              value={selectedItem?.silverRate}
+              required
+              autoFocus
+              className={classNames({
+                "p-invalid": submitted && !selectedItem?.silverRate,
+              })}
+            />
+            {submitted && !selectedItem?.silverRate && (
+              <small className="p-error">silver rate is required.</small>
+            )}
+          </div>
+          <div className="p-field">
+            <label htmlFor="goldRate">Gold rate</label>
+            <InputText
+              id="goldRate"
+              onChange={(e) =>
+                setSelectedItem({
+                  ...selectedItem,
+                  goldRate: e.currentTarget.value,
+                })
+              }
+              value={selectedItem?.goldRate}
+              required
+              autoFocus
+              className={classNames({
+                "p-invalid": submitted && !selectedItem?.goldRate,
+              })}
+            />
+            {submitted && !selectedItem?.goldRate && (
+              <small className="p-error">gold rate is required.</small>
+            )}
+          </div>
+        </Dialog>
       </Card>
     </>
   );
