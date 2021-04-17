@@ -101,15 +101,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
   };
   const saveNewItem = () => {
     if (selectedItem?.id) {
-      const newItems = createNextState(items, (draft) =>
-        draft.forEach((i) => {
-          if (i.id === selectedItem?.id) {
-            i.name = selectedItem.name;
-          }
-        })
-      );
       editItemToFireStore();
-      setItems(newItems);
     } else {
       // call API to retrieve new ID
       saveItemToFireStore();
@@ -126,6 +118,14 @@ const ItemsPanel: FC<Props> = ({ category }) => {
       })
       .then(() => {
         console.log("Document successfully updated!");
+        const newItems = createNextState(items, (draft) =>
+          draft.forEach((i) => {
+            if (i.id === selectedItem?.id) {
+              i.name = selectedItem.name;
+            }
+          })
+        );
+        setItems(newItems);
       })
       .catch(function () {
         console.error("Error writing document: ");
