@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { Toolbar } from "primereact/toolbar";
@@ -8,6 +8,7 @@ import { InputText } from "primereact/inputtext";
 import classNames from "classnames";
 import { createNextState } from "@reduxjs/toolkit";
 import { ItemType } from "./types";
+import { db } from "../../firebase";
 
 type Props = {
   items: ItemType[];
@@ -21,10 +22,12 @@ const ItemsPanel: FC<Props> = ({ items, updateItems }) => {
   });
   const [submitted, setSubmitted] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
+
   const editItem = (rowData: any) => {
     setShowDialog(true);
     setSelectedItem(rowData);
   };
+
   const confirmDeleteItem = (rowData: any) => {};
 
   const actionBodyTemplate = (rowData: any) => {
@@ -50,6 +53,19 @@ const ItemsPanel: FC<Props> = ({ items, updateItems }) => {
     setShowDialog(true);
   };
 
+  const getAllItemsFromFireStore = () => {
+    var goldItemCollection = db.collection("goldItems");
+
+    goldItemCollection.get().then((querySnapshot) => {
+      querySnapshot.forEach((goldItem) => {
+        console.log(goldItem.id);
+
+        var goldItemDetail = goldItem.data();
+        console.log(JSON.stringify(goldItemDetail));
+      });
+    });
+  };
+
   const leftToolbarTemplate = () => {
     return (
       <>
@@ -58,6 +74,13 @@ const ItemsPanel: FC<Props> = ({ items, updateItems }) => {
           icon="pi pi-plus"
           className="p-button-success p-mr-2"
           onClick={openNew}
+        />
+
+        <Button
+          label="refresh"
+          icon="pi pi-refresh"
+          className="p-button-success p-mr-2"
+          onClick={getAllItemsFromFireStore}
         />
       </>
     );
@@ -71,14 +94,29 @@ const ItemsPanel: FC<Props> = ({ items, updateItems }) => {
           }
         })
       );
+
       updateItems(newItems);
     } else {
       // call API to retrieve new ID
-
+      saveItemToFireStore();
       updateItems([...items, { ...selectedItem, id: `${items.length + 1}` }]);
     }
     setSubmitted(true);
     hideDialog();
+  };
+
+  const saveItemToFireStore = () => {
+    db.collection("goldItems")
+      .doc()
+      .set({
+        name: selectedItem.name,
+      })
+      .then(function () {
+        console.log("Document successfully written!");
+      })
+      .catch(function () {
+        console.error("Error writing document: ");
+      });
   };
 
   const hideDialog = () => {

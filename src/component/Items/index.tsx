@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { useState, useEffect } from "react";
 import { TabView, TabPanel } from "primereact/tabview";
 import {
   goldItems as mockGoldItems,
@@ -7,17 +7,35 @@ import {
 } from "./mockData";
 import ItemsPanel from "./ItemsPanel";
 import "./DataTable.css";
+import { db } from "../../firebase";
+import { ItemType } from "./types";
 
 const Items = () => {
   const confirmDeleteSelected = () => {};
 
-  const [goldItems, setGoldItems] = useState(mockGoldItems);
+  const [goldItems, setGoldItems] = useState<ItemType[]>([]);
   const [silverPerPriceItems, setSilverPerPriceItems] = useState(
     mockSilverPerPriceItems
   );
   const [silverPerWeightItems, setSilverPerWeightItems] = useState(
     mockSilverPerWeightItems
   );
+
+  useEffect(() => {
+    var goldItemCollection = db.collection("goldItems");
+
+    goldItemCollection.get().then((querySnapshot) => {
+      querySnapshot.forEach((goldItem) => {
+        console.log(goldItem.id);
+        var goldItemDetail = goldItem.data();
+        console.log(JSON.stringify(goldItemDetail));
+        setGoldItems([
+          ...goldItems,
+          { name: goldItemDetail.name, id: goldItem.id },
+        ]);
+      });
+    });
+  }, []);
 
   return (
     <>
