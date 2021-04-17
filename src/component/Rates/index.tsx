@@ -41,7 +41,7 @@ const Rates = () => {
         const rateData = rate.data();
         console.log(JSON.stringify(rateData));
         allRates.push({
-          silverRate: rateData.silveRate,
+          silverRate: rateData.silverRate,
           goldRate: rateData.goldRate,
           date: rateData.date,
           id: rate.id,
@@ -153,7 +153,7 @@ const Rates = () => {
   const saveRateToFireStore = () => {
     db.collection("goldSilverRates")
       .add({
-        silveRate: selectedItem.silverRate,
+        silverRate: selectedItem.silverRate,
         goldRate: selectedItem.goldRate,
         date: selectedItem.date,
       })
