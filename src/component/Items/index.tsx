@@ -1,59 +1,21 @@
-import { useState, useEffect } from "react";
 import { TabView, TabPanel } from "primereact/tabview";
-import {
-  goldItems as mockGoldItems,
-  silverPerPriceItems as mockSilverPerPriceItems,
-  silverPerWeightItems as mockSilverPerWeightItems,
-} from "./mockData";
+
 import ItemsPanel from "./ItemsPanel";
 import "./DataTable.css";
-import { db } from "../../firebase";
-import { ItemType } from "./types";
 
 const Items = () => {
-  const confirmDeleteSelected = () => {};
-
-  const [goldItems, setGoldItems] = useState<ItemType[]>([]);
-  const [silverPerPriceItems, setSilverPerPriceItems] = useState(
-    mockSilverPerPriceItems
-  );
-  const [silverPerWeightItems, setSilverPerWeightItems] = useState(
-    mockSilverPerWeightItems
-  );
-
-  useEffect(() => {
-    var goldItemCollection = db.collection("goldItems");
-
-    goldItemCollection.get().then((querySnapshot) => {
-      const allGoldItems: ItemType[] = [];
-      querySnapshot.forEach((goldItem) => {
-        console.log(goldItem.id);
-        var goldItemDetail = goldItem.data();
-        console.log(JSON.stringify(goldItemDetail));
-        allGoldItems.push({ name: goldItemDetail.name, id: goldItem.id });
-      });
-      setGoldItems(allGoldItems);
-    });
-  }, []);
-
   return (
     <>
       <div className="card">
         <TabView>
           <TabPanel header="Gold Items">
-            <ItemsPanel items={goldItems} updateItems={setGoldItems} />
+            <ItemsPanel category="goldItems" />
           </TabPanel>
           <TabPanel header="Silver per price items">
-            <ItemsPanel
-              items={silverPerPriceItems}
-              updateItems={setSilverPerPriceItems}
-            />
+            <ItemsPanel category="silverPerPriceItems" />
           </TabPanel>
           <TabPanel header="Silver per weight items">
-            <ItemsPanel
-              items={silverPerWeightItems}
-              updateItems={setSilverPerWeightItems}
-            />
+            <ItemsPanel category="silverPerWeightItems" />
           </TabPanel>
         </TabView>
       </div>

@@ -11,11 +11,11 @@ import { ItemType } from "./types";
 import { db } from "../../firebase";
 
 type Props = {
-  items: ItemType[];
-  updateItems: (items: ItemType[]) => void;
+  category: string;
 };
 
-const ItemsPanel: FC<Props> = ({ items, updateItems }) => {
+const ItemsPanel: FC<Props> = ({ category }) => {
+  const [items, setItems] = useState<ItemType[]>([]);
   const [selectedItem, setSelectedItem] = useState<ItemType>({
     id: "",
     name: "",
@@ -52,19 +52,20 @@ const ItemsPanel: FC<Props> = ({ items, updateItems }) => {
     setSubmitted(false);
     setShowDialog(true);
   };
+  useEffect(() => {
+    const collection = db.collection(category);
 
-  const getAllItemsFromFireStore = () => {
-    var goldItemCollection = db.collection("goldItems");
-
-    goldItemCollection.get().then((querySnapshot) => {
-      querySnapshot.forEach((goldItem) => {
-        console.log(goldItem.id);
-
-        var goldItemDetail = goldItem.data();
+    collection.get().then((querySnapshot) => {
+      const allItems: ItemType[] = [];
+      querySnapshot.forEach((item) => {
+        console.log(item.id);
+        var goldItemDetail = item.data();
         console.log(JSON.stringify(goldItemDetail));
+        allItems.push({ name: goldItemDetail.name, id: item.id });
       });
+      setItems(allItems);
     });
-  };
+  }, []);
 
   const leftToolbarTemplate = () => {
     return (
@@ -74,13 +75,6 @@ const ItemsPanel: FC<Props> = ({ items, updateItems }) => {
           icon="pi pi-plus"
           className="p-button-success p-mr-2"
           onClick={openNew}
-        />
-
-        <Button
-          label="refresh"
-          icon="pi pi-refresh"
-          className="p-button-success p-mr-2"
-          onClick={getAllItemsFromFireStore}
         />
       </>
     );
@@ -95,18 +89,18 @@ const ItemsPanel: FC<Props> = ({ items, updateItems }) => {
         })
       );
 
-      updateItems(newItems);
+      setItems(newItems);
     } else {
       // call API to retrieve new ID
       saveItemToFireStore();
-      updateItems([...items, { ...selectedItem, id: `${items.length + 1}` }]);
+      setItems([...items, { ...selectedItem, id: `${items.length + 1}` }]);
     }
     setSubmitted(true);
     hideDialog();
   };
 
   const saveItemToFireStore = () => {
-    db.collection("goldItems")
+    db.collection(category)
       .doc()
       .set({
         name: selectedItem.name,
