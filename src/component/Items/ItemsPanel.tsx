@@ -8,7 +8,8 @@ import { InputText } from "primereact/inputtext";
 import classNames from "classnames";
 import { createNextState } from "@reduxjs/toolkit";
 import { ItemType } from "./types";
-import { db } from "api";
+import { db, save } from "api";
+import { ItemCategoryType } from "api/types";
 
 const categoryMap = {
   goldItems: "Gold",
@@ -16,7 +17,7 @@ const categoryMap = {
   silverPerWeightItems: "Silver per weight",
 };
 type Props = {
-  category: "goldItems" | "silverPerPriceItems" | "silverPerWeightItems";
+  category: ItemCategoryType;
 };
 
 const ItemsPanel: FC<Props> = ({ category }) => {
@@ -131,18 +132,9 @@ const ItemsPanel: FC<Props> = ({ category }) => {
         console.error("Error writing document: ");
       });
   };
-  const saveItemToFireStore = () => {
-    db.collection(category)
-      .add({
-        name: selectedItem.name,
-      })
-      .then((i: { id: any }) => {
-        console.log("Document successfully written with ID", i.id);
-        setItems([...items, { ...selectedItem, id: i.id }]);
-      })
-      .catch(function () {
-        console.error("Error writing document: ");
-      });
+  const saveItemToFireStore = async () => {
+    const savedItem: ItemType = await save(category, selectedItem);
+    setItems([...items, savedItem]);
   };
 
   const hideDialog = () => {
