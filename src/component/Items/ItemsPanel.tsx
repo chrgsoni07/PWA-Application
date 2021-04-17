@@ -151,7 +151,12 @@ const ItemsPanel: FC<Props> = ({ category }) => {
           selectionMode="single"
           dataKey="id"
         >
-          <Column field="id" header="Id" sortable></Column>
+          <Column
+            field="id"
+            header="Id"
+            sortable
+            body={(_: any, prop: any) => prop.rowIndex + 1}
+          ></Column>
           <Column field="name" header="Name" sortable></Column>
           <Column body={actionBodyTemplate}></Column>
         </DataTable>
