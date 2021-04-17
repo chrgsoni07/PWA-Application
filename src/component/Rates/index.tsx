@@ -1,5 +1,4 @@
 import { Button } from "primereact/button";
-import AddRatesModal from "./AddRatesModal";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toolbar } from "primereact/toolbar";
@@ -8,12 +7,11 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import React, { useState, useEffect, useRef, FormEvent } from "react";
 import { RateType } from "./types";
-import { db } from "../../firebase";
+import { db, save } from "api";
 import classNames from "classnames";
 import { createNextState } from "@reduxjs/toolkit";
 
 const Rates = () => {
-  const [modalShow, setModalShow] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [rates, setRates] = useState<RateType[]>([]);
   const [selectedItem, setSelectedItem] = useState<RateType>({
@@ -93,7 +91,7 @@ const Rates = () => {
           )
         );
       })
-      .catch((error) => {
+      .catch((error: any) => {
         console.error("Error removing document: ", error);
       });
   };
@@ -150,20 +148,9 @@ const Rates = () => {
       });
   };
 
-  const saveRateToFireStore = () => {
-    db.collection("goldSilverRates")
-      .add({
-        silverRate: selectedItem.silverRate,
-        goldRate: selectedItem.goldRate,
-        date: selectedItem.date,
-      })
-      .then((i) => {
-        console.log("Document successfully written with ID", i.id);
-        setRates([...rates, { ...selectedItem, id: i.id }]);
-      })
-      .catch(function () {
-        console.error("Error writing document: ");
-      });
+  const saveRateToFireStore = async () => {
+    const savedItem: RateType = await save("goldSilverRates", selectedItem);
+    setRates([...rates, savedItem]);
   };
 
   const itemDialogFooter = (
@@ -186,7 +173,6 @@ const Rates = () => {
   return (
     <>
       <Card>
-        <AddRatesModal show={modalShow} onHide={() => setModalShow(false)} />
         <div style={{ height: 235 }}>
           <iframe
             src="https://www.goldpriceindia.com/wmshare-wlifop-001.php"
@@ -269,7 +255,6 @@ const Rates = () => {
               }
               value={selectedItem?.goldRate}
               required
-              autoFocus
               className={classNames({
                 "p-invalid": submitted && !selectedItem?.goldRate,
               })}

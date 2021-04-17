@@ -1,4 +1,5 @@
 import firebase from "firebase";
+import { CollectionNameType } from "./types";
 
 const firebaseApp = firebase.initializeApp({
   apiKey: "AIzaSyBliuj3l49dWcJ0Bb0jCGFLA8oSbMi9AFs",
@@ -14,3 +15,12 @@ const firebaseApp = firebase.initializeApp({
 const db = firebaseApp.firestore();
 
 export { db };
+
+export const save = async <T>(
+  collectionName: CollectionNameType,
+  data: any
+): Promise<T> => {
+  delete data["id"];
+  const { id } = await db.collection(collectionName).add(data);
+  return { ...data, id };
+};

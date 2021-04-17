@@ -8,7 +8,7 @@ import { InputText } from "primereact/inputtext";
 import classNames from "classnames";
 import { createNextState } from "@reduxjs/toolkit";
 import { ItemType } from "./types";
-import { db } from "../../firebase";
+import { db } from "api";
 
 const categoryMap = {
   goldItems: "Gold",
@@ -45,7 +45,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
           )
         );
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         console.error("Error removing document: ", error);
       });
   };
@@ -136,7 +136,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
       .add({
         name: selectedItem.name,
       })
-      .then((i) => {
+      .then((i: { id: any }) => {
         console.log("Document successfully written with ID", i.id);
         setItems([...items, { ...selectedItem, id: i.id }]);
       })
