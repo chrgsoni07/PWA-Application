@@ -1,15 +1,54 @@
-import { Form, Col, Row } from "react-bootstrap";
 import { Button } from "primereact/button";
 import React, { useState, useEffect, useRef, FormEvent } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { Toolbar } from "primereact/toolbar";
 import { InputText } from "primereact/inputtext";
+import { CustomerType } from "./types";
+import { db, save } from "api";
+import classNames from "classnames";
+import { createNextState } from "@reduxjs/toolkit";
+import { Dialog } from "primereact/dialog";
+import { InputTextarea } from "primereact/inputtextarea";
 
 const Customers = () => {
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [selectedProducts, setSelectedProducts] = useState([]);
   const [globalFilter, setGlobalFilter] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [customers, setCustomers] = useState<CustomerType[]>([]);
+  const [submitted, setSubmitted] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<CustomerType>({
+    id: "",
+    mobile: "",
+    place: "",
+    address: "",
+    name: "",
+  });
+
+  useEffect(() => {
+    const collection = db.collection("customers");
+
+    collection.get().then((querySnapshot) => {
+      const allCustomers: CustomerType[] = [];
+      querySnapshot.forEach((customer) => {
+        console.log(customer.id);
+        const customerData = customer.data();
+        console.log(JSON.stringify(customerData));
+        allCustomers.push({
+          name: customerData.name,
+          mobile: customerData.mobile,
+          place: customerData.place,
+          address: customerData.address,
+          id: customer.id,
+        });
+      });
+      setCustomers(allCustomers);
+    });
+  }, []);
+
+  const editSelectedCustomer = (rowData: any) => {
+    setShowDialog(true);
+    setSelectedItem(rowData);
+  };
 
   const actionBodyTemplate = (rowData: any) => {
     return (
@@ -17,7 +56,7 @@ const Customers = () => {
         <Button
           icon="pi pi-pencil"
           className="p-button-rounded p-button-success p-mr-2"
-          onClick={() => editProduct(rowData)}
+          onClick={() => editSelectedCustomer(rowData)}
         />
         <Button
           icon="pi pi-trash"
@@ -28,71 +67,127 @@ const Customers = () => {
     );
   };
 
-  const leftToolbarTemplate = () => {
-    return (
-      <React.Fragment>
-        <Button
-          label="New"
-          icon="pi pi-plus"
-          className="p-button-success p-mr-2"
-          onClick={openNew}
-        />
-        <Button
-          label="Delete"
-          icon="pi pi-trash"
-          className="p-button-danger"
-          onClick={confirmDeleteSelected}
-          disabled={!selectedProducts || !selectedProducts.length}
-        />
-      </React.Fragment>
-    );
+  const openNew = () => {
+    setSelectedItem({
+      id: "",
+      mobile: "",
+      name: "",
+      address: "",
+      place: "",
+    });
+    setSubmitted(false);
+    setShowDialog(true);
   };
 
   const header = (
     <div className="table-header">
-      <h5 className="p-m-0">Manage Products</h5>
+      <Button
+        label="New"
+        icon="pi pi-plus"
+        className="p-button-success p-mr-2"
+        onClick={openNew}
+      />
+
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
-        {/* TODO for search */}
         <InputText type="search" placeholder="Search..." />
       </span>
     </div>
   );
 
-  const confirmDeleteSelected = () => {};
+  const saveNewCustomer = () => {
+    if (selectedItem?.id) {
+      editCustomerToFireStore();
+    } else {
+      saveCustomerToFireStore();
+    }
+    setSubmitted(true);
+    hideDialog();
+  };
 
-  const openNew = () => {};
+  const saveCustomerToFireStore = async () => {
+    db.collection("customers")
+      .doc()
+      .set({
+        name: selectedItem.name,
+        mobile: selectedItem.mobile,
+        place: selectedItem.place,
+        address: selectedItem.address,
+      })
+      .then(() => {
+        console.log("Document successfully updated!");
+      })
+      .catch(function () {
+        console.error("Error writing document: ");
+      });
+  };
 
-  const editProduct = (rowData: any) => {};
+  const editCustomerToFireStore = () => {
+    db.collection("customers")
+      .doc(selectedItem.id)
+      .set({
+        name: selectedItem.name,
+        mobile: selectedItem.mobile,
+        place: selectedItem.place,
+        address: selectedItem.address,
+      })
+      .then(() => {
+        console.log("Document successfully updated!");
+        const newCustomer = createNextState(customers, (draft) =>
+          draft.forEach((i) => {
+            if (i.id === selectedItem?.id) {
+              i.mobile = selectedItem.mobile;
+              i.name = selectedItem.name;
+              i.place = selectedItem.place;
+              i.address = selectedItem.address;
+            }
+          })
+        );
+        setCustomers(newCustomer);
+      })
+      .catch(function () {
+        console.error("Error writing document: ");
+      });
+  };
 
-  const confirmDeleteProduct = (rowData: any) => {};
+  const hideDialog = () => {
+    setSubmitted(false);
+    setShowDialog(false);
+  };
 
-  const tableData = [
-    {
-      id: 1,
-      customerName: "Mangilal ji Soni",
-      place: "Dhamniya",
-      mobileNo: "+91-784-874-6144",
-    },
-    {
-      id: 2,
-      customerName: "Bherulal ji Gayri",
-      place: "Liliya",
-      mobileNo: "+91-784-477-7541",
-    },
-    {
-      id: 3,
-      customerName: "Shambhulal ji Dhakad",
-      place: "Khor",
-      mobileNo: "+91-784-754-8745",
-    },
-    {
-      id: 4,
-      customerName: "Shantilal ji Dhakad",
-      place: "Jawad",
-      mobileNo: "+91-784-874-7850",
-    },
-  ];
+  const itemDialogFooter = (
+    <>
+      <Button
+        label="Cancel"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={hideDialog}
+      />
+      <Button
+        label="Save"
+        icon="pi pi-check"
+        className="p-button-text"
+        onClick={saveNewCustomer}
+      />
+    </>
+  );
+
+  const confirmDeleteProduct = (rowData: CustomerType) => {
+    db.collection("customers")
+      .doc(rowData.id)
+      .delete()
+      .then(() => {
+        console.log("Document successfully deleted!");
+        setCustomers(
+          createNextState(customers, (draft) =>
+            draft.filter((i) => i.id !== rowData.id)
+          )
+        );
+      })
+      .catch((error: any) => {
+        console.error("Error removing document: ", error);
+      });
+  };
 
   const [validated, setValidated] = useState(false);
 
@@ -106,55 +201,24 @@ const Customers = () => {
     setValidated(true);
   };
 
+  const leftToolbarTemplate = () => {
+    return (
+      <React.Fragment>
+        <Button
+          label="New"
+          icon="pi pi-plus"
+          className="p-button-success p-mr-2"
+          onClick={openNew}
+        />
+      </React.Fragment>
+    );
+  };
+
   return (
-    <div className="container">
-      <Form noValidate validated={validated} onSubmit={handleSubmit}>
-        <Row>
-          <Col>
-            <Form.Group controlId="formGroupCustomerName">
-              <Form.Label>Customer name</Form.Label>
-              <Form.Control type="text" required />
-              <Form.Control.Feedback type="invalid">
-                Please provide customer name
-              </Form.Control.Feedback>
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formGroupPlace">
-              <Form.Label>Place</Form.Label>
-              <Form.Control type="text" required />
-              <Form.Control.Feedback type="invalid">
-                Please provide place
-              </Form.Control.Feedback>
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formGroupMobileNo">
-              <Form.Label>Mobile no</Form.Label>
-              <Form.Control type="number" required />
-              <Form.Control.Feedback type="invalid">
-                Please provide mobile no
-              </Form.Control.Feedback>
-            </Form.Group>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Form.Group controlId="formGroupAddress">
-              <Form.Label>Address</Form.Label>
-              <Form.Control as="textarea" rows={2} />
-            </Form.Group>
-          </Col>
-        </Row>
-
-        <Button type="submit" label="Submit form" />
-      </Form>
-
-      <hr />
+    <>
       <div className="card">
-        <Toolbar className="p-mb-4" left={leftToolbarTemplate}></Toolbar>
         <DataTable
-          value={tableData}
+          value={customers}
           selection={selectedProduct}
           onSelectionChange={(e) => setSelectedProduct(e.value)}
           paginator
@@ -168,13 +232,118 @@ const Customers = () => {
           dataKey="id"
         >
           <Column field="id" header="Id"></Column>
-          <Column field="customerName" header="Customer name"></Column>
+          <Column field="name" header="Name"></Column>
+          <Column field="mobile" header="Mobile no"></Column>
           <Column field="place" header="Place"></Column>
-          <Column field="mobileNo" header="Mobile no"></Column>
+          <Column field="address" header="Address"></Column>
           <Column body={actionBodyTemplate}></Column>
         </DataTable>
       </div>
-    </div>
+
+      <Dialog
+        header={"Add new customer"}
+        visible={showDialog}
+        style={{ width: "600px" }}
+        modal
+        className="p-fluid"
+        footer={itemDialogFooter}
+        onHide={hideDialog}
+      >
+        <div className="p-fluid p-formgrid p-grid">
+          <div className="p-field p-col">
+            <label htmlFor="name">Name</label>
+            <InputText
+              id="name"
+              type="text"
+              onChange={(e) =>
+                setSelectedItem({
+                  ...selectedItem,
+                  name: e.currentTarget.value,
+                })
+              }
+              value={selectedItem?.name}
+              required
+              autoFocus
+              className={classNames({
+                "p-invalid": submitted && !selectedItem?.name,
+              })}
+            />
+            {submitted && !selectedItem?.name && (
+              <small className="p-error">name is required.</small>
+            )}
+          </div>
+
+          <div className="p-field p-col">
+            <label htmlFor="mobile">Mobile</label>
+            <InputText
+              id="mobile"
+              type="text"
+              onChange={(e) =>
+                setSelectedItem({
+                  ...selectedItem,
+                  mobile: e.currentTarget.value,
+                })
+              }
+              value={selectedItem?.mobile}
+              required
+              autoFocus
+              className={classNames({
+                "p-invalid": submitted && !selectedItem?.mobile,
+              })}
+            />
+            {submitted && !selectedItem?.mobile && (
+              <small className="p-error">mobilee no is required.</small>
+            )}
+          </div>
+
+          <div className="p-field p-col">
+            <label htmlFor="place">Place</label>
+            <InputText
+              id="place"
+              type="text"
+              onChange={(e) =>
+                setSelectedItem({
+                  ...selectedItem,
+                  place: e.currentTarget.value,
+                })
+              }
+              value={selectedItem?.place}
+              required
+              autoFocus
+              className={classNames({
+                "p-invalid": submitted && !selectedItem?.place,
+              })}
+            />
+            {submitted && !selectedItem?.place && (
+              <small className="p-error">place no is required.</small>
+            )}
+          </div>
+
+          <div className="p-field p-col-12">
+            <label htmlFor="address">Address</label>
+            <InputTextarea
+              id="address"
+              type="text"
+              onChange={(e) =>
+                setSelectedItem({
+                  ...selectedItem,
+                  address: e.currentTarget.value,
+                })
+              }
+              value={selectedItem?.address}
+              required
+              autoFocus
+              className={classNames({
+                "p-invalid": submitted && !selectedItem?.address,
+              })}
+            />
+            {submitted && !selectedItem?.address && (
+              <small className="p-error">address no is required.</small>
+            )}
+          </div>
+        </div>
+      </Dialog>
+    </>
   );
 };
 
