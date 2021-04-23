@@ -11,7 +11,7 @@ import { Dialog } from "primereact/dialog";
 import { InputTextarea } from "primereact/inputtextarea";
 
 const Customers = () => {
-  const [globalFilter, setGlobalFilter] = useState([]);
+  const [globalFilter, setGlobalFilter] = useState("");
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [customers, setCustomers] = useState<CustomerType[]>([]);
   const [submitted, setSubmitted] = useState(false);
@@ -90,7 +90,11 @@ const Customers = () => {
 
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
-        <InputText type="search" placeholder="Search..." />
+        <InputText
+          type="search"
+          onInput={(e) => setGlobalFilter(e.currentTarget.value)}
+          placeholder="Search..."
+        />
       </span>
     </div>
   );
@@ -231,7 +235,12 @@ const Customers = () => {
           selectionMode="single"
           dataKey="id"
         >
-          <Column field="id" header="Id"></Column>
+          <Column
+            field="id"
+            header="Id"
+            sortable
+            body={(_: any, prop: any) => prop.rowIndex + 1}
+          ></Column>
           <Column field="name" header="Name"></Column>
           <Column field="mobile" header="Mobile no"></Column>
           <Column field="place" header="Place"></Column>

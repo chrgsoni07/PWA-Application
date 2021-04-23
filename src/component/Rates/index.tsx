@@ -205,7 +205,12 @@ const Rates = () => {
             selectionMode="single"
             dataKey="id"
           >
-            <Column field="id" header="Id"></Column>
+            <Column
+              field="id"
+              header="Id"
+              sortable
+              body={(_: any, prop: any) => prop.rowIndex + 1}
+            ></Column>
             <Column field="goldRate" header="Gold (10 gram)"></Column>
             <Column field="silverRate" header="Silver (1 kg)"></Column>
             <Column field="date" header="Date"></Column>
