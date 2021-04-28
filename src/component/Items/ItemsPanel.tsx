@@ -10,6 +10,7 @@ import { createNextState } from "@reduxjs/toolkit";
 import { ItemType } from "./types";
 import { db, save } from "api";
 import { ItemCategoryType } from "api/types";
+import "./DataTable.css";
 
 const categoryMap = {
   goldItems: "Gold",
@@ -174,6 +175,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} items"
           selectionMode="single"
           dataKey="id"
+          className="p-datatable-gridlines"
         >
           <Column
             field="id"

@@ -234,6 +234,7 @@ const Customers = () => {
           header={header}
           selectionMode="single"
           dataKey="id"
+          className="p-datatable-gridlines"
         >
           <Column
             field="id"
