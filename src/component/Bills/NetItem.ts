@@ -1,4 +1,4 @@
-export type oldItem = {
+export type NewItem = {
   item: string;
   weight: number;
   rate: number;

@@ -74,6 +74,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
     setSubmitted(false);
     setShowDialog(true);
   };
+
   useEffect(() => {
     const collection = db.collection(category);
 

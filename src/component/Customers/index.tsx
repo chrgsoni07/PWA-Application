@@ -260,7 +260,7 @@ const Customers = () => {
         onHide={hideDialog}
       >
         <div className="p-fluid p-formgrid p-grid">
-          <div className="p-field p-col">
+          <div className="p-field p-col-6">
             <label htmlFor="name">Name</label>
             <InputText
               id="name"
@@ -283,7 +283,7 @@ const Customers = () => {
             )}
           </div>
 
-          <div className="p-field p-col">
+          <div className="p-field p-col-6">
             <label htmlFor="mobile">Mobile</label>
             <InputText
               id="mobile"
@@ -305,8 +305,10 @@ const Customers = () => {
               <small className="p-error">mobilee no is required.</small>
             )}
           </div>
+        </div>
 
-          <div className="p-field p-col">
+        <div className="p-fluid p-formgrid p-grid">
+          <div className="p-field p-col-6">
             <label htmlFor="place">Place</label>
             <InputText
               id="place"
@@ -329,7 +331,7 @@ const Customers = () => {
             )}
           </div>
 
-          <div className="p-field p-col-12">
+          <div className="p-field p-col-6">
             <label htmlFor="address">Address</label>
             <InputTextarea
               id="address"

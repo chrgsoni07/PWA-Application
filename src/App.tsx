@@ -2,6 +2,7 @@ import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
+import "primeflex/primeflex.css";
 import Items from "./component/Items";
 import NavigationBar from "./component/Navbar/NavigationBar";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
