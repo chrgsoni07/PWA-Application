@@ -13,6 +13,9 @@ import { Column } from "primereact/column";
 import { Calendar } from "primereact/calendar";
 import { NewItem } from "./NetItem";
 import { OldItem } from "./OldItem";
+import { Toolbar } from "primereact/toolbar";
+import { ColumnGroup } from "primereact/columngroup";
+import { Row } from "primereact/row";
 
 const Bills = () => {
   const [activeIndex, setActiveIndex] = useState(1);
@@ -58,11 +61,11 @@ const Bills = () => {
 
   useEffect(() => {
     let newItem: NewItem = {
-      amount: 49000,
+      amount: 25000,
       item: "Jhumki",
       makingCharges: 200,
       rate: 49000,
-      weight: 10,
+      weight: 5,
     };
 
     let oldItem: OldItem = {
@@ -70,25 +73,127 @@ const Bills = () => {
       item: "old chain",
       rate: 40000,
       weight: 4.5,
+      percentage: 100,
     };
     newItems.push(newItem);
     oldItems.push(oldItem);
   }, []);
 
   const header = () => {
-    <Button
-      label="New"
-      icon="pi pi-plus"
-      className="p-button-success p-mr-2"
-    />;
+    <Button label="New" icon="pi pi-plus" className="p-button-sm" />;
   };
 
   const footer = (
     <span style={{ display: "table", margin: "0 auto" }}>
-      {/* <Button label="Save" icon="pi pi-save" style={{ marginRight: ".25em" }} />
-      <Button label="Draft" icon="pi pi-check" className="p-button-secondary" /> */}
+      <Button label="Save" icon="pi pi-save" style={{ marginRight: ".25em" }} />
+      <Button label="Draft" icon="pi pi-check" className="p-button-secondary" />
     </span>
   );
+
+  const toolBarNewItem = () => {
+    return (
+      <React.Fragment>
+        <Button
+          icon="pi pi-plus"
+          className="p-button-rounded"
+          onClick={addBlankRowForNewItem}
+        />
+        <Button
+          icon="pi pi-times"
+          className="p-button-rounded p-button-danger"
+        />
+      </React.Fragment>
+    );
+  };
+
+  const toolBarOldItem = () => {
+    return (
+      <React.Fragment>
+        <Button
+          icon="pi pi-plus"
+          className="p-button-rounded"
+          onClick={addBlankRowForOldItem}
+        />
+        <Button
+          icon="pi pi-times"
+          className="p-button-rounded p-button-danger"
+        />
+      </React.Fragment>
+    );
+  };
+
+  const formatCurrency = (value: any) => {
+    return value.toLocaleString("en-IN", {
+      style: "currency",
+      currency: "INR",
+    });
+  };
+
+  const newTotalAmount = () => {
+    let total = 0;
+    for (let newItem of newItems) {
+      total += newItem.amount;
+    }
+    return formatCurrency(total);
+  };
+
+  let newItemfooterGroup = (
+    <ColumnGroup>
+      <Row>
+        <Column
+          footer="Totals:"
+          colSpan={4}
+          footerStyle={{ textAlign: "right" }}
+        />
+        <Column footer={newTotalAmount} />
+      </Row>
+    </ColumnGroup>
+  );
+
+  const OldItemAmount = () => {
+    let total = 0;
+    for (let oldItem of oldItems) {
+      total += oldItem.amount;
+    }
+    return formatCurrency(total);
+  };
+
+  let oldItemfooterGroup = (
+    <ColumnGroup>
+      <Row>
+        <Column
+          footer="Totals:"
+          colSpan={4}
+          footerStyle={{ textAlign: "right" }}
+        />
+        <Column footer={OldItemAmount} />
+      </Row>
+    </ColumnGroup>
+  );
+
+  const addBlankRowForNewItem = () => {
+    let blankNewItem: NewItem = {
+      amount: 0,
+      item: "",
+      makingCharges: 0,
+      rate: 0,
+      weight: 0,
+    };
+
+    setNewItems([...newItems, blankNewItem]);
+  };
+
+  const addBlankRowForOldItem = () => {
+    let blankOldItem: OldItem = {
+      amount: 0,
+      item: "",
+      percentage: 100,
+      rate: 0,
+      weight: 0,
+    };
+
+    setOldItems([...oldItems, blankOldItem]);
+  };
 
   let originalRows = {};
 
@@ -104,11 +209,20 @@ const Bills = () => {
 
   const onRowEditCancel = () => {};
 
-  const priceBodyTemplate = (rowData: any) => {
-    return new Intl.NumberFormat("en-US", {
+  const amountBodyTemplate = (rowData: any) => {
+    return new Intl.NumberFormat("en-IN", {
       style: "currency",
-      currency: "USD",
-    }).format(rowData.price);
+      currency: "INR",
+      maximumFractionDigits: 0,
+    }).format(rowData.amount);
+  };
+
+  const makingChargesTemplate = (rowData: any) => {
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0,
+    }).format(rowData.makingCharges);
   };
 
   const inputTextEditor = (productKey: string, props: any, field: string) => {
@@ -135,14 +249,25 @@ const Bills = () => {
     return inputTextEditor(productKey, props, "weight");
   };
 
+  const percentEditor = (productKey: string, props: any) => {
+    return (
+      <InputNumber
+        value={props.rowData["percentage"]}
+        onValueChange={(e) => onEditorValueChange(productKey, props, e.value)}
+        suffix="%"
+      />
+    );
+  };
+
   const makingChargesEditor = (productKey: string, props: any) => {
     return (
       <InputNumber
         value={props.rowData["makingCharges"]}
         onValueChange={(e) => onEditorValueChange(productKey, props, e.value)}
         mode="currency"
-        currency="USD"
-        locale="en-US"
+        currency="INR"
+        locale="en-IN"
+        minFractionDigits={0}
       />
     );
   };
@@ -153,8 +278,9 @@ const Bills = () => {
         value={props.rowData["amount"]}
         onValueChange={(e) => onEditorValueChange(productKey, props, e.value)}
         mode="currency"
-        currency="USD"
-        locale="en-US"
+        currency="INR"
+        locale="en-IN"
+        minFractionDigits={0}
       />
     );
   };
@@ -196,26 +322,27 @@ const Bills = () => {
         breakpoints={{ "960px": "75vw", "640px": "100vw" }}
         style={{ width: "50vw" }}
       >
-        <div className="p-formgrid p-grid">
-          <div className="p-field p-col-12">
-            <label htmlFor="customerSelect">Select customer :</label>
-            <Dropdown
-              id="customerSelect"
-              value={selectedCustomer}
-              options={customers}
-              onChange={(e) => setSelectedCustomer(e.value || {})}
-              optionLabel="name"
-              filter
-              showClear
-              filterBy="name"
-              placeholder="Select a customer"
-              style={{ width: "80%" }}
-            />
-          </div>
-        </div>
-
         <div className="p-grid">
           <div className="p-col-8">
+            {/* drop down */}
+            <div className="p-formgrid p-grid">
+              <div className="p-field p-col-12">
+                <label htmlFor="customerSelect">Select customer</label>
+                <Dropdown
+                  id="customerSelect"
+                  value={selectedCustomer}
+                  options={customers}
+                  onChange={(e) => setSelectedCustomer(e.value || {})}
+                  optionLabel="name"
+                  filter
+                  showClear
+                  filterBy="name"
+                  placeholder="Select a customer"
+                  style={{ width: "100%" }}
+                />
+              </div>
+            </div>
+
             <div className="p-formgrid p-grid">
               <div className="p-field p-col-4">
                 <label htmlFor="name">Name: </label>
@@ -239,33 +366,13 @@ const Bills = () => {
                 <span id="name">{selectedCustomer.address}</span>
               </div>
             </div>
-
-            <div className="p-formgrid  p-grid">
-              <div className="p-field p-col-6">
-                <label htmlFor="advanceAmount">Advance Amount</label>
-                <InputNumber
-                  id="advanceAmount"
-                  value={advanceAmount}
-                  onChange={(e) => setAdvanceAmount(e.value)}
-                />
-              </div>
-
-              <div className="p-field p-col-6">
-                <label htmlFor="priviousAmount">Privious Amount</label>
-                <InputNumber
-                  id="priviousAmount"
-                  value={priviousAmount}
-                  onChange={(e) => setPriviousAmount(e.value)}
-                />
-              </div>
-            </div>
           </div>
 
           <div className="p-col-4">
             <div className="p-formgrid p-grid">
               <div className="p-field p-col">
-                <label htmlFor="invoiceNo">Invoice no.: </label>
-                <span id="invoiceNo">1</span>
+                <label htmlFor="invoiceNo">Invoice no</label>
+                <InputText value={101} />
               </div>
 
               <div className="p-field p-col">
@@ -278,18 +385,43 @@ const Bills = () => {
                 />
               </div>
             </div>
+
+            <div className="p-formgrid  p-grid">
+              <div className="p-field p-col">
+                <label htmlFor="advanceAmount">Advance Amount</label>
+                <InputNumber
+                  id="advanceAmount"
+                  value={advanceAmount}
+                  onChange={(e) => setAdvanceAmount(e.value)}
+                />
+              </div>
+
+              <div className="p-field p-col">
+                <label htmlFor="priviousAmount">Privious Amount</label>
+                <InputNumber
+                  id="priviousAmount"
+                  value={priviousAmount}
+                  onChange={(e) => setPriviousAmount(e.value)}
+                />
+              </div>
+            </div>
           </div>
         </div>
 
         <TabView>
           <TabPanel header="New Item">
             <div className="card">
+              <Toolbar left={toolBarNewItem}></Toolbar>
               <DataTable
                 value={newItems}
                 editMode="row"
                 dataKey="id"
                 onRowEditInit={onRowEditInit}
                 onRowEditCancel={onRowEditCancel}
+                className="p-datatable-sm"
+                scrollable
+                scrollHeight="150px"
+                footerColumnGroup={newItemfooterGroup}
               >
                 <Column
                   field="item"
@@ -309,13 +441,13 @@ const Bills = () => {
                 <Column
                   field="makingCharges"
                   header="Making Charges (per gram)"
-                  body={priceBodyTemplate}
+                  body={makingChargesTemplate}
                   editor={(props) => makingChargesEditor("newItems", props)}
                 ></Column>
                 <Column
                   field="amount"
                   header="Total Amount"
-                  body={priceBodyTemplate}
+                  body={amountBodyTemplate}
                   editor={(props) => amountEditor("newItems", props)}
                 ></Column>
                 <Column
@@ -329,12 +461,17 @@ const Bills = () => {
 
           <TabPanel header="Old Item">
             <div className="card">
+              <Toolbar left={toolBarOldItem}></Toolbar>
               <DataTable
                 value={oldItems}
                 editMode="row"
                 dataKey="id"
                 onRowEditInit={onRowEditInit}
                 onRowEditCancel={onRowEditCancel}
+                className="p-datatable-sm"
+                scrollable
+                scrollHeight="150px"
+                footerColumnGroup={oldItemfooterGroup}
               >
                 <Column
                   field="item"
@@ -347,6 +484,11 @@ const Bills = () => {
                   editor={(props) => weightEditor("oldItems", props)}
                 ></Column>
                 <Column
+                  field="percentage"
+                  header="percentage"
+                  editor={(props) => percentEditor("oldItems", props)}
+                ></Column>
+                <Column
                   field="rate"
                   header="Rate"
                   editor={(props) => rateEditor("oldItems", props)}
@@ -354,7 +496,7 @@ const Bills = () => {
                 <Column
                   field="amount"
                   header="Total Amount"
-                  body={priceBodyTemplate}
+                  body={amountBodyTemplate}
                   editor={(props) => amountEditor("oldItems", props)}
                 ></Column>
                 <Column

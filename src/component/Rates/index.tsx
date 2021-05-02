@@ -192,7 +192,7 @@ const Rates = () => {
           />
         </div>
         <div className="card">
-          <Toolbar className="p-mb-4" left={leftToolbarTemplate}></Toolbar>
+          <Toolbar left={leftToolbarTemplate}></Toolbar>
           <DataTable
             value={rates}
             selection={selectedProduct}
@@ -204,6 +204,7 @@ const Rates = () => {
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
             selectionMode="single"
             dataKey="id"
+            className="p-datatable-gridlines p-datatable-sm"
           >
             <Column
               field="id"

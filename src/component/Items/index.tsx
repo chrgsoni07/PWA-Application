@@ -1,7 +1,6 @@
 import { TabView, TabPanel } from "primereact/tabview";
 
 import ItemsPanel from "./ItemsPanel";
-import "./DataTable.css";
 
 const Items = () => {
   return (

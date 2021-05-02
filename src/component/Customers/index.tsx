@@ -119,6 +119,7 @@ const Customers = () => {
         address: selectedItem.address,
       })
       .then(() => {
+        setCustomers([...customers, selectedItem]);
         console.log("Document successfully updated!");
       })
       .catch(function () {
@@ -234,7 +235,7 @@ const Customers = () => {
           header={header}
           selectionMode="single"
           dataKey="id"
-          className="p-datatable-gridlines"
+          className="p-datatable-gridlines p-datatable-sm"
         >
           <Column
             field="id"

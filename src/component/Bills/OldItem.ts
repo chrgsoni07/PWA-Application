@@ -3,4 +3,5 @@ export type OldItem = {
   weight: number;
   rate: number;
   amount: number;
+  percentage: number;
 };
