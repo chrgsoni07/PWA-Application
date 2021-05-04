@@ -1,7 +1,8 @@
 export type OldItem = {
   item: string;
-  weight: number;
+  grossWeight: number;
+  purity: number;
+  netWeight: number;
   rate: number;
   amount: number;
-  percentage: number;
 };

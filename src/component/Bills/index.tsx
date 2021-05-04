@@ -72,8 +72,9 @@ const Bills = () => {
       amount: 42000,
       item: "old chain",
       rate: 40000,
-      weight: 4.5,
-      percentage: 100,
+      grossWeight: 4.5,
+      netWeight: 4.5,
+      purity: 100,
     };
     newItems.push(newItem);
     oldItems.push(oldItem);
@@ -130,10 +131,7 @@ const Bills = () => {
   };
 
   const newTotalAmount = () => {
-    let total = 0;
-    for (let newItem of newItems) {
-      total += newItem.amount;
-    }
+    const total = newItems.reduce((acc, item) => acc + item.amount, 0);
     return formatCurrency(total);
   };
 
@@ -163,7 +161,7 @@ const Bills = () => {
       <Row>
         <Column
           footer="Totals:"
-          colSpan={4}
+          colSpan={5}
           footerStyle={{ textAlign: "right" }}
         />
         <Column footer={OldItemAmount} />
@@ -187,9 +185,10 @@ const Bills = () => {
     let blankOldItem: OldItem = {
       amount: 0,
       item: "",
-      percentage: 100,
+      purity: 100,
       rate: 0,
-      weight: 0,
+      grossWeight: 0,
+      netWeight: 0,
     };
 
     setOldItems([...oldItems, blankOldItem]);
@@ -245,14 +244,18 @@ const Bills = () => {
     return inputTextEditor(productKey, props, "rate");
   };
 
-  const weightEditor = (productKey: string, props: any) => {
-    return inputTextEditor(productKey, props, "weight");
+  const grossWeightEditor = (productKey: string, props: any) => {
+    return inputTextEditor(productKey, props, "grossWeight");
   };
 
-  const percentEditor = (productKey: string, props: any) => {
+  const netWeightEditor = (productKey: string, props: any) => {
+    return inputTextEditor(productKey, props, "netWeight");
+  };
+
+  const purityEditor = (productKey: string, props: any) => {
     return (
       <InputNumber
-        value={props.rowData["percentage"]}
+        value={props.rowData["purity"]}
         onValueChange={(e) => onEditorValueChange(productKey, props, e.value)}
         suffix="%"
       />
@@ -317,10 +320,10 @@ const Bills = () => {
         onHide={onHide}
         header="New Bill"
         footer={footer}
-        maximizable
         modal
         breakpoints={{ "960px": "75vw", "640px": "100vw" }}
         style={{ width: "50vw" }}
+        maximized={true}
       >
         <div className="p-grid">
           <div className="p-col-8">
@@ -425,28 +428,28 @@ const Bills = () => {
               >
                 <Column
                   field="item"
-                  header="Item"
+                  header="ITEM"
                   editor={(props) => itemEditor("newItems", props)}
                 ></Column>
                 <Column
                   field="weight"
-                  header="Weight"
-                  editor={(props) => weightEditor("newItems", props)}
+                  header="WEIGHT"
+                  editor={(props) => grossWeightEditor("newItems", props)}
                 ></Column>
                 <Column
                   field="rate"
-                  header="Rate"
+                  header="RATE"
                   editor={(props) => rateEditor("newItems", props)}
                 ></Column>
                 <Column
                   field="makingCharges"
-                  header="Making Charges (per gram)"
+                  header="MAKING CHARGES (per gram)"
                   body={makingChargesTemplate}
                   editor={(props) => makingChargesEditor("newItems", props)}
                 ></Column>
                 <Column
                   field="amount"
-                  header="Total Amount"
+                  header="AMOUNT"
                   body={amountBodyTemplate}
                   editor={(props) => amountEditor("newItems", props)}
                 ></Column>
@@ -475,27 +478,32 @@ const Bills = () => {
               >
                 <Column
                   field="item"
-                  header="Item"
+                  header="ITEM"
                   editor={(props) => itemEditor("oldItems", props)}
                 ></Column>
                 <Column
-                  field="weight"
-                  header="Weight"
-                  editor={(props) => weightEditor("oldItems", props)}
+                  field="grossWeight"
+                  header="GR.WT"
+                  editor={(props) => grossWeightEditor("oldItems", props)}
                 ></Column>
                 <Column
-                  field="percentage"
-                  header="percentage"
-                  editor={(props) => percentEditor("oldItems", props)}
+                  field="purity"
+                  header="PURITY"
+                  editor={(props) => purityEditor("oldItems", props)}
+                ></Column>
+                <Column
+                  field="netWeight"
+                  header="NET.WT."
+                  editor={(props) => netWeightEditor("oldItems", props)}
                 ></Column>
                 <Column
                   field="rate"
-                  header="Rate"
+                  header="RATE"
                   editor={(props) => rateEditor("oldItems", props)}
                 ></Column>
                 <Column
                   field="amount"
-                  header="Total Amount"
+                  header="AMOUNT"
                   body={amountBodyTemplate}
                   editor={(props) => amountEditor("oldItems", props)}
                 ></Column>
@@ -508,6 +516,44 @@ const Bills = () => {
             </div>
           </TabPanel>
         </TabView>
+
+        <div className="p-fluid">
+          <div className="p-field p-grid">
+            <label htmlFor="totalNew" className="p-col-12 p-md-2">
+              Total new
+            </label>
+            <div className="p-col-12 p-md-10">
+              <InputNumber id="totalNew" value={50100} />
+            </div>
+          </div>
+
+          <div className="p-field p-grid">
+            <label htmlFor="totalOld" className="p-col-12 p-md-2">
+              Total old
+            </label>
+            <div className="p-col-12 p-md-10">
+              <InputNumber id="totalOld" value={25000} />
+            </div>
+          </div>
+
+          <div className="p-field p-grid">
+            <label htmlFor="Discount" className="p-col-12 p-md-2">
+              Discount
+            </label>
+            <div className="p-col-12 p-md-10">
+              <InputNumber id="Discount" value={100} />
+            </div>
+          </div>
+
+          <div className="p-field p-grid">
+            <label htmlFor="amountPayable" className="p-col-12 p-md-2">
+              Amount payable
+            </label>
+            <div className="p-col-12 p-md-10">
+              <InputNumber id="amountPayable" value={25000} />
+            </div>
+          </div>
+        </div>
       </Dialog>
     </>
   );
