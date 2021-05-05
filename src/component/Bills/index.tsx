@@ -27,7 +27,7 @@ const Bills = () => {
   const [priviousAmount, setPriviousAmount] = useState();
   const [newItems, setNewItems] = useState<NewItem[]>([]);
   const [oldItems, setOldItems] = useState<OldItem[]>([]);
-
+  const [editingRows, setEditingRows] = useState({});
   const [selectedCustomer, setSelectedCustomer] = useState<CustomerType>({
     id: "",
     mobile: "",
@@ -37,28 +37,28 @@ const Bills = () => {
   });
 
   const [customers, setCustomers] = useState<CustomerType[]>([]);
-
-  useEffect(() => {
-    const collection = db.collection("customers");
-
-    collection.get().then((querySnapshot) => {
-      const allCustomers: CustomerType[] = [];
-      querySnapshot.forEach((customer) => {
-        console.log(customer.id);
-        const customerData = customer.data();
-        console.log(JSON.stringify(customerData));
-        allCustomers.push({
-          name: customerData.name,
-          mobile: customerData.mobile,
-          place: customerData.place,
-          address: customerData.address,
-          id: customer.id,
+  /*
+    useEffect(() => {
+      const collection = db.collection("customers");
+  
+      collection.get().then((querySnapshot) => {
+        const allCustomers: CustomerType[] = [];
+        querySnapshot.forEach((customer) => {
+          console.log(customer.id);
+          const customerData = customer.data();
+          console.log(JSON.stringify(customerData));
+          allCustomers.push({
+            name: customerData.name,
+            mobile: customerData.mobile,
+            place: customerData.place,
+            address: customerData.address,
+            id: customer.id,
+          });
         });
+        setCustomers(allCustomers);
       });
-      setCustomers(allCustomers);
-    });
-  }, []);
-
+    }, []);
+  */
   useEffect(() => {
     let newItem: NewItem = {
       amount: 25000,
@@ -79,6 +79,12 @@ const Bills = () => {
     newItems.push(newItem);
     oldItems.push(oldItem);
   }, []);
+
+  const items = [
+    { label: "Jhumki", value: "Jhumki" },
+    { label: "Latkan", value: "Latkan" },
+    { label: "Bali", value: "Bali" },
+  ];
 
   const header = () => {
     <Button label="New" icon="pi pi-plus" className="p-button-sm" />;
@@ -208,6 +214,10 @@ const Bills = () => {
 
   const onRowEditCancel = () => {};
 
+  const onRowEditChange = (event: any) => {
+    setEditingRows(event.data);
+  };
+
   const amountBodyTemplate = (rowData: any) => {
     return new Intl.NumberFormat("en-IN", {
       style: "currency",
@@ -216,6 +226,9 @@ const Bills = () => {
     }).format(rowData.amount);
   };
 
+  {
+    /* new method start */
+  }
   const makingChargesTemplate = (rowData: any) => {
     return new Intl.NumberFormat("en-IN", {
       style: "currency",
@@ -224,62 +237,104 @@ const Bills = () => {
     }).format(rowData.makingCharges);
   };
 
-  const inputTextEditor = (productKey: string, props: any, field: string) => {
+  const inputTextEditorNew = (props: any, field: string) => {
     return (
       <InputText
         type="text"
         value={props.rowData[field]}
-        onChange={(e) =>
-          onEditorValueChange(productKey, props, e.currentTarget.value)
-        }
+        onChange={(e) => onEditorValueChangeNew(props, e.currentTarget.value)}
       />
     );
   };
 
-  const itemEditor = (productKey: string, props: any) => {
-    return inputTextEditor(productKey, props, "item");
+  const newItemNameEditor = (props: any) => {
+    return (
+      <Dropdown
+        value={props.rowData["item"]}
+        options={items}
+        optionLabel="label"
+        optionValue="value"
+        onChange={(e) => onEditorValueChangeNew(props, e.value)}
+        style={{ width: "100%" }}
+        placeholder="Select a item"
+        itemTemplate={(option) => {
+          return <span>{option.label}</span>;
+        }}
+      />
+    );
   };
 
-  const rateEditor = (productKey: string, props: any) => {
-    return inputTextEditor(productKey, props, "rate");
+  const newRateEditor = (props: any) => {
+    return inputTextEditorNew(props, "rate");
   };
 
-  const grossWeightEditor = (productKey: string, props: any) => {
-    return inputTextEditor(productKey, props, "grossWeight");
+  const newWeightEditor = (props: any) => {
+    return inputTextEditorNew(props, "weight");
   };
 
-  const netWeightEditor = (productKey: string, props: any) => {
-    return inputTextEditor(productKey, props, "netWeight");
+  const newMakingChargesEditor = (props: any) => {
+    return (
+      <InputNumber
+        value={props.rowData["makingCharges"]}
+        onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
+        mode="currency"
+        currency="INR"
+        locale="en-IN"
+        minFractionDigits={0}
+      />
+    );
   };
 
-  const purityEditor = (productKey: string, props: any) => {
+  const onEditorValueChangeOld = (props: any, value: string) => {
+    let updatedProducts = [...props.value];
+    updatedProducts[props.rowIndex][props.field] = value;
+    setOldItems(updatedProducts);
+    updateOldAmount(props);
+  };
+
+  const inputTextEditorOld = (props: any, field: string) => {
+    return (
+      <InputText
+        type="text"
+        value={props.rowData[field]}
+        onChange={(e) => onEditorValueChangeOld(props, e.currentTarget.value)}
+      />
+    );
+  };
+
+  const oldGrossWeightEditor = (props: any) => {
+    return inputTextEditorOld(props, "grossWeight");
+  };
+
+  const oldNetWeightEditor = (props: any) => {
+    return inputTextEditorOld(props, "netWeight");
+  };
+
+  const oldPurityEditor = (props: any) => {
     return (
       <InputNumber
         value={props.rowData["purity"]}
-        onValueChange={(e) => onEditorValueChange(productKey, props, e.value)}
+        onValueChange={(e) => onEditorValueChangeOld(props, e.value)}
         suffix="%"
       />
     );
   };
 
-  const makingChargesEditor = (productKey: string, props: any) => {
-    return (
-      <InputNumber
-        value={props.rowData["makingCharges"]}
-        onValueChange={(e) => onEditorValueChange(productKey, props, e.value)}
-        mode="currency"
-        currency="INR"
-        locale="en-IN"
-        minFractionDigits={0}
-      />
-    );
+  const oldItemEditor = (props: any) => {
+    return inputTextEditorOld(props, "item");
   };
 
-  const amountEditor = (productKey: string, props: any) => {
+  const oldRateEditor = (props: any) => {
+    return inputTextEditorOld(props, "rate");
+  };
+
+  {
+    /* 
+  const amountEditor = (props: any) => {
     return (
       <InputNumber
         value={props.rowData["amount"]}
-        onValueChange={(e) => onEditorValueChange(productKey, props, e.value)}
+        onValueChange={(e) => onEditorValueChange( props, e.value)}
         mode="currency"
         currency="INR"
         locale="en-IN"
@@ -288,13 +343,44 @@ const Bills = () => {
     );
   };
 
-  const onEditorValueChange = (
-    productKey: string,
-    props: any,
-    value: string
-  ) => {
+  */
+  }
+
+  const updateNewAmount = (props: any) => {
+    let amount = amountCalulationForNewItem(props.rowData);
+    let updatedProducts = [...props.value];
+    updatedProducts[props.rowIndex]["amount"] = amount;
+    setNewItems(updatedProducts);
+  };
+
+  const updateOldAmount = (props: any) => {
+    let amount = amountCalulationForOldItem(props.rowData);
+    let updatedProducts = [...props.value];
+    updatedProducts[props.rowIndex]["amount"] = amount;
+    setOldItems(updatedProducts);
+  };
+
+  const onEditorValueChangeNew = (props: any, value: string) => {
     let updatedProducts = [...props.value];
     updatedProducts[props.rowIndex][props.field] = value;
+    setNewItems(updatedProducts);
+    updateNewAmount(props);
+  };
+
+  const amountCalulationForNewItem = (updatedProd: NewItem) => {
+    let amount =
+      updatedProd.weight * (updatedProd.rate / 10) +
+      updatedProd.weight * updatedProd.makingCharges;
+
+    return amount;
+  };
+
+  const amountCalulationForOldItem = (updatedProd: OldItem) => {
+    let amount =
+      updatedProd.grossWeight *
+      (updatedProd.purity / 100) *
+      (updatedProd.rate / 10);
+    return amount;
   };
 
   return (
@@ -421,7 +507,8 @@ const Bills = () => {
                 dataKey="id"
                 onRowEditInit={onRowEditInit}
                 onRowEditCancel={onRowEditCancel}
-                className="p-datatable-sm"
+                editingRows={editingRows}
+                onRowEditChange={onRowEditChange}
                 scrollable
                 scrollHeight="150px"
                 footerColumnGroup={newItemfooterGroup}
@@ -429,29 +516,28 @@ const Bills = () => {
                 <Column
                   field="item"
                   header="ITEM"
-                  editor={(props) => itemEditor("newItems", props)}
+                  editor={(props) => newItemNameEditor(props)}
                 ></Column>
                 <Column
                   field="weight"
                   header="WEIGHT"
-                  editor={(props) => grossWeightEditor("newItems", props)}
+                  editor={(props) => newWeightEditor(props)}
                 ></Column>
                 <Column
                   field="rate"
                   header="RATE"
-                  editor={(props) => rateEditor("newItems", props)}
+                  editor={(props) => newRateEditor(props)}
                 ></Column>
                 <Column
                   field="makingCharges"
                   header="MAKING CHARGES (per gram)"
                   body={makingChargesTemplate}
-                  editor={(props) => makingChargesEditor("newItems", props)}
+                  editor={(props) => newMakingChargesEditor(props)}
                 ></Column>
                 <Column
                   field="amount"
                   header="AMOUNT"
                   body={amountBodyTemplate}
-                  editor={(props) => amountEditor("newItems", props)}
                 ></Column>
                 <Column
                   rowEditor
@@ -479,33 +565,32 @@ const Bills = () => {
                 <Column
                   field="item"
                   header="ITEM"
-                  editor={(props) => itemEditor("oldItems", props)}
+                  editor={(props) => oldItemEditor(props)}
                 ></Column>
                 <Column
                   field="grossWeight"
                   header="GR.WT"
-                  editor={(props) => grossWeightEditor("oldItems", props)}
+                  editor={(props) => oldGrossWeightEditor(props)}
                 ></Column>
                 <Column
                   field="purity"
                   header="PURITY"
-                  editor={(props) => purityEditor("oldItems", props)}
+                  editor={(props) => oldPurityEditor(props)}
                 ></Column>
                 <Column
                   field="netWeight"
                   header="NET.WT."
-                  editor={(props) => netWeightEditor("oldItems", props)}
+                  editor={(props) => oldNetWeightEditor(props)}
                 ></Column>
                 <Column
                   field="rate"
                   header="RATE"
-                  editor={(props) => rateEditor("oldItems", props)}
+                  editor={(props) => oldRateEditor(props)}
                 ></Column>
                 <Column
                   field="amount"
                   header="AMOUNT"
                   body={amountBodyTemplate}
-                  editor={(props) => amountEditor("oldItems", props)}
                 ></Column>
                 <Column
                   rowEditor
