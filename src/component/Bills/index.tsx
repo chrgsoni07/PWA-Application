@@ -226,9 +226,12 @@ const Bills = () => {
     }).format(rowData.amount);
   };
 
-  {
-    /* new method start */
-  }
+  const netWeightTemplate = (rowData: any) => {
+    return new Intl.NumberFormat("en-IN", {
+      maximumFractionDigits: 3,
+    }).format(rowData.netWeight);
+  };
+
   const makingChargesTemplate = (rowData: any) => {
     return new Intl.NumberFormat("en-IN", {
       style: "currency",
@@ -290,6 +293,7 @@ const Bills = () => {
     updatedProducts[props.rowIndex][props.field] = value;
     setOldItems(updatedProducts);
     updateOldAmount(props);
+    updateNetWeight(props);
   };
 
   const inputTextEditorOld = (props: any, field: string) => {
@@ -304,10 +308,6 @@ const Bills = () => {
 
   const oldGrossWeightEditor = (props: any) => {
     return inputTextEditorOld(props, "grossWeight");
-  };
-
-  const oldNetWeightEditor = (props: any) => {
-    return inputTextEditorOld(props, "netWeight");
   };
 
   const oldPurityEditor = (props: any) => {
@@ -357,6 +357,15 @@ const Bills = () => {
     let amount = amountCalulationForOldItem(props.rowData);
     let updatedProducts = [...props.value];
     updatedProducts[props.rowIndex]["amount"] = amount;
+    setOldItems(updatedProducts);
+  };
+
+  const updateNetWeight = (props: any) => {
+    let updatedOldItem: OldItem = props.rowData;
+    let updatedNetWeight =
+      (updatedOldItem.grossWeight * updatedOldItem.purity) / 100;
+    let updatedProducts = [...props.value];
+    updatedProducts[props.rowIndex]["netWeight"] = updatedNetWeight;
     setOldItems(updatedProducts);
   };
 
@@ -520,7 +529,7 @@ const Bills = () => {
                 ></Column>
                 <Column
                   field="weight"
-                  header="WEIGHT"
+                  header="WEIGHT(gram)"
                   editor={(props) => newWeightEditor(props)}
                 ></Column>
                 <Column
@@ -530,7 +539,7 @@ const Bills = () => {
                 ></Column>
                 <Column
                   field="makingCharges"
-                  header="MAKING CHARGES (per gram)"
+                  header="MAKING CHARGES(per gram)"
                   body={makingChargesTemplate}
                   editor={(props) => newMakingChargesEditor(props)}
                 ></Column>
@@ -569,18 +578,18 @@ const Bills = () => {
                 ></Column>
                 <Column
                   field="grossWeight"
-                  header="GR.WT"
+                  header="GR.WT.(gram)"
                   editor={(props) => oldGrossWeightEditor(props)}
                 ></Column>
                 <Column
                   field="purity"
-                  header="PURITY"
+                  header="PURITY(%)"
                   editor={(props) => oldPurityEditor(props)}
                 ></Column>
                 <Column
                   field="netWeight"
-                  header="NET.WT."
-                  editor={(props) => oldNetWeightEditor(props)}
+                  header="NET.WT.(gram)"
+                  body={netWeightTemplate}
                 ></Column>
                 <Column
                   field="rate"
