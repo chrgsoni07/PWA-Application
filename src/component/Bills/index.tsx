@@ -24,7 +24,7 @@ const Bills = () => {
     undefined
   );
   const [advanceAmount, setAdvanceAmount] = useState();
-  const [priviousAmount, setPriviousAmount] = useState();
+  const [previousAmount, setPreviousAmount] = useState();
   const [newItems, setNewItems] = useState<NewItem[]>([]);
   const [oldItems, setOldItems] = useState<OldItem[]>([]);
   const [editingRows, setEditingRows] = useState({});
@@ -495,11 +495,11 @@ const Bills = () => {
               </div>
 
               <div className="p-field p-col">
-                <label htmlFor="priviousAmount">Privious Amount</label>
+                <label htmlFor="previousAmount">Privious Amount</label>
                 <InputNumber
-                  id="priviousAmount"
-                  value={priviousAmount}
-                  onChange={(e) => setPriviousAmount(e.value)}
+                  id="previousAmount"
+                  value={previousAmount}
+                  onChange={(e) => setPreviousAmount(e.value)}
                 />
               </div>
             </div>
