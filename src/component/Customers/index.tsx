@@ -5,7 +5,6 @@ import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import { CustomerType } from "./types";
 import { db, save } from "api";
-import classNames from "classnames";
 import { createNextState } from "@reduxjs/toolkit";
 import { Dialog } from "primereact/dialog";
 import { InputTextarea } from "primereact/inputtextarea";
@@ -275,9 +274,7 @@ const Customers = () => {
               value={selectedItem?.name}
               required
               autoFocus
-              className={classNames({
-                "p-invalid": submitted && !selectedItem?.name,
-              })}
+              className={submitted && !selectedItem?.name ? "p-invalid" : ""}
             />
             {submitted && !selectedItem?.name && (
               <small className="p-error">name is required.</small>
@@ -298,9 +295,7 @@ const Customers = () => {
               value={selectedItem?.mobile}
               required
               autoFocus
-              className={classNames({
-                "p-invalid": submitted && !selectedItem?.mobile,
-              })}
+              className={submitted && !selectedItem?.mobile ? "p-invalid" : ""}
             />
             {submitted && !selectedItem?.mobile && (
               <small className="p-error">mobilee no is required.</small>
@@ -323,9 +318,7 @@ const Customers = () => {
               value={selectedItem?.place}
               required
               autoFocus
-              className={classNames({
-                "p-invalid": submitted && !selectedItem?.place,
-              })}
+              className={submitted && !selectedItem?.place ? "p-invalid" : ""}
             />
             {submitted && !selectedItem?.place && (
               <small className="p-error">place no is required.</small>
@@ -346,9 +339,7 @@ const Customers = () => {
               value={selectedItem?.address}
               required
               autoFocus
-              className={classNames({
-                "p-invalid": submitted && !selectedItem?.address,
-              })}
+              className={submitted && !selectedItem?.address ? "p-invalid" : ""}
             />
             {submitted && !selectedItem?.address && (
               <small className="p-error">address no is required.</small>

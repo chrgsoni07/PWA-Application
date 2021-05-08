@@ -5,10 +5,9 @@ import { Toolbar } from "primereact/toolbar";
 import { Card } from "primereact/card";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import React, { useState, useEffect, useRef, FormEvent } from "react";
+import React, { useState, useEffect } from "react";
 import { RateType } from "./types";
 import { db, save } from "api";
-import classNames from "classnames";
 import { createNextState } from "@reduxjs/toolkit";
 
 const Rates = () => {
@@ -241,9 +240,9 @@ const Rates = () => {
               value={selectedItem?.silverRate}
               required
               autoFocus
-              className={classNames({
-                "p-invalid": submitted && !selectedItem?.silverRate,
-              })}
+              className={
+                submitted && !selectedItem?.silverRate ? "p-invalid" : ""
+              }
             />
             {submitted && !selectedItem?.silverRate && (
               <small className="p-error">silver rate is required.</small>
@@ -261,9 +260,9 @@ const Rates = () => {
               }
               value={selectedItem?.goldRate}
               required
-              className={classNames({
-                "p-invalid": submitted && !selectedItem?.goldRate,
-              })}
+              className={
+                submitted && !selectedItem?.goldRate ? "p-invalid" : ""
+              }
             />
             {submitted && !selectedItem?.goldRate && (
               <small className="p-error">gold rate is required.</small>

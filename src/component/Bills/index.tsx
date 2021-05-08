@@ -200,7 +200,7 @@ const Bills = () => {
     setOldItems([...oldItems, blankOldItem]);
   };
 
-  let originalRows = {};
+  let originalRows: any = {};
 
   const onHide = () => {
     setDisplayDialog(false);
@@ -516,8 +516,6 @@ const Bills = () => {
                 dataKey="id"
                 onRowEditInit={onRowEditInit}
                 onRowEditCancel={onRowEditCancel}
-                editingRows={editingRows}
-                onRowEditChange={onRowEditChange}
                 scrollable
                 scrollHeight="150px"
                 footerColumnGroup={newItemfooterGroup}

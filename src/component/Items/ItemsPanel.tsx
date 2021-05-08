@@ -5,7 +5,6 @@ import { Toolbar } from "primereact/toolbar";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import classNames from "classnames";
 import { createNextState } from "@reduxjs/toolkit";
 import { ItemType } from "./types";
 import { db, save } from "api";
@@ -206,9 +205,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
             value={selectedItem?.name}
             required
             autoFocus
-            className={classNames({
-              "p-invalid": submitted && !selectedItem?.name,
-            })}
+            className={submitted && !selectedItem?.name ? "p-invalid" : ""}
           />
           {submitted && !selectedItem?.name && (
             <small className="p-error">Name is required.</small>
