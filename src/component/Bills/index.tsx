@@ -28,6 +28,8 @@ const Bills = () => {
   const [newItems, setNewItems] = useState<NewItem[]>([]);
   const [oldItems, setOldItems] = useState<OldItem[]>([]);
   const [editingRows, setEditingRows] = useState({});
+  const [newAmountTotal, setNewAmountTotal] = useState<number | 0>();
+  const [oldAmountTotal, setOldAmountTotal] = useState<number | 0>();
   const [selectedCustomer, setSelectedCustomer] = useState<CustomerType>({
     id: "",
     mobile: "",
@@ -66,6 +68,7 @@ const Bills = () => {
       makingCharges: 200,
       rate: 49000,
       weight: 5,
+      otherCharges: 0,
     };
 
     let oldItem: OldItem = {
@@ -136,8 +139,9 @@ const Bills = () => {
     });
   };
 
-  const newTotalAmount = () => {
+  const newItemsTotalAmount = () => {
     const total = newItems.reduce((acc, item) => acc + item.amount, 0);
+    setNewAmountTotal(total);
     return formatCurrency(total);
   };
 
@@ -146,19 +150,17 @@ const Bills = () => {
       <Row>
         <Column
           footer="Totals:"
-          colSpan={4}
+          colSpan={5}
           footerStyle={{ textAlign: "right" }}
         />
-        <Column footer={newTotalAmount} />
+        <Column footer={newItemsTotalAmount} />
       </Row>
     </ColumnGroup>
   );
 
-  const OldItemAmount = () => {
-    let total = 0;
-    for (let oldItem of oldItems) {
-      total += oldItem.amount;
-    }
+  const oldItemsTotalAmount = () => {
+    const total = oldItems.reduce((acc, item) => acc + item.amount, 0);
+    setOldAmountTotal(total);
     return formatCurrency(total);
   };
 
@@ -170,7 +172,7 @@ const Bills = () => {
           colSpan={5}
           footerStyle={{ textAlign: "right" }}
         />
-        <Column footer={OldItemAmount} />
+        <Column footer={oldItemsTotalAmount} />
       </Row>
     </ColumnGroup>
   );
@@ -182,6 +184,7 @@ const Bills = () => {
       makingCharges: 0,
       rate: 0,
       weight: 0,
+      otherCharges: 0,
     };
 
     setNewItems([...newItems, blankNewItem]);
@@ -240,6 +243,14 @@ const Bills = () => {
     }).format(rowData.makingCharges);
   };
 
+  const otherChargesTemplate = (rowData: any) => {
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0,
+    }).format(rowData.otherCharges);
+  };
+
   const inputTextEditorNew = (props: any, field: string) => {
     return (
       <InputText
@@ -279,6 +290,19 @@ const Bills = () => {
     return (
       <InputNumber
         value={props.rowData["makingCharges"]}
+        onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
+        mode="currency"
+        currency="INR"
+        locale="en-IN"
+        minFractionDigits={0}
+      />
+    );
+  };
+
+  const newOtherChargesEditor = (props: any) => {
+    return (
+      <InputNumber
+        value={props.rowData["otherCharges"]}
         onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
         mode="currency"
         currency="INR"
@@ -347,14 +371,14 @@ const Bills = () => {
   }
 
   const updateNewAmount = (props: any) => {
-    let amount = amountCalulationForNewItem(props.rowData);
+    let amount = calculateNewItemAmount(props.rowData);
     let updatedProducts = [...props.value];
     updatedProducts[props.rowIndex]["amount"] = amount;
     setNewItems(updatedProducts);
   };
 
   const updateOldAmount = (props: any) => {
-    let amount = amountCalulationForOldItem(props.rowData);
+    let amount = calculateOldItemAmount(props.rowData);
     let updatedProducts = [...props.value];
     updatedProducts[props.rowIndex]["amount"] = amount;
     setOldItems(updatedProducts);
@@ -376,15 +400,16 @@ const Bills = () => {
     updateNewAmount(props);
   };
 
-  const amountCalulationForNewItem = (updatedProd: NewItem) => {
+  const calculateNewItemAmount = (updatedProd: NewItem) => {
     let amount =
       updatedProd.weight * (updatedProd.rate / 10) +
-      updatedProd.weight * updatedProd.makingCharges;
+      updatedProd.weight * updatedProd.makingCharges +
+      updatedProd.otherCharges;
 
     return amount;
   };
 
-  const amountCalulationForOldItem = (updatedProd: OldItem) => {
+  const calculateOldItemAmount = (updatedProd: OldItem) => {
     let amount =
       updatedProd.grossWeight *
       (updatedProd.purity / 100) *
@@ -542,6 +567,12 @@ const Bills = () => {
                   editor={(props) => newMakingChargesEditor(props)}
                 ></Column>
                 <Column
+                  field="otherCharges"
+                  header="OTHER CHARGES"
+                  body={otherChargesTemplate}
+                  editor={(props) => newOtherChargesEditor(props)}
+                ></Column>
+                <Column
                   field="amount"
                   header="AMOUNT"
                   body={amountBodyTemplate}
@@ -615,7 +646,7 @@ const Bills = () => {
               Total new
             </label>
             <div className="p-col-12 p-md-10">
-              <InputNumber id="totalNew" value={50100} />
+              <InputNumber id="totalNew" value={newAmountTotal} />
             </div>
           </div>
 
@@ -624,7 +655,7 @@ const Bills = () => {
               Total old
             </label>
             <div className="p-col-12 p-md-10">
-              <InputNumber id="totalOld" value={25000} />
+              <InputNumber id="totalOld" value={oldAmountTotal} />
             </div>
           </div>
 

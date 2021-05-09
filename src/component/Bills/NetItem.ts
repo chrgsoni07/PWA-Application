@@ -4,4 +4,5 @@ export type NewItem = {
   rate: number;
   makingCharges: number;
   amount: number;
+  otherCharges: number;
 };
