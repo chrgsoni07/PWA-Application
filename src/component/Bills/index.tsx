@@ -76,21 +76,21 @@ const Bills = () => {
   */
   useEffect(() => {
     let newItem: NewItem = {
-      amount: 25000,
-      item: "Jhumki",
+      amount: 76500,
+      item: "Chain",
       makingCharges: 200,
       rate: 49000,
-      weight: 5,
+      weight: 15,
       otherCharges: 0,
     };
 
     let oldItem: OldItem = {
-      amount: 42000,
+      amount: 17640,
       item: "old chain",
-      rate: 40000,
+      rate: 49000,
       grossWeight: 4.5,
       netWeight: 4.5,
-      purity: 100,
+      purity: 80,
     };
     newItems.push(newItem);
     oldItems.push(oldItem);
@@ -100,6 +100,7 @@ const Bills = () => {
     { label: "Jhumki", value: "Jhumki" },
     { label: "Latkan", value: "Latkan" },
     { label: "Bali", value: "Bali" },
+    { label: "Chain", value: "Chain" },
   ];
 
   const header = () => {
@@ -685,17 +686,17 @@ const Bills = () => {
           </TabPanel>
         </TabView>
         <div className="p-fluid p-formgrid p-grid">
-          <div className="p-field p-col-12 p-md-2">
+          <div className="p-field p-col">
             <label htmlFor="totalNew"> Total new </label>
             <InputNumber id="totalNew" value={billDetails.newTotal} />
           </div>
 
-          <div className="p-field p-col-12 p-md-2">
+          <div className="p-field p-col">
             <label htmlFor="totalOld">Total old </label>
             <InputNumber id="totalOld" value={billDetails.oldTotal} />
           </div>
 
-          <div className="p-field p-col-12 p-md-2">
+          <div className="p-field p-col">
             <label htmlFor="oldNewDifference"> Old New Difference </label>
             <InputNumber
               id="oldNewDifference"
@@ -703,7 +704,7 @@ const Bills = () => {
             />
           </div>
 
-          <div className="p-field p-col-12 p-md-2">
+          <div className="p-field p-col">
             <label htmlFor="discount">Discount</label>
             <InputNumber
               id="discount"
@@ -712,12 +713,12 @@ const Bills = () => {
             />
           </div>
 
-          <div className="p-field p-col-12 p-md-2">
+          <div className="p-field p-col">
             <label htmlFor="amountPayable"> Amount payable </label>
             <InputNumber id="amountPayable" value={billDetails.amountPayable} />
           </div>
 
-          <div className="p-field p-col-12 p-md-2">
+          <div className="p-field p-col">
             <label htmlFor="paid"> Amount paid </label>
             <InputNumber
               id="paid"
@@ -726,7 +727,7 @@ const Bills = () => {
             />
           </div>
 
-          <div className="p-field p-col-12 p-md-2">
+          <div className="p-field p-col">
             <label htmlFor="due"> Due </label>
             <InputNumber id="due" value={billDetails.due} />
           </div>
