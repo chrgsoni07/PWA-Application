@@ -13,9 +13,12 @@ import { Column } from "primereact/column";
 import { Calendar } from "primereact/calendar";
 import { NewItem } from "./NetItem";
 import { OldItem } from "./OldItem";
+import { BillDetails } from "./BillDetails";
 import { Toolbar } from "primereact/toolbar";
 import { ColumnGroup } from "primereact/columngroup";
 import { Row } from "primereact/row";
+import "./DataTableDemo.css";
+import { log } from "node:console";
 
 const Bills = () => {
   const [activeIndex, setActiveIndex] = useState(1);
@@ -28,8 +31,18 @@ const Bills = () => {
   const [newItems, setNewItems] = useState<NewItem[]>([]);
   const [oldItems, setOldItems] = useState<OldItem[]>([]);
   const [editingRows, setEditingRows] = useState({});
-  const [newAmountTotal, setNewAmountTotal] = useState<number | 0>();
-  const [oldAmountTotal, setOldAmountTotal] = useState<number | 0>();
+
+  const [billDetails, setBillDetails] = useState<BillDetails>({
+    customerId: 0,
+    newTotal: 0,
+    oldTotal: 0,
+    oldNewDifference: 0,
+    discount: 0,
+    paid: 0,
+    due: 0,
+    amountPayable: 0,
+  });
+
   const [selectedCustomer, setSelectedCustomer] = useState<CustomerType>({
     id: "",
     mobile: "",
@@ -139,10 +152,43 @@ const Bills = () => {
     });
   };
 
+  useEffect(() => {
+    const newTotal = newItems.reduce((acc, item) => acc + item.amount, 0);
+    const oldTotal = oldItems.reduce((acc, item) => acc + item.amount, 0);
+    const oldNewDifference = newTotal - oldTotal;
+
+    if (oldNewDifference > 0) {
+      const amountPayable = oldNewDifference;
+      setBillDetails({
+        ...billDetails,
+        oldTotal,
+        newTotal,
+        oldNewDifference,
+        amountPayable,
+      });
+    } else {
+      setBillDetails({ ...billDetails, oldTotal, newTotal, oldNewDifference });
+    }
+  }, [newItems, oldItems]);
+
   const newItemsTotalAmount = () => {
-    const total = newItems.reduce((acc, item) => acc + item.amount, 0);
-    setNewAmountTotal(total);
-    return formatCurrency(total);
+    return formatCurrency(billDetails.newTotal);
+  };
+
+  const oldItemsTotalAmount = () => {
+    return formatCurrency(billDetails.oldTotal);
+  };
+
+  const onDiscoutChange = (discount: number) => {
+    let amountPayable = billDetails.oldNewDifference - discount;
+    if (discount) {
+      setBillDetails({ ...billDetails, discount, amountPayable });
+    }
+  };
+
+  const onAmountPaidChange = (paid: number) => {
+    let due = billDetails.amountPayable - paid;
+    setBillDetails({ ...billDetails, paid, due });
   };
 
   let newItemfooterGroup = (
@@ -157,12 +203,6 @@ const Bills = () => {
       </Row>
     </ColumnGroup>
   );
-
-  const oldItemsTotalAmount = () => {
-    const total = oldItems.reduce((acc, item) => acc + item.amount, 0);
-    setOldAmountTotal(total);
-    return formatCurrency(total);
-  };
 
   let oldItemfooterGroup = (
     <ColumnGroup>
@@ -533,148 +573,162 @@ const Bills = () => {
 
         <TabView>
           <TabPanel header="New Item">
-            <div className="card">
-              <Toolbar left={toolBarNewItem}></Toolbar>
-              <DataTable
-                value={newItems}
-                editMode="row"
-                dataKey="id"
-                onRowEditInit={onRowEditInit}
-                onRowEditCancel={onRowEditCancel}
-                scrollable
-                scrollHeight="150px"
-                footerColumnGroup={newItemfooterGroup}
-              >
-                <Column
-                  field="item"
-                  header="ITEM"
-                  editor={(props) => newItemNameEditor(props)}
-                ></Column>
-                <Column
-                  field="weight"
-                  header="WEIGHT(gram)"
-                  editor={(props) => newWeightEditor(props)}
-                ></Column>
-                <Column
-                  field="rate"
-                  header="RATE"
-                  editor={(props) => newRateEditor(props)}
-                ></Column>
-                <Column
-                  field="makingCharges"
-                  header="MAKING CHARGES(per gram)"
-                  body={makingChargesTemplate}
-                  editor={(props) => newMakingChargesEditor(props)}
-                ></Column>
-                <Column
-                  field="otherCharges"
-                  header="OTHER CHARGES"
-                  body={otherChargesTemplate}
-                  editor={(props) => newOtherChargesEditor(props)}
-                ></Column>
-                <Column
-                  field="amount"
-                  header="AMOUNT"
-                  body={amountBodyTemplate}
-                ></Column>
-                <Column
-                  rowEditor
-                  headerStyle={{ width: "7rem" }}
-                  bodyStyle={{ textAlign: "center" }}
-                ></Column>
-              </DataTable>
+            <div className="datatable-responsive-demo">
+              <div className="card">
+                <Toolbar left={toolBarNewItem}></Toolbar>
+                <DataTable
+                  value={newItems}
+                  editMode="row"
+                  dataKey="id"
+                  onRowEditInit={onRowEditInit}
+                  onRowEditCancel={onRowEditCancel}
+                  scrollable
+                  scrollHeight="150px"
+                  footerColumnGroup={newItemfooterGroup}
+                  className="p-datatable-responsive-demo"
+                >
+                  <Column
+                    field="item"
+                    header="ITEM"
+                    editor={(props) => newItemNameEditor(props)}
+                  ></Column>
+                  <Column
+                    field="weight"
+                    header="WEIGHT(gram)"
+                    editor={(props) => newWeightEditor(props)}
+                  ></Column>
+                  <Column
+                    field="rate"
+                    header="RATE"
+                    editor={(props) => newRateEditor(props)}
+                  ></Column>
+                  <Column
+                    field="makingCharges"
+                    header="MAKING CHARGES(per gram)"
+                    body={makingChargesTemplate}
+                    editor={(props) => newMakingChargesEditor(props)}
+                  ></Column>
+                  <Column
+                    field="otherCharges"
+                    header="OTHER CHARGES"
+                    body={otherChargesTemplate}
+                    editor={(props) => newOtherChargesEditor(props)}
+                  ></Column>
+                  <Column
+                    field="amount"
+                    header="AMOUNT"
+                    body={amountBodyTemplate}
+                  ></Column>
+                  <Column
+                    rowEditor
+                    headerStyle={{ width: "7rem" }}
+                    bodyStyle={{ textAlign: "center" }}
+                  ></Column>
+                </DataTable>
+              </div>
             </div>
           </TabPanel>
 
           <TabPanel header="Old Item">
-            <div className="card">
-              <Toolbar left={toolBarOldItem}></Toolbar>
-              <DataTable
-                value={oldItems}
-                editMode="row"
-                dataKey="id"
-                onRowEditInit={onRowEditInit}
-                onRowEditCancel={onRowEditCancel}
-                className="p-datatable-sm"
-                scrollable
-                scrollHeight="150px"
-                footerColumnGroup={oldItemfooterGroup}
-              >
-                <Column
-                  field="item"
-                  header="ITEM"
-                  editor={(props) => oldItemEditor(props)}
-                ></Column>
-                <Column
-                  field="grossWeight"
-                  header="GR.WT.(gram)"
-                  editor={(props) => oldGrossWeightEditor(props)}
-                ></Column>
-                <Column
-                  field="purity"
-                  header="PURITY(%)"
-                  editor={(props) => oldPurityEditor(props)}
-                ></Column>
-                <Column
-                  field="netWeight"
-                  header="NET.WT.(gram)"
-                  body={netWeightTemplate}
-                ></Column>
-                <Column
-                  field="rate"
-                  header="RATE"
-                  editor={(props) => oldRateEditor(props)}
-                ></Column>
-                <Column
-                  field="amount"
-                  header="AMOUNT"
-                  body={amountBodyTemplate}
-                ></Column>
-                <Column
-                  rowEditor
-                  headerStyle={{ width: "7rem" }}
-                  bodyStyle={{ textAlign: "center" }}
-                ></Column>
-              </DataTable>
+            <div className="datatable-responsive-demo">
+              <div className="card">
+                <Toolbar left={toolBarOldItem}></Toolbar>
+                <DataTable
+                  value={oldItems}
+                  editMode="row"
+                  dataKey="id"
+                  onRowEditInit={onRowEditInit}
+                  onRowEditCancel={onRowEditCancel}
+                  className="p-datatable-responsive-demo"
+                  scrollable
+                  scrollHeight="150px"
+                  footerColumnGroup={oldItemfooterGroup}
+                >
+                  <Column
+                    field="item"
+                    header="ITEM"
+                    editor={(props) => oldItemEditor(props)}
+                  ></Column>
+                  <Column
+                    field="grossWeight"
+                    header="GR.WT.(gram)"
+                    editor={(props) => oldGrossWeightEditor(props)}
+                  ></Column>
+                  <Column
+                    field="purity"
+                    header="PURITY(%)"
+                    editor={(props) => oldPurityEditor(props)}
+                  ></Column>
+                  <Column
+                    field="netWeight"
+                    header="NET.WT.(gram)"
+                    body={netWeightTemplate}
+                  ></Column>
+                  <Column
+                    field="rate"
+                    header="RATE"
+                    editor={(props) => oldRateEditor(props)}
+                  ></Column>
+                  <Column
+                    field="amount"
+                    header="AMOUNT"
+                    body={amountBodyTemplate}
+                  ></Column>
+                  <Column
+                    rowEditor
+                    headerStyle={{ width: "7rem" }}
+                    bodyStyle={{ textAlign: "center" }}
+                  ></Column>
+                </DataTable>
+              </div>
             </div>
           </TabPanel>
         </TabView>
-
-        <div className="p-fluid">
-          <div className="p-field p-grid">
-            <label htmlFor="totalNew" className="p-col-12 p-md-2">
-              Total new
-            </label>
-            <div className="p-col-12 p-md-10">
-              <InputNumber id="totalNew" value={newAmountTotal} />
-            </div>
+        <div className="p-fluid p-formgrid p-grid">
+          <div className="p-field p-col-12 p-md-2">
+            <label htmlFor="totalNew"> Total new </label>
+            <InputNumber id="totalNew" value={billDetails.newTotal} />
           </div>
 
-          <div className="p-field p-grid">
-            <label htmlFor="totalOld" className="p-col-12 p-md-2">
-              Total old
-            </label>
-            <div className="p-col-12 p-md-10">
-              <InputNumber id="totalOld" value={oldAmountTotal} />
-            </div>
+          <div className="p-field p-col-12 p-md-2">
+            <label htmlFor="totalOld">Total old </label>
+            <InputNumber id="totalOld" value={billDetails.oldTotal} />
           </div>
 
-          <div className="p-field p-grid">
-            <label htmlFor="Discount" className="p-col-12 p-md-2">
-              Discount
-            </label>
-            <div className="p-col-12 p-md-10">
-              <InputNumber id="Discount" value={100} />
-            </div>
+          <div className="p-field p-col-12 p-md-2">
+            <label htmlFor="oldNewDifference"> Old New Difference </label>
+            <InputNumber
+              id="oldNewDifference"
+              value={billDetails.oldNewDifference}
+            />
           </div>
 
-          <div className="p-field p-grid">
-            <label htmlFor="amountPayable" className="p-col-12 p-md-2">
-              Amount payable
-            </label>
-            <div className="p-col-12 p-md-10">
-              <InputNumber id="amountPayable" value={25000} />
-            </div>
+          <div className="p-field p-col-12 p-md-2">
+            <label htmlFor="discount">Discount</label>
+            <InputNumber
+              id="discount"
+              value={billDetails.discount}
+              onChange={(e) => onDiscoutChange(e.value)}
+            />
+          </div>
+
+          <div className="p-field p-col-12 p-md-2">
+            <label htmlFor="amountPayable"> Amount payable </label>
+            <InputNumber id="amountPayable" value={billDetails.amountPayable} />
+          </div>
+
+          <div className="p-field p-col-12 p-md-2">
+            <label htmlFor="paid"> Amount paid </label>
+            <InputNumber
+              id="paid"
+              value={billDetails.paid}
+              onChange={(e) => onAmountPaidChange(e.value)}
+            />
+          </div>
+
+          <div className="p-field p-col-12 p-md-2">
+            <label htmlFor="due"> Due </label>
+            <InputNumber id="due" value={billDetails.due} />
           </div>
         </div>
       </Dialog>
