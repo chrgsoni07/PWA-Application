@@ -19,6 +19,7 @@ import { ColumnGroup } from "primereact/columngroup";
 import { Row } from "primereact/row";
 import "./DataTableDemo.css";
 import { log } from "node:console";
+import { types } from "node:util";
 
 const Bills = () => {
   const [activeIndex, setActiveIndex] = useState(1);
@@ -73,7 +74,7 @@ const Bills = () => {
         setCustomers(allCustomers);
       });
     }, []);
-  */
+ 
   useEffect(() => {
     let newItem: NewItem = {
       amount: 76500,
@@ -82,6 +83,7 @@ const Bills = () => {
       rate: 49000,
       weight: 15,
       otherCharges: 0,
+      type: 'gold'
     };
 
     let oldItem: OldItem = {
@@ -91,16 +93,24 @@ const Bills = () => {
       grossWeight: 4.5,
       netWeight: 4.5,
       purity: 80,
+      type: 'gold'
     };
     newItems.push(newItem);
     oldItems.push(oldItem);
   }, []);
+ */
 
   const items = [
     { label: "Jhumki", value: "Jhumki" },
     { label: "Latkan", value: "Latkan" },
     { label: "Bali", value: "Bali" },
     { label: "Chain", value: "Chain" },
+  ];
+
+  const itemType = [
+    { label: "Gold", value: "gold" },
+    { label: "Silver", value: "silver" },
+    { label: "Silver per piece", value: "silverPerPiece" },
   ];
 
   const header = () => {
@@ -197,7 +207,7 @@ const Bills = () => {
       <Row>
         <Column
           footer="Totals:"
-          colSpan={5}
+          colSpan={6}
           footerStyle={{ textAlign: "right" }}
         />
         <Column footer={newItemsTotalAmount} />
@@ -210,7 +220,7 @@ const Bills = () => {
       <Row>
         <Column
           footer="Totals:"
-          colSpan={5}
+          colSpan={6}
           footerStyle={{ textAlign: "right" }}
         />
         <Column footer={oldItemsTotalAmount} />
@@ -226,6 +236,7 @@ const Bills = () => {
       rate: 0,
       weight: 0,
       otherCharges: 0,
+      type: "gold",
     };
 
     setNewItems([...newItems, blankNewItem]);
@@ -239,6 +250,7 @@ const Bills = () => {
       rate: 0,
       grossWeight: 0,
       netWeight: 0,
+      type: "gold",
     };
 
     setOldItems([...oldItems, blankOldItem]);
@@ -319,6 +331,23 @@ const Bills = () => {
     );
   };
 
+  const newItemTypeEditor = (props: any) => {
+    return (
+      <Dropdown
+        value={props.rowData["type"]}
+        options={itemType}
+        optionLabel="label"
+        optionValue="value"
+        onChange={(e) => onEditorValueChangeNew(props, e.value)}
+        style={{ width: "100%" }}
+        placeholder="Select a item type"
+        itemTemplate={(option) => {
+          return <span>{option.label}</span>;
+        }}
+      />
+    );
+  };
+
   const newRateEditor = (props: any) => {
     return inputTextEditorNew(props, "rate");
   };
@@ -385,6 +414,23 @@ const Bills = () => {
     );
   };
 
+  const oldItemTypeEditor = (props: any) => {
+    return (
+      <Dropdown
+        value={props.rowData["type"]}
+        options={itemType}
+        optionLabel="label"
+        optionValue="value"
+        onChange={(e) => onEditorValueChangeOld(props, e.value)}
+        style={{ width: "100%" }}
+        placeholder="Select a item type"
+        itemTemplate={(option) => {
+          return <span>{option.label}</span>;
+        }}
+      />
+    );
+  };
+
   const oldItemEditor = (props: any) => {
     return inputTextEditorOld(props, "item");
   };
@@ -442,19 +488,40 @@ const Bills = () => {
   };
 
   const calculateNewItemAmount = (updatedProd: NewItem) => {
-    let amount =
-      updatedProd.weight * (updatedProd.rate / 10) +
-      updatedProd.weight * updatedProd.makingCharges +
-      updatedProd.otherCharges;
+    let amount;
+    if (updatedProd.type === "gold") {
+      amount =
+        updatedProd.weight * (updatedProd.rate / 10) +
+        updatedProd.weight * updatedProd.makingCharges +
+        updatedProd.otherCharges;
+    }
+
+    if (updatedProd.type === "silver") {
+      amount =
+        updatedProd.weight * (updatedProd.rate / 1000) +
+        updatedProd.otherCharges;
+    }
+
+    if (updatedProd.type === "silverPerPiece") {
+      amount = updatedProd.otherCharges;
+    }
 
     return amount;
   };
 
   const calculateOldItemAmount = (updatedProd: OldItem) => {
-    let amount =
-      updatedProd.grossWeight *
-      (updatedProd.purity / 100) *
-      (updatedProd.rate / 10);
+    let amount;
+    if (updatedProd.type === "gold") {
+      amount =
+        updatedProd.grossWeight *
+        (updatedProd.purity / 100) *
+        (updatedProd.rate / 10);
+    }
+
+    if (updatedProd.type === "silver") {
+      amount = updatedProd.grossWeight * (updatedProd.rate / 1000);
+    }
+
     return amount;
   };
 
@@ -574,114 +641,124 @@ const Bills = () => {
 
         <TabView>
           <TabPanel header="New Item">
-            <div className="datatable-responsive-demo">
-              <div className="card">
-                <Toolbar left={toolBarNewItem}></Toolbar>
-                <DataTable
-                  value={newItems}
-                  editMode="row"
-                  dataKey="id"
-                  onRowEditInit={onRowEditInit}
-                  onRowEditCancel={onRowEditCancel}
-                  scrollable
-                  scrollHeight="150px"
-                  footerColumnGroup={newItemfooterGroup}
-                  className="p-datatable-responsive-demo"
-                >
-                  <Column
-                    field="item"
-                    header="ITEM"
-                    editor={(props) => newItemNameEditor(props)}
-                  ></Column>
-                  <Column
-                    field="weight"
-                    header="WEIGHT(gram)"
-                    editor={(props) => newWeightEditor(props)}
-                  ></Column>
-                  <Column
-                    field="rate"
-                    header="RATE"
-                    editor={(props) => newRateEditor(props)}
-                  ></Column>
-                  <Column
-                    field="makingCharges"
-                    header="MAKING CHARGES(per gram)"
-                    body={makingChargesTemplate}
-                    editor={(props) => newMakingChargesEditor(props)}
-                  ></Column>
-                  <Column
-                    field="otherCharges"
-                    header="OTHER CHARGES"
-                    body={otherChargesTemplate}
-                    editor={(props) => newOtherChargesEditor(props)}
-                  ></Column>
-                  <Column
-                    field="amount"
-                    header="AMOUNT"
-                    body={amountBodyTemplate}
-                  ></Column>
-                  <Column
-                    rowEditor
-                    headerStyle={{ width: "7rem" }}
-                    bodyStyle={{ textAlign: "center" }}
-                  ></Column>
-                </DataTable>
-              </div>
+            <div className="card">
+              <Toolbar left={toolBarNewItem}></Toolbar>
+              <DataTable
+                value={newItems}
+                editMode="row"
+                dataKey="id"
+                onRowEditInit={onRowEditInit}
+                onRowEditCancel={onRowEditCancel}
+                scrollable
+                scrollHeight="150px"
+                footerColumnGroup={newItemfooterGroup}
+                className="p-datatable-sm"
+                resizableColumns
+                columnResizeMode="expand"
+              >
+                <Column
+                  field="type"
+                  header="TYPE"
+                  editor={(props) => newItemTypeEditor(props)}
+                ></Column>
+                <Column
+                  field="item"
+                  header="ITEM"
+                  editor={(props) => newItemNameEditor(props)}
+                ></Column>
+                <Column
+                  field="weight"
+                  header="WEIGHT(gram)"
+                  editor={(props) => newWeightEditor(props)}
+                ></Column>
+                <Column
+                  field="rate"
+                  header="RATE"
+                  editor={(props) => newRateEditor(props)}
+                ></Column>
+                <Column
+                  field="makingCharges"
+                  header="MAKING CHARGES(per gram)"
+                  body={makingChargesTemplate}
+                  editor={(props) => newMakingChargesEditor(props)}
+                ></Column>
+                <Column
+                  field="otherCharges"
+                  header="OTHER CHARGES"
+                  body={otherChargesTemplate}
+                  editor={(props) => newOtherChargesEditor(props)}
+                ></Column>
+                <Column
+                  field="amount"
+                  header="AMOUNT"
+                  body={amountBodyTemplate}
+                ></Column>
+                <Column
+                  rowEditor
+                  headerStyle={{ width: "7rem" }}
+                  bodyStyle={{ textAlign: "center" }}
+                ></Column>
+              </DataTable>
             </div>
           </TabPanel>
 
           <TabPanel header="Old Item">
-            <div className="datatable-responsive-demo">
-              <div className="card">
-                <Toolbar left={toolBarOldItem}></Toolbar>
-                <DataTable
-                  value={oldItems}
-                  editMode="row"
-                  dataKey="id"
-                  onRowEditInit={onRowEditInit}
-                  onRowEditCancel={onRowEditCancel}
-                  className="p-datatable-responsive-demo"
-                  scrollable
-                  scrollHeight="150px"
-                  footerColumnGroup={oldItemfooterGroup}
-                >
-                  <Column
-                    field="item"
-                    header="ITEM"
-                    editor={(props) => oldItemEditor(props)}
-                  ></Column>
-                  <Column
-                    field="grossWeight"
-                    header="GR.WT.(gram)"
-                    editor={(props) => oldGrossWeightEditor(props)}
-                  ></Column>
-                  <Column
-                    field="purity"
-                    header="PURITY(%)"
-                    editor={(props) => oldPurityEditor(props)}
-                  ></Column>
-                  <Column
-                    field="netWeight"
-                    header="NET.WT.(gram)"
-                    body={netWeightTemplate}
-                  ></Column>
-                  <Column
-                    field="rate"
-                    header="RATE"
-                    editor={(props) => oldRateEditor(props)}
-                  ></Column>
-                  <Column
-                    field="amount"
-                    header="AMOUNT"
-                    body={amountBodyTemplate}
-                  ></Column>
-                  <Column
-                    rowEditor
-                    headerStyle={{ width: "7rem" }}
-                    bodyStyle={{ textAlign: "center" }}
-                  ></Column>
-                </DataTable>
-              </div>
+            <div className="card">
+              <Toolbar left={toolBarOldItem}></Toolbar>
+              <DataTable
+                value={oldItems}
+                editMode="row"
+                dataKey="id"
+                onRowEditInit={onRowEditInit}
+                onRowEditCancel={onRowEditCancel}
+                className="p-datatable-sm"
+                resizableColumns
+                columnResizeMode="expand"
+                scrollable
+                scrollHeight="150px"
+                footerColumnGroup={oldItemfooterGroup}
+              >
+                <Column
+                  field="type"
+                  header="TYPE"
+                  editor={(props) => oldItemTypeEditor(props)}
+                ></Column>
+                <Column
+                  field="item"
+                  header="ITEM"
+                  editor={(props) => oldItemEditor(props)}
+                ></Column>
+                <Column
+                  field="grossWeight"
+                  header="GR.WT.(gram)"
+                  editor={(props) => oldGrossWeightEditor(props)}
+                ></Column>
+                <Column
+                  field="purity"
+                  header="PURITY(%)"
+                  editor={(props) => oldPurityEditor(props)}
+                ></Column>
+                <Column
+                  field="netWeight"
+                  header="NET.WT.(gram)"
+                  body={netWeightTemplate}
+                ></Column>
+                <Column
+                  field="rate"
+                  header="RATE"
+                  editor={(props) => oldRateEditor(props)}
+                ></Column>
+                <Column
+                  field="amount"
+                  header="AMOUNT"
+                  body={amountBodyTemplate}
+                ></Column>
+                <Column
+                  rowEditor
+                  headerStyle={{ width: "7rem" }}
+                  bodyStyle={{ textAlign: "center" }}
+                ></Column>
+              </DataTable>
             </div>
           </TabPanel>
         </TabView>

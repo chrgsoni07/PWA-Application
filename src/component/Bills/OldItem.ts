@@ -5,4 +5,5 @@ export type OldItem = {
   netWeight: number;
   rate: number;
   amount: number;
+  type: string;
 };
