@@ -1,5 +1,4 @@
 export type BillDetails = {
-  customerId: number;
   newTotal: number;
   oldTotal: number;
   oldNewDifference: number;

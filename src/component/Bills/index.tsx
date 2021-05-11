@@ -5,6 +5,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Dialog } from "primereact/dialog";
 import { db } from "api";
 import { CustomerType } from "component/Customers/types";
+import { Bill } from "./Bill";
 import { Dropdown } from "primereact/dropdown";
 import { InputNumber } from "primereact/inputnumber";
 import { InputText } from "primereact/inputtext";
@@ -18,8 +19,6 @@ import { Toolbar } from "primereact/toolbar";
 import { ColumnGroup } from "primereact/columngroup";
 import { Row } from "primereact/row";
 import "./DataTableDemo.css";
-import { log } from "node:console";
-import { types } from "node:util";
 
 const Bills = () => {
   const [activeIndex, setActiveIndex] = useState(1);
@@ -34,7 +33,6 @@ const Bills = () => {
   const [editingRows, setEditingRows] = useState({});
 
   const [billDetails, setBillDetails] = useState<BillDetails>({
-    customerId: 0,
     newTotal: 0,
     oldTotal: 0,
     oldNewDifference: 0,
@@ -52,29 +50,39 @@ const Bills = () => {
     name: "",
   });
 
+  const [bill, setBill] = useState<Bill>({
+    billNo: 101,
+    invoiceDate: "",
+    customer: selectedCustomer,
+    newItems: [],
+    oldItems: [],
+    billDetail: billDetails,
+  });
+
   const [customers, setCustomers] = useState<CustomerType[]>([]);
-  /*
-    useEffect(() => {
-      const collection = db.collection("customers");
-  
-      collection.get().then((querySnapshot) => {
-        const allCustomers: CustomerType[] = [];
-        querySnapshot.forEach((customer) => {
-          console.log(customer.id);
-          const customerData = customer.data();
-          console.log(JSON.stringify(customerData));
-          allCustomers.push({
-            name: customerData.name,
-            mobile: customerData.mobile,
-            place: customerData.place,
-            address: customerData.address,
-            id: customer.id,
-          });
+
+  useEffect(() => {
+    const collection = db.collection("customers");
+
+    collection.get().then((querySnapshot) => {
+      const allCustomers: CustomerType[] = [];
+      querySnapshot.forEach((customer) => {
+        console.log(customer.id);
+        const customerData = customer.data();
+        console.log(JSON.stringify(customerData));
+        allCustomers.push({
+          name: customerData.name,
+          mobile: customerData.mobile,
+          place: customerData.place,
+          address: customerData.address,
+          id: customer.id,
         });
-        setCustomers(allCustomers);
       });
-    }, []);
- 
+      setCustomers(allCustomers);
+    });
+  }, []);
+
+  /*
   useEffect(() => {
     let newItem: NewItem = {
       amount: 76500,
@@ -98,8 +106,8 @@ const Bills = () => {
     newItems.push(newItem);
     oldItems.push(oldItem);
   }, []);
- */
 
+  */
   const items = [
     { label: "Jhumki", value: "Jhumki" },
     { label: "Latkan", value: "Latkan" },
@@ -113,13 +121,29 @@ const Bills = () => {
     { label: "Silver per piece", value: "silverPerPiece" },
   ];
 
+  const onSave = () => {
+    setBill({
+      ...bill,
+      customer: selectedCustomer,
+      newItems,
+      oldItems,
+      billDetail: billDetails,
+    });
+    console.log(bill);
+  };
+
   const header = () => {
     <Button label="New" icon="pi pi-plus" className="p-button-sm" />;
   };
 
   const footer = (
     <span style={{ display: "table", margin: "0 auto" }}>
-      <Button label="Save" icon="pi pi-save" style={{ marginRight: ".25em" }} />
+      <Button
+        label="Save"
+        icon="pi pi-save"
+        style={{ marginRight: ".25em" }}
+        onClick={onSave}
+      />
       <Button label="Draft" icon="pi pi-check" className="p-button-secondary" />
     </span>
   );
@@ -322,6 +346,8 @@ const Bills = () => {
         optionLabel="label"
         optionValue="value"
         onChange={(e) => onEditorValueChangeNew(props, e.value)}
+        filter
+        filterBy="value"
         style={{ width: "100%" }}
         placeholder="Select a item"
         itemTemplate={(option) => {
