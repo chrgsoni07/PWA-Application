@@ -3,7 +3,7 @@ import { Card } from "primereact/card";
 import { TabView, TabPanel } from "primereact/tabview";
 import React, { useState, useEffect, useRef } from "react";
 import { Dialog } from "primereact/dialog";
-import { db } from "api";
+import { db, save } from "api";
 import { CustomerType } from "component/Customers/types";
 import { Bill } from "./Bill";
 import { Dropdown } from "primereact/dropdown";
@@ -23,9 +23,7 @@ import "./DataTableDemo.css";
 const Bills = () => {
   const [activeIndex, setActiveIndex] = useState(1);
   const [displayDialog, setDisplayDialog] = useState(false);
-  const [invoiceDate, setInvoiceDate] = useState<Date | Date[] | undefined>(
-    undefined
-  );
+  const [invoiceDate, setInvoiceDate] = useState<Date | Date[]>(new Date());
   const [advanceAmount, setAdvanceAmount] = useState();
   const [previousAmount, setPreviousAmount] = useState();
   const [newItems, setNewItems] = useState<NewItem[]>([]);
@@ -124,12 +122,19 @@ const Bills = () => {
   const onSave = () => {
     setBill({
       ...bill,
+      invoiceDate: invoiceDate.toLocaleString(),
       customer: selectedCustomer,
       newItems,
       oldItems,
       billDetail: billDetails,
     });
-    console.log(bill);
+
+    saveBillToFirestore();
+  };
+
+  const saveBillToFirestore = async () => {
+    const savedBill: Bill = await save("bills", bill);
+    console.log(savedBill);
   };
 
   const header = () => {
