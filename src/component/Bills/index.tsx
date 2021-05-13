@@ -29,7 +29,7 @@ const Bills = () => {
   const [newItems, setNewItems] = useState<NewItem[]>([]);
   const [oldItems, setOldItems] = useState<OldItem[]>([]);
   const [editingRows, setEditingRows] = useState({});
-
+  const [savedBills, setSavedBills] = useState<String[]>([]);
   const [billDetails, setBillDetails] = useState<BillDetails>({
     newTotal: 0,
     oldTotal: 0,
@@ -77,6 +77,17 @@ const Bills = () => {
         });
       });
       setCustomers(allCustomers);
+    });
+  }, []);
+
+  useEffect(() => {
+    const collection = db.collection("bills");
+
+    collection.get().then((querySnapshot) => {
+      querySnapshot.forEach((bill) => {
+        const billData = bill.data();
+        alert(JSON.stringify(billData));
+      });
     });
   }, []);
 
@@ -221,6 +232,7 @@ const Bills = () => {
 
   const onDiscoutChange = (discount: number) => {
     let amountPayable = billDetails.oldNewDifference - discount;
+
     if (discount) {
       setBillDetails({ ...billDetails, discount, amountPayable });
     }
