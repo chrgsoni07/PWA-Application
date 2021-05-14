@@ -75,43 +75,44 @@ const Bills = () => {
     });
   }, []);
 
-  useEffect(() => {
-    const collection = db.collection("bills");
-
-    collection.get().then((querySnapshot) => {
-      querySnapshot.forEach((bill) => {
-        const billData = bill.data();
-        alert(JSON.stringify(billData));
-      });
-    });
-  }, []);
-
   /*
-  useEffect(() => {
-    let newItem: NewItem = {
-      amount: 76500,
-      item: "Chain",
-      makingCharges: 200,
-      rate: 49000,
-      weight: 15,
-      otherCharges: 0,
-      type: 'gold'
-    };
-
-    let oldItem: OldItem = {
-      amount: 17640,
-      item: "old chain",
-      rate: 49000,
-      grossWeight: 4.5,
-      netWeight: 4.5,
-      purity: 80,
-      type: 'gold'
-    };
-    newItems.push(newItem);
-    oldItems.push(oldItem);
-  }, []);
-
-  */
+   useEffect(() => {
+     const collection = db.collection("bills");
+ 
+     collection.get().then((querySnapshot) => {
+       querySnapshot.forEach((bill) => {
+         const billData = bill.data();
+         alert(JSON.stringify(billData));
+       });
+     });
+   }, []);
+ 
+  
+   useEffect(() => {
+     let newItem: NewItem = {
+       amount: 76500,
+       item: "Chain",
+       makingCharges: 200,
+       rate: 49000,
+       weight: 15,
+       otherCharges: 0,
+       type: 'gold'
+     };
+ 
+     let oldItem: OldItem = {
+       amount: 17640,
+       item: "old chain",
+       rate: 49000,
+       grossWeight: 4.5,
+       netWeight: 4.5,
+       purity: 80,
+       type: 'gold'
+     };
+     newItems.push(newItem);
+     oldItems.push(oldItem);
+   }, []);
+ 
+   */
   const items = [
     { label: "Jhumki", value: "Jhumki" },
     { label: "Latkan", value: "Latkan" },
@@ -138,7 +139,8 @@ const Bills = () => {
     console.log("updated bill", newBill);
     setBill(newBill);
 
-    saveBillToFirestore(newBill);
+    console.log(newBill);
+    //  saveBillToFirestore(newBill);
   };
 
   const saveBillToFirestore = async (newBill: Bill) => {
@@ -202,8 +204,12 @@ const Bills = () => {
   };
 
   useEffect(() => {
-    const newTotal = newItems.reduce((acc, item) => acc + item.amount, 0);
-    const oldTotal = oldItems.reduce((acc, item) => acc + item.amount, 0);
+    const newTotal = Math.round(
+      newItems.reduce((acc, item) => acc + item.amount, 0)
+    );
+    const oldTotal = Math.round(
+      oldItems.reduce((acc, item) => acc + item.amount, 0)
+    );
     const oldNewDifference = newTotal - oldTotal;
 
     if (oldNewDifference > 0) {
@@ -529,7 +535,7 @@ const Bills = () => {
   };
 
   const calculateNewItemAmount = (updatedProd: NewItem) => {
-    let amount;
+    let amount = 0;
     if (updatedProd.type === "gold") {
       amount =
         updatedProd.weight * (updatedProd.rate / 10) +
@@ -547,11 +553,11 @@ const Bills = () => {
       amount = updatedProd.otherCharges;
     }
 
-    return amount;
+    return Math.round(amount);
   };
 
   const calculateOldItemAmount = (updatedProd: OldItem) => {
-    let amount;
+    let amount = 0;
     if (updatedProd.type === "gold") {
       amount =
         updatedProd.grossWeight *
@@ -563,7 +569,7 @@ const Bills = () => {
       amount = updatedProd.grossWeight * (updatedProd.rate / 1000);
     }
 
-    return amount;
+    return Math.round(amount);
   };
 
   return (
