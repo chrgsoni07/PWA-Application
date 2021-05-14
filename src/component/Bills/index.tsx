@@ -19,6 +19,7 @@ import { Toolbar } from "primereact/toolbar";
 import { ColumnGroup } from "primereact/columngroup";
 import { Row } from "primereact/row";
 import "./DataTableDemo.css";
+import { ExecFileSyncOptionsWithBufferEncoding } from "node:child_process";
 
 const Bills = () => {
   const [activeIndex, setActiveIndex] = useState(1);
@@ -40,13 +41,7 @@ const Bills = () => {
     amountPayable: 0,
   });
 
-  const [selectedCustomer, setSelectedCustomer] = useState<CustomerType>({
-    id: "",
-    mobile: "",
-    place: "",
-    address: "",
-    name: "",
-  });
+  const [selectedCustomer, setSelectedCustomer] = useState<CustomerType>();
 
   const [bill, setBill] = useState<Bill>({
     billNo: 101,
@@ -131,20 +126,23 @@ const Bills = () => {
   ];
 
   const onSave = () => {
-    setBill({
+    const newBill = {
       ...bill,
       invoiceDate: invoiceDate.toLocaleString(),
       customer: selectedCustomer,
       newItems,
       oldItems,
       billDetail: billDetails,
-    });
+    };
+    console.log("newItems", newItems);
+    console.log("updated bill", newBill);
+    setBill(newBill);
 
-    saveBillToFirestore();
+    saveBillToFirestore(newBill);
   };
 
-  const saveBillToFirestore = async () => {
-    const savedBill: Bill = await save("bills", bill);
+  const saveBillToFirestore = async (newBill: Bill) => {
+    const savedBill: Bill = await save("bills", newBill);
     console.log(savedBill);
   };
 
@@ -620,24 +618,24 @@ const Bills = () => {
             <div className="p-formgrid p-grid">
               <div className="p-field p-col-4">
                 <label htmlFor="name">Name: </label>
-                <span id="name">{selectedCustomer.name}</span>
+                <span id="name">{selectedCustomer?.name}</span>
               </div>
 
               <div className="p-field p-col-4">
                 <label htmlFor="mobile">Mobile: </label>
-                <span id="mobile">{selectedCustomer.mobile}</span>
+                <span id="mobile">{selectedCustomer?.mobile}</span>
               </div>
 
               <div className="p-field p-col-4">
                 <label htmlFor="place">Place: </label>
-                <span id="place">{selectedCustomer.place}</span>
+                <span id="place">{selectedCustomer?.place}</span>
               </div>
             </div>
 
             <div className="p-formgrid  p-grid">
               <div className="p-field p-col-12">
                 <label htmlFor="address">Address: </label>
-                <span id="name">{selectedCustomer.address}</span>
+                <span id="name">{selectedCustomer?.address}</span>
               </div>
             </div>
           </div>

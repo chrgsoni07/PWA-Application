@@ -6,7 +6,7 @@ import { OldItem } from "./OldItem";
 export type Bill = {
   billNo: number;
   invoiceDate: string;
-  customer: CustomerType;
+  customer: CustomerType | undefined;
   newItems: NewItem[];
   oldItems: OldItem[];
   billDetail: BillDetails;
