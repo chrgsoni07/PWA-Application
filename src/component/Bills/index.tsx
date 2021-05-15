@@ -1,3 +1,5 @@
+import { BillTotals } from "./BillTotals";
+import { BillsMeta } from "./BillsMeta";
 import { OldItems } from "./OldItems";
 import { NewItems } from "./NewItems";
 import { Button } from "primereact/button";
@@ -7,9 +9,6 @@ import { useState, useEffect } from "react";
 import { Dialog } from "primereact/dialog";
 import { db, save } from "api";
 import { CustomerType } from "component/Customers/types";
-import { InputNumber } from "primereact/inputnumber";
-import { InputText } from "primereact/inputtext";
-import { Calendar } from "primereact/calendar";
 import Customer from "./Customer";
 import "./DataTableDemo.css";
 import { Bill, BillDetails, NewItem, OldItem } from "./types";
@@ -252,44 +251,14 @@ const Bills = () => {
             setSelectedCustomer={setSelectedCustomer}
           />
 
-          <div className="p-col-4">
-            <div className="p-formgrid p-grid">
-              <div className="p-field p-col">
-                <label htmlFor="invoiceNo">Invoice no</label>
-                <InputText value={101} />
-              </div>
-
-              <div className="p-field p-col">
-                <label htmlFor="invoiceDate">Invoice Date</label>
-                <Calendar
-                  id="invoiceDate"
-                  value={invoiceDate}
-                  onChange={(e) => setInvoiceDate(e.value)}
-                  showIcon
-                />
-              </div>
-            </div>
-
-            <div className="p-formgrid  p-grid">
-              <div className="p-field p-col">
-                <label htmlFor="advanceAmount">Advance Amount</label>
-                <InputNumber
-                  id="advanceAmount"
-                  value={advanceAmount}
-                  onChange={(e) => setAdvanceAmount(e.value)}
-                />
-              </div>
-
-              <div className="p-field p-col">
-                <label htmlFor="previousAmount">Privious Amount</label>
-                <InputNumber
-                  id="previousAmount"
-                  value={previousAmount}
-                  onChange={(e) => setPreviousAmount(e.value)}
-                />
-              </div>
-            </div>
-          </div>
+          <BillsMeta
+            invoiceDate={invoiceDate}
+            setInvoiceDate={setInvoiceDate}
+            advanceAmount={advanceAmount}
+            setAdvanceAmount={setAdvanceAmount}
+            previousAmount={previousAmount}
+            setPreviousAmount={setPreviousAmount}
+          />
         </div>
 
         <TabView>
@@ -312,53 +281,11 @@ const Bills = () => {
             />
           </TabPanel>
         </TabView>
-        <div className="p-fluid p-formgrid p-grid">
-          <div className="p-field p-col">
-            <label htmlFor="totalNew"> Total new </label>
-            <InputNumber id="totalNew" value={billDetails.newTotal} />
-          </div>
-
-          <div className="p-field p-col">
-            <label htmlFor="totalOld">Total old </label>
-            <InputNumber id="totalOld" value={billDetails.oldTotal} />
-          </div>
-
-          <div className="p-field p-col">
-            <label htmlFor="oldNewDifference"> Old New Difference </label>
-            <InputNumber
-              id="oldNewDifference"
-              value={billDetails.oldNewDifference}
-            />
-          </div>
-
-          <div className="p-field p-col">
-            <label htmlFor="discount">Discount</label>
-            <InputNumber
-              id="discount"
-              value={billDetails.discount}
-              onChange={(e) => onDiscoutChange(e.value)}
-            />
-          </div>
-
-          <div className="p-field p-col">
-            <label htmlFor="amountPayable"> Amount payable </label>
-            <InputNumber id="amountPayable" value={billDetails.amountPayable} />
-          </div>
-
-          <div className="p-field p-col">
-            <label htmlFor="paid"> Amount paid </label>
-            <InputNumber
-              id="paid"
-              value={billDetails.paid}
-              onChange={(e) => onAmountPaidChange(e.value)}
-            />
-          </div>
-
-          <div className="p-field p-col">
-            <label htmlFor="due"> Due </label>
-            <InputNumber id="due" value={billDetails.due} />
-          </div>
-        </div>
+        <BillTotals
+          onDiscoutChange={onDiscoutChange}
+          onAmountPaidChange={onAmountPaidChange}
+          billDetails={billDetails}
+        />
       </Dialog>
     </>
   );
