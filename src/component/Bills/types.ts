@@ -1,21 +1,19 @@
 import { CustomerType } from "component/Customers/types";
 
-export type OldItem = {
+type CommonItemType = {
   item: string;
+  type: string;
+  rate: number;
+  amount: number;
+};
+export type OldItem = CommonItemType & {
   grossWeight: number;
   purity: number;
   netWeight: number;
-  rate: number;
-  amount: number;
-  type: string;
 };
-export type NewItem = {
-  item: string;
-  type: string;
+export type NewItem = CommonItemType & {
   weight: number;
-  rate: number;
   makingCharges: number;
-  amount: number;
   otherCharges: number;
 };
 export type BillDetails = {
