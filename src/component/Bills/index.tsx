@@ -5,13 +5,15 @@ import { NewItems } from "./NewItems";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { TabView, TabPanel } from "primereact/tabview";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Dialog } from "primereact/dialog";
 import { db, save } from "api";
 import { CustomerType } from "component/Customers/types";
 import Customer from "./Customer";
 import "./DataTableDemo.css";
 import { Bill, BillDetails, NewItem, OldItem } from "./types";
+import { Column } from "primereact/column";
+import { DataTable } from "primereact/datatable";
 
 const Bills = () => {
   const [activeIndex, setActiveIndex] = useState(1);
@@ -22,7 +24,10 @@ const Bills = () => {
   const [newItems, setNewItems] = useState<NewItem[]>([]);
   const [oldItems, setOldItems] = useState<OldItem[]>([]);
   const [editingRows, setEditingRows] = useState({});
-  const [savedBills, setSavedBills] = useState<String[]>([]);
+  const [savedBills, setSavedBills] = useState<Bill[]>([]);
+  const [customers, setCustomers] = useState<CustomerType[]>([]);
+  const [selectedCustomer, setSelectedCustomer] = useState<CustomerType>();
+
   const [billDetails, setBillDetails] = useState<BillDetails>({
     newTotal: 0,
     oldTotal: 0,
@@ -33,7 +38,7 @@ const Bills = () => {
     amountPayable: 0,
   });
 
-  const [selectedCustomer, setSelectedCustomer] = useState<CustomerType>();
+  const [selectedSavedBill, setSelectedSavedBill] = useState<Bill>();
 
   const [bill, setBill] = useState<Bill>({
     billNo: 101,
@@ -43,8 +48,6 @@ const Bills = () => {
     oldItems: [],
     billDetail: billDetails,
   });
-
-  const [customers, setCustomers] = useState<CustomerType[]>([]);
 
   useEffect(() => {
     const collection = db.collection("customers");
@@ -67,44 +70,25 @@ const Bills = () => {
     });
   }, []);
 
-  /*
-   useEffect(() => {
-     const collection = db.collection("bills");
- 
-     collection.get().then((querySnapshot) => {
-       querySnapshot.forEach((bill) => {
-         const billData = bill.data();
-         alert(JSON.stringify(billData));
-       });
-     });
-   }, []);
- 
-  
-   useEffect(() => {
-     let newItem: NewItem = {
-       amount: 76500,
-       item: "Chain",
-       makingCharges: 200,
-       rate: 49000,
-       weight: 15,
-       otherCharges: 0,
-       type: 'gold'
-     };
- 
-     let oldItem: OldItem = {
-       amount: 17640,
-       item: "old chain",
-       rate: 49000,
-       grossWeight: 4.5,
-       netWeight: 4.5,
-       purity: 80,
-       type: 'gold'
-     };
-     newItems.push(newItem);
-     oldItems.push(oldItem);
-   }, []);
- 
-   */
+  useEffect(() => {
+    const collection = db.collection("bills");
+
+    collection.get().then((querySnapshot) => {
+      const allBills: Bill[] = [];
+      querySnapshot.forEach((bill) => {
+        const billData = bill.data();
+        allBills.push({
+          billNo: billData.billNo,
+          invoiceDate: billData.invoiceDate,
+          newItems: billData.newItems,
+          customer: billData.customer,
+          oldItems: billData.oldItems,
+          billDetail: billData.billDetail,
+        });
+      });
+      setSavedBills(allBills);
+    });
+  }, []);
 
   const onSave = () => {
     const newBill = {
@@ -198,23 +182,27 @@ const Bills = () => {
     setEditingRows(event.data);
   };
 
-  {
-    /* 
-  const amountEditor = (props: any) => {
+  const actionBodyTemplate = (rowData: any) => {
     return (
-      <InputNumber
-        value={props.rowData["amount"]}
-        onValueChange={(e) => onEditorValueChange( props, e.value)}
-        mode="currency"
-        currency="INR"
-        locale="en-IN"
-        minFractionDigits={0}
-      />
+      <>
+        <Button
+          icon="pi pi-eye"
+          className="p-button-rounded p-button-help p-mr-2"
+          onClick={() => viewBill(rowData)}
+        />
+        <Button
+          icon="pi pi-pencil"
+          className="p-button-rounded p-button-success p-mr-2"
+          onClick={() => editItem(rowData)}
+        />
+        <Button
+          icon="pi pi-trash"
+          className="p-button-rounded p-button-warning"
+          onClick={() => confirmDeleteItem(rowData)}
+        />
+      </>
     );
   };
-
-  */
-  }
 
   return (
     <>
@@ -229,7 +217,40 @@ const Bills = () => {
           activeIndex={activeIndex}
           onTabChange={(e) => setActiveIndex(e.index)}
         >
-          <TabPanel header="Privious Bills">Customer detail</TabPanel>
+          <TabPanel header="Previous Bills">
+            <div className="card">
+              <DataTable
+                value={savedBills}
+                selection={selectedSavedBill}
+                onSelectionChange={(e) => setSelectedSavedBill(e.value)}
+                paginator
+                rows={10}
+                rowsPerPageOptions={[5, 10, 25]}
+                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} items"
+                selectionMode="single"
+                dataKey="id"
+                className="p-datatable-gridlines p-datatable-sm"
+              >
+                <Column
+                  field="id"
+                  header="Id"
+                  sortable
+                  body={(_: any, prop: any) => prop.rowIndex + 1}
+                ></Column>
+                <Column field="billNo" header="Bill No"></Column>
+                <Column field="invoiceDate" header="Date"></Column>
+                <Column field="customer.name" header="Customer"></Column>
+                <Column
+                  field="billDetail.amountPayable"
+                  header="Amount Payable"
+                ></Column>
+                <Column field="billDetail.paid" header="Paid"></Column>
+                <Column field="billDetail.due" header="Due"></Column>
+                <Column body={actionBodyTemplate}></Column>
+              </DataTable>
+            </div>
+          </TabPanel>
           <TabPanel header="Draft">Draft</TabPanel>
         </TabView>
       </Card>
@@ -292,3 +313,14 @@ const Bills = () => {
 };
 
 export default Bills;
+function viewBill(rowData: any): void {
+  throw new Error("Function not implemented.");
+}
+
+function confirmDeleteItem(rowData: any): void {
+  throw new Error("Function not implemented.");
+}
+
+function editItem(rowData: any): void {
+  throw new Error("Function not implemented.");
+}
