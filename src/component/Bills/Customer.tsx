@@ -24,27 +24,25 @@ function Customer({ selectedCustomer, customers, setSelectedCustomer }: any) {
         </div>
       </div>
 
-      <div className="p-formgrid p-grid">
-        <div className="p-field p-col-4">
+      <div className="p-fluid p-formgrid p-grid">
+        <div className="p-field p-col">
           <label htmlFor="name">Name: </label>
           <span id="name">{selectedCustomer?.name}</span>
         </div>
 
-        <div className="p-field p-col-4">
+        <div className="p-field p-col">
           <label htmlFor="mobile">Mobile: </label>
           <span id="mobile">{selectedCustomer?.mobile}</span>
         </div>
 
-        <div className="p-field p-col-4">
+        <div className="p-field p-col">
           <label htmlFor="place">Place: </label>
           <span id="place">{selectedCustomer?.place}</span>
         </div>
-      </div>
 
-      <div className="p-formgrid  p-grid">
-        <div className="p-field p-col-12">
+        <div className="p-field p-col">
           <label htmlFor="address">Address: </label>
-          <span id="name">{selectedCustomer?.address}</span>
+          <span id="address">{selectedCustomer?.address}</span>
         </div>
       </div>
     </div>

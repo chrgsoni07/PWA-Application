@@ -173,6 +173,14 @@ export function NewItems({
       />
     );
   };
+  const newItemFieldToDelete = () => {
+    return (
+      <Button
+        icon="pi pi-times"
+        className="p-button-rounded p-button-danger p-button-sm"
+      />
+    );
+  };
   const toolBarNewItem = () => {
     return (
       <>
@@ -181,16 +189,12 @@ export function NewItems({
           className="p-button-rounded"
           onClick={addBlankRowForNewItem}
         />
-        <Button
-          icon="pi pi-times"
-          className="p-button-rounded p-button-danger"
-        />
       </>
     );
   };
   return (
     <div className="card">
-      <Toolbar left={toolBarNewItem}></Toolbar>
+      <Toolbar left={toolBarNewItem} style={{ padding: 5 }}></Toolbar>
       <DataTable
         value={newItems}
         editMode="row"
@@ -250,6 +254,7 @@ export function NewItems({
             textAlign: "center",
           }}
         ></Column>
+        <Column body={newItemFieldToDelete}></Column>
       </DataTable>
     </div>
   );
