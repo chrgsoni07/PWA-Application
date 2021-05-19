@@ -61,7 +61,7 @@ const Bills = () => {
 
   const actionBodyTemplate = (rowData: any) => {
     function viewBill(rowData: any): void {
-      setBill(rowData);
+      setBill({ ...rowData, invoiceDate: new Date(rowData.invoiceDate) });
       setDisplayDialog(true);
     }
     return (

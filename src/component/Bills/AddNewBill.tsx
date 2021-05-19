@@ -57,6 +57,7 @@ export const AddNewBill: FC<AddNewBillProps> = ({
     setOldItems(bill.oldItems);
     bill.billDetail && setBillDetails(bill.billDetail);
     setInvoiceDate(bill.invoiceDate);
+    setSelectedCustomer(bill.customer);
   }, [bill]);
 
   useEffect(() => {
