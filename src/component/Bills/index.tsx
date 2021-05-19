@@ -1,8 +1,9 @@
 import { AddNewBill } from "./AddNewBill";
+import ViewBill from "./ViewBill";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { TabView, TabPanel } from "primereact/tabview";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { db, save } from "api";
 import "./DataTableDemo.css";
 import { Bill } from "./types";
@@ -13,11 +14,9 @@ import { defaultBill } from "./commonData";
 const Bills = () => {
   const [activeIndex, setActiveIndex] = useState(1);
   const [displayDialog, setDisplayDialog] = useState(false);
-
+  const [displayViewDialog, setDisplayViewDialog] = useState(false);
   const [editingRows, setEditingRows] = useState({});
   const [savedBills, setSavedBills] = useState<Bill[]>([]);
-
-  const [selectedSavedBill, setSelectedSavedBill] = useState<Bill>();
   const [bill, setBill] = useState<Bill>(defaultBill());
 
   useEffect(() => {
@@ -62,8 +61,18 @@ const Bills = () => {
   const actionBodyTemplate = (rowData: any) => {
     function viewBill(rowData: any): void {
       setBill({ ...rowData, invoiceDate: new Date(rowData.invoiceDate) });
+      setDisplayViewDialog(true);
+    }
+
+    function editBill(rowData: any): void {
+      setBill({ ...rowData, invoiceDate: new Date(rowData.invoiceDate) });
       setDisplayDialog(true);
     }
+
+    function confirmDeleteBill(rowData: any): void {
+      throw new Error("Function not implemented.");
+    }
+
     return (
       <>
         <Button
@@ -74,12 +83,12 @@ const Bills = () => {
         <Button
           icon="pi pi-pencil"
           className="p-button-rounded p-button-success p-mr-2"
-          onClick={() => editItem(rowData)}
+          onClick={() => editBill(rowData)}
         />
         <Button
           icon="pi pi-trash"
           className="p-button-rounded p-button-warning"
-          onClick={() => confirmDeleteItem(rowData)}
+          onClick={() => confirmDeleteBill(rowData)}
         />
       </>
     );
@@ -103,8 +112,6 @@ const Bills = () => {
               <DataTable
                 id="test2"
                 value={savedBills}
-                selection={selectedSavedBill}
-                onSelectionChange={(e) => setSelectedSavedBill(e.value)}
                 paginator
                 rows={10}
                 rowsPerPageOptions={[5, 10, 25]}
@@ -148,16 +155,14 @@ const Bills = () => {
         displayDialog={displayDialog}
         setDisplayDialog={setDisplayDialog}
       />
+
+      <ViewBill
+        bill={bill}
+        displayDialog={displayViewDialog}
+        setDisplayDialog={setDisplayViewDialog}
+      />
     </>
   );
 };
 
 export default Bills;
-
-function confirmDeleteItem(rowData: any): void {
-  throw new Error("Function not implemented.");
-}
-
-function editItem(rowData: any): void {
-  throw new Error("Function not implemented.");
-}
