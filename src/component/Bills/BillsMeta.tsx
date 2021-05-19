@@ -1,15 +1,10 @@
 import { Calendar } from "primereact/calendar";
 import { InputNumber } from "primereact/inputnumber";
 import { InputText } from "primereact/inputtext";
-import React from "react";
-export function BillsMeta({
-  invoiceDate,
-  setInvoiceDate,
-  advanceAmount,
-  setAdvanceAmount,
-  previousAmount,
-  setPreviousAmount,
-}: any) {
+import React, { useState } from "react";
+export function BillsMeta({ invoiceDate, setInvoiceDate }: any) {
+  const [previousAmount, setPreviousAmount] = useState();
+  const [advanceAmount, setAdvanceAmount] = useState();
   return (
     <div className="p-col-4">
       <div className="p-formgrid p-grid">

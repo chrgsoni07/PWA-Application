@@ -1,3 +1,4 @@
+import { AddNewBill } from "./AddNewBill";
 import { BillTotals } from "./BillTotals";
 import { BillsMeta } from "./BillsMeta";
 import { OldItems } from "./OldItems";
@@ -18,57 +19,11 @@ import { DataTable } from "primereact/datatable";
 const Bills = () => {
   const [activeIndex, setActiveIndex] = useState(1);
   const [displayDialog, setDisplayDialog] = useState(false);
-  const [invoiceDate, setInvoiceDate] = useState<Date | Date[]>(new Date());
-  const [advanceAmount, setAdvanceAmount] = useState();
-  const [previousAmount, setPreviousAmount] = useState();
-  const [newItems, setNewItems] = useState<NewItem[]>([]);
-  const [oldItems, setOldItems] = useState<OldItem[]>([]);
+
   const [editingRows, setEditingRows] = useState({});
   const [savedBills, setSavedBills] = useState<Bill[]>([]);
-  const [customers, setCustomers] = useState<CustomerType[]>([]);
-  const [selectedCustomer, setSelectedCustomer] = useState<CustomerType>();
-
-  const [billDetails, setBillDetails] = useState<BillDetails>({
-    newTotal: 0,
-    oldTotal: 0,
-    oldNewDifference: 0,
-    discount: 0,
-    paid: 0,
-    due: 0,
-    amountPayable: 0,
-  });
 
   const [selectedSavedBill, setSelectedSavedBill] = useState<Bill>();
-
-  const [bill, setBill] = useState<Bill>({
-    billNo: 101,
-    invoiceDate: "",
-    customer: selectedCustomer,
-    newItems: [],
-    oldItems: [],
-    billDetail: billDetails,
-  });
-
-  useEffect(() => {
-    const collection = db.collection("customers");
-
-    collection.get().then((querySnapshot) => {
-      const allCustomers: CustomerType[] = [];
-      querySnapshot.forEach((customer) => {
-        console.log(customer.id);
-        const customerData = customer.data();
-        console.log(JSON.stringify(customerData));
-        allCustomers.push({
-          name: customerData.name,
-          mobile: customerData.mobile,
-          place: customerData.place,
-          address: customerData.address,
-          id: customer.id,
-        });
-      });
-      setCustomers(allCustomers);
-    });
-  }, []);
 
   useEffect(() => {
     const collection = db.collection("bills");
@@ -90,23 +45,6 @@ const Bills = () => {
     });
   }, []);
 
-  const onSave = () => {
-    const newBill = {
-      ...bill,
-      invoiceDate: invoiceDate.toLocaleString(),
-      customer: selectedCustomer,
-      newItems,
-      oldItems,
-      billDetail: billDetails,
-    };
-    console.log("newItems", newItems);
-    console.log("updated bill", newBill);
-    setBill(newBill);
-
-    console.log(newBill);
-    //  saveBillToFirestore(newBill);
-  };
-
   const saveBillToFirestore = async (newBill: Bill) => {
     const savedBill: Bill = await save("bills", newBill);
     console.log(savedBill);
@@ -116,67 +54,11 @@ const Bills = () => {
     <Button label="New" icon="pi pi-plus" className="p-button-sm" />;
   };
 
-  const footer = (
-    <span style={{ display: "table", margin: "0 auto" }}>
-      <Button
-        label="Save"
-        icon="pi pi-save"
-        style={{ marginRight: ".25em" }}
-        onClick={onSave}
-      />
-      <Button label="Draft" icon="pi pi-check" className="p-button-secondary" />
-    </span>
-  );
-
-  useEffect(() => {
-    const newTotal = Math.round(
-      newItems.reduce((acc, item) => acc + item.amount, 0)
-    );
-    const oldTotal = Math.round(
-      oldItems.reduce((acc, item) => acc + item.amount, 0)
-    );
-    const oldNewDifference = newTotal - oldTotal;
-
-    if (oldNewDifference > 0) {
-      const amountPayable = oldNewDifference;
-      setBillDetails({
-        ...billDetails,
-        oldTotal,
-        newTotal,
-        oldNewDifference,
-        amountPayable,
-      });
-    } else {
-      setBillDetails({ ...billDetails, oldTotal, newTotal, oldNewDifference });
-    }
-  }, [newItems, oldItems]);
-
-  const onDiscoutChange = (discount: number) => {
-    let amountPayable = billDetails.oldNewDifference - discount;
-
-    if (discount) {
-      setBillDetails({ ...billDetails, discount, amountPayable });
-    }
-  };
-
-  const onAmountPaidChange = (paid: number) => {
-    let due = billDetails.amountPayable - paid;
-    setBillDetails({ ...billDetails, paid, due });
-  };
-
   let originalRows: any = {};
-
-  const onHide = () => {
-    setDisplayDialog(false);
-  };
 
   const displayModel = () => {
     setDisplayDialog(true);
   };
-
-  const onRowEditInit = () => {};
-
-  const onRowEditCancel = () => {};
 
   const onRowEditChange = (event: any) => {
     setEditingRows(event.data);
@@ -220,6 +102,7 @@ const Bills = () => {
           <TabPanel header="Previous Bills">
             <div className="card">
               <DataTable
+                id="test2"
                 value={savedBills}
                 selection={selectedSavedBill}
                 onSelectionChange={(e) => setSelectedSavedBill(e.value)}
@@ -238,7 +121,12 @@ const Bills = () => {
                   sortable
                   body={(_: any, prop: any) => prop.rowIndex + 1}
                 ></Column>
-                <Column field="billNo" header="Bill No"></Column>
+                <Column
+                  field="billNo"
+                  header="Bill No"
+                  data-testid="test"
+                  key="test3"
+                ></Column>
                 <Column field="invoiceDate" header="Date"></Column>
                 <Column field="customer.name" header="Customer"></Column>
                 <Column
@@ -255,59 +143,10 @@ const Bills = () => {
         </TabView>
       </Card>
 
-      <Dialog
-        visible={displayDialog}
-        onHide={onHide}
-        header="New Bill"
-        footer={footer}
-        modal
-        breakpoints={{ "960px": "75vw", "640px": "100vw" }}
-        style={{ width: "50vw" }}
-        maximized={true}
-      >
-        <div className="p-grid">
-          <Customer
-            selectedCustomer={selectedCustomer}
-            customers={customers}
-            setSelectedCustomer={setSelectedCustomer}
-          />
-
-          <BillsMeta
-            invoiceDate={invoiceDate}
-            setInvoiceDate={setInvoiceDate}
-            advanceAmount={advanceAmount}
-            setAdvanceAmount={setAdvanceAmount}
-            previousAmount={previousAmount}
-            setPreviousAmount={setPreviousAmount}
-          />
-        </div>
-
-        <TabView>
-          <TabPanel header="New Item">
-            <NewItems
-              newItems={newItems}
-              onRowEditInit={onRowEditInit}
-              onRowEditCancel={onRowEditCancel}
-              billDetails={billDetails}
-              setNewItems={setNewItems}
-            />
-          </TabPanel>
-          <TabPanel header="Old Item">
-            <OldItems
-              setOldItems={setOldItems}
-              oldItems={oldItems}
-              onRowEditInit={onRowEditInit}
-              onRowEditCancel={onRowEditCancel}
-              billDetails={billDetails}
-            />
-          </TabPanel>
-        </TabView>
-        <BillTotals
-          onDiscoutChange={onDiscoutChange}
-          onAmountPaidChange={onAmountPaidChange}
-          billDetails={billDetails}
-        />
-      </Dialog>
+      <AddNewBill
+        displayDialog={displayDialog}
+        setDisplayDialog={setDisplayDialog}
+      />
     </>
   );
 };
