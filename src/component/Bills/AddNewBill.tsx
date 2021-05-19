@@ -2,18 +2,30 @@ import { CustomerType } from "component/Customers/types";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { TabPanel, TabView } from "primereact/tabview";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { BillsMeta } from "./BillsMeta";
 import { BillTotals } from "./BillTotals";
+import { defaultBill } from "./commonData";
 import Customer from "./Customer";
 import { NewItems } from "./NewItems";
 import { OldItems } from "./OldItems";
 import { Bill, BillDetails, NewItem, OldItem } from "./types";
 
-export function AddNewBill({ displayDialog, setDisplayDialog }: any) {
+type AddNewBillProps = {
+  displayDialog: boolean;
+  bill: Bill;
+  setDisplayDialog: (flag: boolean) => void;
+  setBill: (bill: Bill) => void;
+};
+export const AddNewBill: FC<AddNewBillProps> = ({
+  displayDialog,
+  setDisplayDialog,
+  bill,
+  setBill,
+}) => {
   const [newItems, setNewItems] = useState<NewItem[]>([]);
   const [oldItems, setOldItems] = useState<OldItem[]>([]);
-  const [invoiceDate, setInvoiceDate] = useState<Date | Date[]>(new Date());
+  const [invoiceDate, setInvoiceDate] = useState<Date>(new Date());
 
   const [selectedCustomer, setSelectedCustomer] = useState<CustomerType>();
   const [billDetails, setBillDetails] = useState<BillDetails>({
@@ -24,14 +36,6 @@ export function AddNewBill({ displayDialog, setDisplayDialog }: any) {
     paid: 0,
     due: 0,
     amountPayable: 0,
-  });
-  const [bill, setBill] = useState<Bill>({
-    billNo: 101,
-    invoiceDate: "",
-    customer: selectedCustomer,
-    newItems: [],
-    oldItems: [],
-    billDetail: billDetails,
   });
 
   const onDiscoutChange = (discount: number) => {
@@ -46,6 +50,13 @@ export function AddNewBill({ displayDialog, setDisplayDialog }: any) {
     let due = billDetails.amountPayable - paid;
     setBillDetails({ ...billDetails, paid, due });
   };
+
+  useEffect(() => {
+    setNewItems(bill.newItems);
+    setOldItems(bill.oldItems);
+    bill.billDetail && setBillDetails(bill.billDetail);
+    setInvoiceDate(bill.invoiceDate);
+  }, [bill]);
 
   useEffect(() => {
     const newTotal = Math.round(
@@ -72,6 +83,7 @@ export function AddNewBill({ displayDialog, setDisplayDialog }: any) {
 
   const onHide = () => {
     setDisplayDialog(false);
+    setBill(defaultBill());
   };
 
   const onRowEditInit = () => {};
@@ -81,7 +93,7 @@ export function AddNewBill({ displayDialog, setDisplayDialog }: any) {
   const onSave = () => {
     const newBill = {
       ...bill,
-      invoiceDate: invoiceDate.toLocaleString(),
+      invoiceDate,
       customer: selectedCustomer,
       newItems,
       oldItems,
@@ -163,4 +175,4 @@ export function AddNewBill({ displayDialog, setDisplayDialog }: any) {
       />
     </Dialog>
   );
-}
+};

@@ -27,9 +27,9 @@ export type BillDetails = {
 };
 export type Bill = {
   billNo: number;
-  invoiceDate: string;
+  invoiceDate: Date;
   customer: CustomerType | undefined;
   newItems: NewItem[];
   oldItems: OldItem[];
-  billDetail: BillDetails;
+  billDetail?: BillDetails;
 };

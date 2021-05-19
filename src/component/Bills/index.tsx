@@ -1,20 +1,14 @@
 import { AddNewBill } from "./AddNewBill";
-import { BillTotals } from "./BillTotals";
-import { BillsMeta } from "./BillsMeta";
-import { OldItems } from "./OldItems";
-import { NewItems } from "./NewItems";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { TabView, TabPanel } from "primereact/tabview";
-import React, { useState, useEffect } from "react";
-import { Dialog } from "primereact/dialog";
+import { useState, useEffect } from "react";
 import { db, save } from "api";
-import { CustomerType } from "component/Customers/types";
-import Customer from "./Customer";
 import "./DataTableDemo.css";
-import { Bill, BillDetails, NewItem, OldItem } from "./types";
+import { Bill } from "./types";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
+import { defaultBill } from "./commonData";
 
 const Bills = () => {
   const [activeIndex, setActiveIndex] = useState(1);
@@ -24,6 +18,7 @@ const Bills = () => {
   const [savedBills, setSavedBills] = useState<Bill[]>([]);
 
   const [selectedSavedBill, setSelectedSavedBill] = useState<Bill>();
+  const [bill, setBill] = useState<Bill>(defaultBill());
 
   useEffect(() => {
     const collection = db.collection("bills");
@@ -65,6 +60,10 @@ const Bills = () => {
   };
 
   const actionBodyTemplate = (rowData: any) => {
+    function viewBill(rowData: any): void {
+      setBill(rowData);
+      setDisplayDialog(true);
+    }
     return (
       <>
         <Button
@@ -144,6 +143,8 @@ const Bills = () => {
       </Card>
 
       <AddNewBill
+        bill={bill}
+        setBill={setBill}
         displayDialog={displayDialog}
         setDisplayDialog={setDisplayDialog}
       />
@@ -152,9 +153,6 @@ const Bills = () => {
 };
 
 export default Bills;
-function viewBill(rowData: any): void {
-  throw new Error("Function not implemented.");
-}
 
 function confirmDeleteItem(rowData: any): void {
   throw new Error("Function not implemented.");
