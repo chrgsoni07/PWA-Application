@@ -3,6 +3,7 @@ import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { TabPanel, TabView } from "primereact/tabview";
 import { FC, useEffect, useState } from "react";
+import { sum } from "utils/number.utils";
 import { BillsMeta } from "./BillsMeta";
 import { BillTotals } from "./BillTotals";
 import { defaultBill } from "./commonData";
@@ -59,26 +60,17 @@ export const AddNewBill: FC<AddNewBillProps> = ({
   }, [bill]);
 
   useEffect(() => {
-    const newTotal = Math.round(
-      newItems.reduce((acc, item) => acc + item.amount, 0)
-    );
-    const oldTotal = Math.round(
-      oldItems.reduce((acc, item) => acc + item.amount, 0)
-    );
+    const newTotal = sum(newItems);
+    const oldTotal = sum(oldItems);
     const oldNewDifference = newTotal - oldTotal;
 
-    if (oldNewDifference > 0) {
-      const amountPayable = oldNewDifference;
-      setBillDetails({
-        ...billDetails,
-        oldTotal,
-        newTotal,
-        oldNewDifference,
-        amountPayable,
-      });
-    } else {
-      setBillDetails({ ...billDetails, oldTotal, newTotal, oldNewDifference });
-    }
+    setBillDetails({
+      ...billDetails,
+      oldTotal,
+      newTotal,
+      oldNewDifference,
+      amountPayable: oldNewDifference > 0 ? oldNewDifference : 0,
+    });
   }, [newItems, oldItems]);
 
   const onHide = () => {
