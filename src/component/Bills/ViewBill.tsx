@@ -18,12 +18,13 @@ const ViewBill: FC<ViewBillProps> = ({
   displayDialog,
   setDisplayDialog,
 }) => {
+  const { customer, oldItems, newItems, billDetail, invoiceDate } = bill;
   const onHide = () => {
     setDisplayDialog(false);
   };
 
   const isOldExist = () => {
-    return bill.oldItems.length > 0;
+    return oldItems.length > 0;
   };
 
   const numberFormat = (value: number | undefined) => {
@@ -56,7 +57,7 @@ const ViewBill: FC<ViewBillProps> = ({
       <Divider align="right">
         <div className="p-d-inline-flex p-ai-center">
           <i className="pi pi-calendar p-mr-2"></i>
-          <b>{bill.invoiceDate.toDateString()}</b>
+          <b>{invoiceDate.toDateString()}</b>
         </div>
       </Divider>
 
@@ -70,56 +71,60 @@ const ViewBill: FC<ViewBillProps> = ({
       <div className="p-grid">
         <div className="p-col">
           <label id="name">Name:</label>
-          <span id="name"> {bill.customer?.name}</span>
+          <span id="name"> {customer?.name}</span>
         </div>
 
         <div className="p-col">
           <label id="place">Place:</label>
-          <span id="place"> {bill.customer?.place}</span>
+          <span id="place"> {customer?.place}</span>
         </div>
 
         <div className="p-col">
           <label id="mobile">Mobile:</label>
-          <span id="mobile"> {bill.customer?.mobile}</span>
+          <span id="mobile"> {customer?.mobile}</span>
         </div>
 
         <div className="p-col">
           <label id="address">Address:</label>
-          <span id="address"> {bill.customer?.address}</span>
+          <span id="address"> {customer?.address}</span>
         </div>
       </div>
 
-      <div className="card">
-        <DataTable
-          value={bill.newItems}
-          header="New Items"
-          className="p-datatable-sm"
-        >
-          <Column field="type" header="Type"></Column>
-          <Column field="item" header="Item"></Column>
-          <Column field="weight" header="Weight"></Column>
-          <Column field="rate" header="Rate"></Column>
-          <Column field="makingCharges" header="Making charge"></Column>
-          <Column field="otherCharges" header="Other Charges"></Column>
-          <Column field="amount" header="Amount"></Column>
-        </DataTable>
-      </div>
+      {newItems.length && (
+        <div className="card">
+          <DataTable
+            value={newItems}
+            header="New Items"
+            className="p-datatable-sm"
+          >
+            <Column field="type" header="Type"></Column>
+            <Column field="item" header="Item"></Column>
+            <Column field="weight" header="Weight"></Column>
+            <Column field="rate" header="Rate"></Column>
+            <Column field="makingCharges" header="Making charge"></Column>
+            <Column field="otherCharges" header="Other Charges"></Column>
+            <Column field="amount" header="Amount"></Column>
+          </DataTable>
+        </div>
+      )}
 
-      <div className="card">
-        <DataTable
-          value={bill.oldItems}
-          header="Old Items"
-          className="p-datatable-sm"
-        >
-          <Column field="type" header="Type"></Column>
-          <Column field="item" header="Item"></Column>
-          <Column field="grossWeight" header="GR. WT"></Column>
-          <Column field="purity" header="Purity"></Column>
-          <Column field="netWeight" header="NT. Wt"></Column>
-          <Column field="rate" header="Rate"></Column>
-          <Column field="amount" header="Amount"></Column>
-        </DataTable>
-      </div>
+      {!!oldItems.length && (
+        <div className="card">
+          <DataTable
+            value={oldItems}
+            header="Old Items"
+            className="p-datatable-sm"
+          >
+            <Column field="type" header="Type"></Column>
+            <Column field="item" header="Item"></Column>
+            <Column field="grossWeight" header="GR. WT"></Column>
+            <Column field="purity" header="Purity"></Column>
+            <Column field="netWeight" header="NT. Wt"></Column>
+            <Column field="rate" header="Rate"></Column>
+            <Column field="amount" header="Amount"></Column>
+          </DataTable>
+        </div>
+      )}
 
       <Divider align="right">
         <div className="p-d-inline-flex p-ai-center">
@@ -132,15 +137,15 @@ const ViewBill: FC<ViewBillProps> = ({
           {/*  <table>
                         <tr>
                             <td>New item total</td>
-                            <td>{bill.billDetail?.newTotal}</td>
+                            <td>{billDetail?.newTotal}</td>
                         </tr>
                         <tr>
                             <td>Old item total</td>
-                            <td>{bill.billDetail?.oldTotal}</td>
+                            <td>{billDetail?.oldTotal}</td>
                         </tr>
                         <tr>
                             <td>Difference</td>
-                            <td>{bill.billDetail?.oldNewDifference}</td>
+                            <td>{billDetail?.oldNewDifference}</td>
                         </tr>
                     </table>
                     */}
@@ -149,15 +154,15 @@ const ViewBill: FC<ViewBillProps> = ({
           {/* <table>
                         <tr>
                             <td>Difference</td>
-                            <td>{bill.billDetail?.oldNewDifference}</td>
+                            <td>{billDetail?.oldNewDifference}</td>
                         </tr>
                         <tr>
                             <td>Discount</td>
-                            <td>{bill.billDetail?.discount}</td>
+                            <td>{billDetail?.discount}</td>
                         </tr>
                         <tr>
                             <td>Amount Payable</td>
-                            <td>{bill.billDetail?.amountPayable}</td>
+                            <td>{billDetail?.amountPayable}</td>
                         </tr>
                     </table>
                     */}
@@ -166,34 +171,34 @@ const ViewBill: FC<ViewBillProps> = ({
           <table>
             <tr>
               <td>New item total</td>
-              <td>{bill.billDetail?.newTotal}</td>
+              <td>{billDetail?.newTotal}</td>
             </tr>
             <tr>
               <td>Old item total</td>
-              <td>{bill.billDetail?.oldTotal}</td>
+              <td>{billDetail?.oldTotal}</td>
             </tr>
             <tr className="highlight">
               <td>Difference</td>
-              <td>{numberFormat(bill.billDetail?.oldNewDifference)}</td>
+              <td>{numberFormat(billDetail?.oldNewDifference)}</td>
             </tr>
             <tr>
               <td>Discount</td>
-              <td>{bill.billDetail?.discount}</td>
+              <td>{billDetail?.discount}</td>
             </tr>
             <tr className="highlight">
               <td>Amount Payable</td>
-              <td>{bill.billDetail?.amountPayable}</td>
+              <td>{billDetail?.amountPayable}</td>
             </tr>
             <tr>
               <td>Paid</td>
               <td>
-                <b>{bill.billDetail?.paid}</b>
+                <b>{billDetail?.paid}</b>
               </td>
             </tr>
             <tr>
               <td>Due</td>
               <td>
-                <b>{bill.billDetail?.due}</b>
+                <b>{billDetail?.due}</b>
               </td>
             </tr>
           </table>
