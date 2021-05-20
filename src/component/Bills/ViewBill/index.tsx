@@ -1,11 +1,12 @@
 import { FC } from "react";
-import { Bill } from "./types";
+import { Bill } from "../types";
 import { Dialog } from "primereact/dialog";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Divider } from "primereact/divider";
-import "./DataTableDemo.css";
+import "../DataTableDemo.css";
 import { InputNumber } from "primereact/inputnumber";
+import ViewAmountDetails from "./ViewAmountDetails";
 
 type ViewBillProps = {
   displayDialog: boolean;
@@ -21,18 +22,6 @@ const ViewBill: FC<ViewBillProps> = ({
   const { customer, oldItems, newItems, billDetail, invoiceDate } = bill;
   const onHide = () => {
     setDisplayDialog(false);
-  };
-
-  const numberFormat = (value: number | undefined) => {
-    if (value) {
-      return new Intl.NumberFormat("en-IN", {
-        style: "currency",
-        currency: "INR",
-        minimumFractionDigits: 0,
-      }).format(value);
-    } else {
-      return value;
-    }
   };
 
   return (
@@ -122,84 +111,7 @@ const ViewBill: FC<ViewBillProps> = ({
         </div>
       )}
 
-      <Divider align="right">
-        <div className="p-d-inline-flex p-ai-center">
-          <i className="pi pi-wallet p-mr-2"></i>
-          <b>Amount Details</b>
-        </div>
-      </Divider>
-      <div className="p-grid">
-        <div className="p-col">
-          {/*  <table>
-                        <tr>
-                            <td>New item total</td>
-                            <td>{billDetail?.newTotal}</td>
-                        </tr>
-                        <tr>
-                            <td>Old item total</td>
-                            <td>{billDetail?.oldTotal}</td>
-                        </tr>
-                        <tr>
-                            <td>Difference</td>
-                            <td>{billDetail?.oldNewDifference}</td>
-                        </tr>
-                    </table>
-                    */}
-        </div>
-        <div className="p-col">
-          {/* <table>
-                        <tr>
-                            <td>Difference</td>
-                            <td>{billDetail?.oldNewDifference}</td>
-                        </tr>
-                        <tr>
-                            <td>Discount</td>
-                            <td>{billDetail?.discount}</td>
-                        </tr>
-                        <tr>
-                            <td>Amount Payable</td>
-                            <td>{billDetail?.amountPayable}</td>
-                        </tr>
-                    </table>
-                    */}
-        </div>
-        <div className="p-col">
-          <table>
-            <tr>
-              <td>New item total</td>
-              <td>{billDetail?.newTotal}</td>
-            </tr>
-            <tr>
-              <td>Old item total</td>
-              <td>{billDetail?.oldTotal}</td>
-            </tr>
-            <tr className="highlight">
-              <td>Difference</td>
-              <td>{numberFormat(billDetail?.oldNewDifference)}</td>
-            </tr>
-            <tr>
-              <td>Discount</td>
-              <td>{billDetail?.discount}</td>
-            </tr>
-            <tr className="highlight">
-              <td>Amount Payable</td>
-              <td>{billDetail?.amountPayable}</td>
-            </tr>
-            <tr>
-              <td>Paid</td>
-              <td>
-                <b>{billDetail?.paid}</b>
-              </td>
-            </tr>
-            <tr>
-              <td>Due</td>
-              <td>
-                <b>{billDetail?.due}</b>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
+      <ViewAmountDetails billDetail={billDetail} />
     </Dialog>
   );
 };

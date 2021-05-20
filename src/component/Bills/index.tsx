@@ -12,7 +12,7 @@ import { DataTable } from "primereact/datatable";
 import { defaultBill } from "./commonData";
 
 const Bills = () => {
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [displayDialog, setDisplayDialog] = useState(false);
   const [displayViewDialog, setDisplayViewDialog] = useState(false);
   const [editingRows, setEditingRows] = useState({});

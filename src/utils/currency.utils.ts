@@ -1,9 +1,5 @@
 export const amountBodyTemplate = (rowData: any) => {
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
-  }).format(rowData.amount);
+  return formatCurrencyNoFraction(rowData.amount);
 };
 
 export const formatCurrency = (value: any) => {
@@ -11,6 +7,17 @@ export const formatCurrency = (value: any) => {
     style: "currency",
     currency: "INR",
   });
+};
+
+export const formatCurrencyNoFraction = (value: number | undefined) => {
+  if (!value) {
+    return value;
+  }
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    minimumFractionDigits: 0,
+  }).format(value);
 };
 
 export const netWeightTemplate = (rowData: any) => {
