@@ -1,7 +1,7 @@
 import { Divider } from "primereact/divider";
 import { formatCurrencyNoFraction } from "utils/currency.utils";
 import { BillDetails } from "../types";
-
+import "./ViewBill.css";
 const ViewAmountDetails = ({ billDetail }: { billDetail?: BillDetails }) => {
   if (!billDetail) {
     return null;

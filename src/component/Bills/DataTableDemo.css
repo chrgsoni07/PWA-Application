@@ -55,22 +55,3 @@
     border-bottom: 1px solid var(--surface-d);
   }
 }
-
-table {
-  width: 100%;
-}
-table,
-th,
-td {
-  border: 1px solid gray;
-  border-collapse: collapse;
-}
-th,
-td {
-  padding: 3px;
-  text-align: left;
-}
-
-.highlight {
-  background-color: #eee;
-}

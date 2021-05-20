@@ -4,8 +4,6 @@ import { Dialog } from "primereact/dialog";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Divider } from "primereact/divider";
-import "../DataTableDemo.css";
-import { InputNumber } from "primereact/inputnumber";
 import ViewAmountDetails from "./ViewAmountDetails";
 
 type ViewBillProps = {
