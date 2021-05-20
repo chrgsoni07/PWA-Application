@@ -25,3 +25,23 @@ export const netWeightTemplate = (rowData: any) => {
     maximumFractionDigits: 3,
   }).format(rowData.netWeight);
 };
+
+export const weightTemplate = (rowData: any) => {
+  return `${rowData.weight} gram`;
+};
+
+export const grossWeightTemplate = (rowData: any) => {
+  return `${rowData.grossWeight} gram`;
+};
+
+export const viewNetWeightTemplate = (rowData: any) => {
+  return `${rowData.netWeight} gram`;
+};
+
+export const makingChargeTemplate = (rowData: any) => {
+  return `${rowData.makingCharges} / gram`;
+};
+
+export const purityTemplate = (rowData: any) => {
+  return `${rowData.purity}%`;
+};

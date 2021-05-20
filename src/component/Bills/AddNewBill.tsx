@@ -92,8 +92,6 @@ export const AddNewBill: FC<AddNewBillProps> = ({
       oldItems,
       billDetail: billDetails,
     };
-    console.log("newItems", newItems);
-    console.log("updated bill", newBill);
     setBill(newBill);
     console.log(newBill); //  saveBillToFirestore(newBill);
   };

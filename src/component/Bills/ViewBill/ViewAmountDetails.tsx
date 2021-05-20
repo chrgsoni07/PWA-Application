@@ -65,11 +65,11 @@ const ViewAmountDetails = ({ billDetail }: { billDetail?: BillDetails }) => {
             <tbody>
               <tr>
                 <td>New item total</td>
-                <td>{newTotal}</td>
+                <td>{formatCurrencyNoFraction(newTotal)}</td>
               </tr>
               <tr>
                 <td>Old item total</td>
-                <td>{oldTotal}</td>
+                <td>{formatCurrencyNoFraction(oldTotal)}</td>
               </tr>
               <tr className="highlight">
                 <td>Difference</td>
@@ -77,22 +77,22 @@ const ViewAmountDetails = ({ billDetail }: { billDetail?: BillDetails }) => {
               </tr>
               <tr>
                 <td>Discount</td>
-                <td>{discount}</td>
+                <td>{formatCurrencyNoFraction(discount)}</td>
               </tr>
               <tr className="highlight">
                 <td>Amount Payable</td>
-                <td>{amountPayable}</td>
+                <td>{formatCurrencyNoFraction(amountPayable)}</td>
               </tr>
               <tr>
                 <td>Paid</td>
                 <td>
-                  <b>{paid}</b>
+                  <b> {formatCurrencyNoFraction(paid)}</b>
                 </td>
               </tr>
               <tr>
                 <td>Due</td>
                 <td>
-                  <b>{due}</b>
+                  <b>{formatCurrencyNoFraction(due)}</b>
                 </td>
               </tr>
             </tbody>

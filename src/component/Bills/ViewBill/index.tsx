@@ -5,6 +5,14 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Divider } from "primereact/divider";
 import ViewAmountDetails from "./ViewAmountDetails";
+import {
+  amountBodyTemplate,
+  weightTemplate,
+  grossWeightTemplate,
+  viewNetWeightTemplate,
+  makingChargeTemplate,
+  purityTemplate,
+} from "utils/currency.utils";
 
 type ViewBillProps = {
   displayDialog: boolean;
@@ -82,11 +90,23 @@ const ViewBill: FC<ViewBillProps> = ({
           >
             <Column field="type" header="Type"></Column>
             <Column field="item" header="Item"></Column>
-            <Column field="weight" header="Weight"></Column>
+            <Column
+              field="weight"
+              header="Weight"
+              body={weightTemplate}
+            ></Column>
             <Column field="rate" header="Rate"></Column>
-            <Column field="makingCharges" header="Making charge"></Column>
+            <Column
+              field="makingCharges"
+              header="Making charge"
+              body={makingChargeTemplate}
+            ></Column>
             <Column field="otherCharges" header="Other Charges"></Column>
-            <Column field="amount" header="Amount"></Column>
+            <Column
+              field="amount"
+              header="Amount"
+              body={amountBodyTemplate}
+            ></Column>
           </DataTable>
         </div>
       )}
@@ -100,11 +120,27 @@ const ViewBill: FC<ViewBillProps> = ({
           >
             <Column field="type" header="Type"></Column>
             <Column field="item" header="Item"></Column>
-            <Column field="grossWeight" header="GR. WT"></Column>
-            <Column field="purity" header="Purity"></Column>
-            <Column field="netWeight" header="NT. Wt"></Column>
+            <Column
+              field="grossWeight"
+              header="GR. WT"
+              body={grossWeightTemplate}
+            ></Column>
+            <Column
+              field="purity"
+              header="Purity"
+              body={purityTemplate}
+            ></Column>
+            <Column
+              field="netWeight"
+              header="NT. Wt"
+              body={viewNetWeightTemplate}
+            ></Column>
             <Column field="rate" header="Rate"></Column>
-            <Column field="amount" header="Amount"></Column>
+            <Column
+              field="amount"
+              header="Amount"
+              body={amountBodyTemplate}
+            ></Column>
           </DataTable>
         </div>
       )}
