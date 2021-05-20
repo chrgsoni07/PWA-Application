@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Bill } from "./types";
 import { Dialog } from "primereact/dialog";
 import { DataTable } from "primereact/datatable";
@@ -21,10 +21,6 @@ const ViewBill: FC<ViewBillProps> = ({
   const { customer, oldItems, newItems, billDetail, invoiceDate } = bill;
   const onHide = () => {
     setDisplayDialog(false);
-  };
-
-  const isOldExist = () => {
-    return oldItems.length > 0;
   };
 
   const numberFormat = (value: number | undefined) => {
