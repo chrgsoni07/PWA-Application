@@ -61,39 +61,41 @@ const ViewAmountDetails = ({ billDetail }: { billDetail?: BillDetails }) => {
                  */}
         </div>
         <div className="p-col">
-          <table>
-            <tr>
-              <td>New item total</td>
-              <td>{newTotal}</td>
-            </tr>
-            <tr>
-              <td>Old item total</td>
-              <td>{oldTotal}</td>
-            </tr>
-            <tr className="highlight">
-              <td>Difference</td>
-              <td>{formatCurrencyNoFraction(oldNewDifference)}</td>
-            </tr>
-            <tr>
-              <td>Discount</td>
-              <td>{discount}</td>
-            </tr>
-            <tr className="highlight">
-              <td>Amount Payable</td>
-              <td>{amountPayable}</td>
-            </tr>
-            <tr>
-              <td>Paid</td>
-              <td>
-                <b>{paid}</b>
-              </td>
-            </tr>
-            <tr>
-              <td>Due</td>
-              <td>
-                <b>{due}</b>
-              </td>
-            </tr>
+          <table id="details">
+            <tbody>
+              <tr>
+                <td>New item total</td>
+                <td>{newTotal}</td>
+              </tr>
+              <tr>
+                <td>Old item total</td>
+                <td>{oldTotal}</td>
+              </tr>
+              <tr className="highlight">
+                <td>Difference</td>
+                <td>{formatCurrencyNoFraction(oldNewDifference)}</td>
+              </tr>
+              <tr>
+                <td>Discount</td>
+                <td>{discount}</td>
+              </tr>
+              <tr className="highlight">
+                <td>Amount Payable</td>
+                <td>{amountPayable}</td>
+              </tr>
+              <tr>
+                <td>Paid</td>
+                <td>
+                  <b>{paid}</b>
+                </td>
+              </tr>
+              <tr>
+                <td>Due</td>
+                <td>
+                  <b>{due}</b>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>

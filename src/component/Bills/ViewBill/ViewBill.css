@@ -1,14 +1,11 @@
-table {
+table#details {
   width: 100%;
 }
-table,
-th,
+
+table#details > th,
 td {
   border: 1px solid gray;
   border-collapse: collapse;
-}
-th,
-td {
   padding: 3px;
   text-align: left;
 }
