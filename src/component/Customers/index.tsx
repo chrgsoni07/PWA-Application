@@ -1,10 +1,10 @@
 import { Button } from "primereact/button";
-import React, { useState, useEffect, useRef, FormEvent } from "react";
+import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import { CustomerType } from "./types";
-import { db, save } from "api";
+import { db } from "api";
 import { createNextState } from "@reduxjs/toolkit";
 import { Dialog } from "primereact/dialog";
 import { InputTextarea } from "primereact/inputtextarea";
@@ -193,30 +193,30 @@ const Customers = () => {
       });
   };
 
-  const [validated, setValidated] = useState(false);
+  // const [validated, setValidated] = useState(false);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
+  // const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //   }
 
-    setValidated(true);
-  };
+  //   setValidated(true);
+  // };
 
-  const leftToolbarTemplate = () => {
-    return (
-      <React.Fragment>
-        <Button
-          label="New"
-          icon="pi pi-plus"
-          className="p-button-success p-mr-2"
-          onClick={openNew}
-        />
-      </React.Fragment>
-    );
-  };
+  // const leftToolbarTemplate = () => {
+  //   return (
+  //     <React.Fragment>
+  //       <Button
+  //         label="New"
+  //         icon="pi pi-plus"
+  //         className="p-button-success p-mr-2"
+  //         onClick={openNew}
+  //       />
+  //     </React.Fragment>
+  //   );
+  // };
 
   return (
     <>

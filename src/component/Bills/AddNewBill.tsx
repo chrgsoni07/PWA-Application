@@ -72,7 +72,7 @@ export const AddNewBill: FC<AddNewBillProps> = ({
       oldNewDifference,
       amountPayable: oldNewDifference > 0 ? oldNewDifference : 0,
     });
-  }, [newItems, oldItems]);
+  }, [newItems, oldItems, billDetails]);
 
   const onHide = () => {
     setDisplayDialog(false);

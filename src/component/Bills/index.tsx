@@ -3,8 +3,8 @@ import ViewBill from "./ViewBill";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { TabView, TabPanel } from "primereact/tabview";
-import React, { useState, useEffect } from "react";
-import { db, save } from "api";
+import { useState, useEffect } from "react";
+import { db } from "api";
 import "./DataTableDemo.css";
 import { Bill } from "./types";
 import { Column } from "primereact/column";
@@ -15,7 +15,7 @@ const Bills = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [displayDialog, setDisplayDialog] = useState(false);
   const [displayViewDialog, setDisplayViewDialog] = useState(false);
-  const [editingRows, setEditingRows] = useState({});
+  // const [editingRows, setEditingRows] = useState({});
   const [savedBills, setSavedBills] = useState<Bill[]>([]);
   const [bill, setBill] = useState<Bill>(defaultBill());
 
@@ -39,24 +39,24 @@ const Bills = () => {
     });
   }, []);
 
-  const saveBillToFirestore = async (newBill: Bill) => {
-    const savedBill: Bill = await save("bills", newBill);
-    console.log(savedBill);
-  };
+  // const saveBillToFirestore = async (newBill: Bill) => {
+  //   const savedBill: Bill = await save("bills", newBill);
+  //   console.log(savedBill);
+  // };
 
   const header = () => {
     <Button label="New" icon="pi pi-plus" className="p-button-sm" />;
   };
 
-  let originalRows: any = {};
+  // let originalRows: any = {};
 
   const displayModel = () => {
     setDisplayDialog(true);
   };
 
-  const onRowEditChange = (event: any) => {
-    setEditingRows(event.data);
-  };
+  // const onRowEditChange = (event: any) => {
+  //   setEditingRows(event.data);
+  // };
 
   const actionBodyTemplate = (rowData: any) => {
     function viewBill(rowData: any): void {

@@ -81,7 +81,7 @@ const ViewBill: FC<ViewBillProps> = ({
         </div>
       </div>
 
-      {newItems.length && (
+      {!!newItems.length && (
         <div className="card">
           <DataTable
             value={newItems}

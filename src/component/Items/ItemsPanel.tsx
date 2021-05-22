@@ -86,7 +86,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
       });
       setItems(allItems);
     });
-  }, []);
+  }, [category]);
 
   const leftToolbarTemplate = () => {
     return (

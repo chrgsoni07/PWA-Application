@@ -6,7 +6,6 @@ import { Dropdown } from "primereact/dropdown";
 import { InputNumber } from "primereact/inputnumber";
 import { InputText } from "primereact/inputtext";
 import { Row } from "primereact/row";
-import { TabPanel } from "primereact/tabview";
 import { Toolbar } from "primereact/toolbar";
 import { amountBodyTemplate, formatCurrency } from "utils/currency.utils";
 import { itemType } from "./commonData";
