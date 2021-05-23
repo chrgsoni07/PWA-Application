@@ -65,14 +65,14 @@ export const AddNewBill: FC<AddNewBillProps> = ({
     const oldTotal = sum(oldItems);
     const oldNewDifference = newTotal - oldTotal;
 
-    setBillDetails({
-      ...billDetails,
+    setBillDetails((oldBill) => ({
+      ...oldBill,
       oldTotal,
       newTotal,
       oldNewDifference,
       amountPayable: oldNewDifference > 0 ? oldNewDifference : 0,
-    });
-  }, [newItems, oldItems, billDetails]);
+    }));
+  }, [newItems, oldItems]);
 
   const onHide = () => {
     setDisplayDialog(false);
