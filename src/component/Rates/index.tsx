@@ -21,7 +21,6 @@ const Rates = () => {
   });
   const [submitted, setSubmitted] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
-  var [date, setDate] = useState(new Date());
 
   const editSelectedRate = (rowData: any) => {
     setShowDialog(true);
@@ -100,7 +99,7 @@ const Rates = () => {
       id: "",
       silverRate: "",
       goldRate: "",
-      date: date.toLocaleDateString(),
+      date: new Date().toLocaleDateString(),
     });
     setSubmitted(false);
     setShowDialog(true);
@@ -174,6 +173,7 @@ const Rates = () => {
       <Card>
         <div style={{ height: 235 }}>
           <iframe
+            title="current rates"
             src="https://www.goldpriceindia.com/wmshare-wlifop-001.php"
             style={{
               position: "relative",
