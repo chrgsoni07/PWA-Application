@@ -3,13 +3,15 @@ import ViewBill from "./ViewBill";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { TabView, TabPanel } from "primereact/tabview";
-import React, { useState, useEffect } from "react";
+import { Calendar } from "primereact/calendar";
+import React, { useState, useEffect, useRef } from "react";
 import { db, save } from "api";
 import "./DataTableDemo.css";
 import { Bill } from "./types";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { defaultBill } from "./commonData";
+import { createNextState } from "@reduxjs/toolkit";
 
 const Bills = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -27,6 +29,7 @@ const Bills = () => {
       querySnapshot.forEach((bill) => {
         const billData = bill.data();
         allBills.push({
+          id: bill.id,
           billNo: billData.billNo,
           invoiceDate: billData.invoiceDate,
           newItems: billData.newItems,
@@ -58,6 +61,11 @@ const Bills = () => {
     setEditingRows(event.data);
   };
 
+  const dateBodyTemplate = (rowData: any) => {
+    var invoiceDate = new Date(rowData.invoiceDate);
+    return invoiceDate.toLocaleDateString();
+  };
+
   const actionBodyTemplate = (rowData: any) => {
     function viewBill(rowData: any): void {
       setBill({ ...rowData, invoiceDate: new Date(rowData.invoiceDate) });
@@ -70,7 +78,21 @@ const Bills = () => {
     }
 
     function confirmDeleteBill(rowData: any): void {
-      throw new Error("Function not implemented.");
+      alert(JSON.stringify(rowData));
+      db.collection("bills")
+        .doc(rowData.id)
+        .delete()
+        .then(() => {
+          console.log("Document successfully deleted!");
+          setSavedBills(
+            createNextState(savedBills, (draft) =>
+              draft.filter((i) => i.id !== rowData.id)
+            )
+          );
+        })
+        .catch((error: Error) => {
+          console.error("Error removing document: ", error);
+        });
     }
 
     return (
@@ -110,7 +132,6 @@ const Bills = () => {
           <TabPanel header="Previous Bills">
             <div className="card">
               <DataTable
-                id="test2"
                 value={savedBills}
                 paginator
                 rows={10}
@@ -132,9 +153,22 @@ const Bills = () => {
                   header="Bill No"
                   data-testid="test"
                   key="test3"
+                  filter
+                  filterPlaceholder="Search by bill no"
                 ></Column>
-                <Column field="invoiceDate" header="Date"></Column>
-                <Column field="customer.name" header="Customer"></Column>
+                <Column
+                  field="invoiceDate"
+                  header="Date"
+                  body={dateBodyTemplate}
+                  filter
+                  filterPlaceholder="Search by date"
+                ></Column>
+                <Column
+                  field="customer.name"
+                  header="Customer"
+                  filter
+                  filterPlaceholder="Search by customer no"
+                ></Column>
                 <Column
                   field="billDetail.amountPayable"
                   header="Amount Payable"

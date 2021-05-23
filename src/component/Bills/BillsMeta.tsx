@@ -20,6 +20,7 @@ export function BillsMeta({ invoiceDate, setInvoiceDate }: any) {
             value={invoiceDate}
             onChange={(e) => setInvoiceDate(e.value)}
             showIcon
+            dateFormat="dd/mm/yy"
           />
         </div>
       </div>

@@ -26,6 +26,7 @@ export type BillDetails = {
   due: number;
 };
 export type Bill = {
+  id: string;
   billNo: number;
   invoiceDate: Date;
   customer?: CustomerType;

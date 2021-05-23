@@ -7,6 +7,10 @@
   display: none;
 }
 
+.p-column-filter {
+  width: 100%;
+}
+
 @media screen and (max-width: 40em) {
   .datatable-responsive-demo
     .p-datatable.p-datatable-responsive-demo

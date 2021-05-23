@@ -6,12 +6,13 @@ import { Dropdown } from "primereact/dropdown";
 import { InputNumber } from "primereact/inputnumber";
 import { InputText } from "primereact/inputtext";
 import { Row } from "primereact/row";
-import { TabPanel } from "primereact/tabview";
 import { Toolbar } from "primereact/toolbar";
 import { amountBodyTemplate, formatCurrency } from "utils/currency.utils";
 import { itemType } from "./commonData";
 import { NewItem } from "./types";
 import "./DataTableDemo.css";
+import { createNextState } from "@reduxjs/toolkit";
+
 export function NewItems({
   newItems,
   onRowEditInit,
@@ -19,12 +20,6 @@ export function NewItems({
   setNewItems,
   billDetails,
 }: any) {
-  const items = [
-    { label: "Jhumki", value: "Jhumki" },
-    { label: "Latkan", value: "Latkan" },
-    { label: "Bali", value: "Bali" },
-    { label: "Chain", value: "Chain" },
-  ];
   const addBlankRowForNewItem = () => {
     let blankNewItem: NewItem = {
       amount: 0,
@@ -119,22 +114,7 @@ export function NewItems({
     );
   };
   const newItemNameEditor = (props: any) => {
-    return (
-      <Dropdown
-        value={props.rowData["item"]}
-        options={items}
-        optionLabel="label"
-        optionValue="value"
-        onChange={(e) => onEditorValueChangeNew(props, e.value)}
-        filter
-        filterBy="value"
-        style={{ width: "100%" }}
-        placeholder="Select a item"
-        itemTemplate={(option) => {
-          return <span>{option.label}</span>;
-        }}
-      />
-    );
+    return inputTextEditorNew(props, "item");
   };
   const newMakingChargesEditor = (props: any) => {
     return (
@@ -173,14 +153,19 @@ export function NewItems({
       />
     );
   };
-  const newItemFieldToDelete = () => {
+
+  const confirmDeleteRow = (rowData: any) => {};
+
+  const newItemFieldToDelete = (rowData: any) => {
     return (
       <Button
-        icon="pi pi-times"
-        className="p-button-rounded p-button-danger p-button-sm"
+        icon="pi pi-trash"
+        className="p-button-rounded p-button-warning p-button-sm"
+        onClick={() => confirmDeleteRow(rowData)}
       />
     );
   };
+
   const toolBarNewItem = () => {
     return (
       <>

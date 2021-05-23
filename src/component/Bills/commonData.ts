@@ -5,6 +5,7 @@ export const itemType = [
 ];
 
 export const defaultBill = () => ({
+  id: "",
   billNo: 101,
   invoiceDate: new Date(),
   customer: undefined,
