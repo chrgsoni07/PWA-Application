@@ -3,7 +3,6 @@ import ViewBill from "./ViewBill";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { TabView, TabPanel } from "primereact/tabview";
-import { Calendar } from "primereact/calendar";
 import React, { useState, useEffect, useRef } from "react";
 import "./DataTableDemo.css";
 import { Bill } from "./types";
@@ -11,12 +10,12 @@ import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { defaultBill } from "./commonData";
 import { createNextState } from "@reduxjs/toolkit";
+import { db } from "api";
 
 const Bills = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [displayDialog, setDisplayDialog] = useState(false);
   const [displayViewDialog, setDisplayViewDialog] = useState(false);
-  // const [editingRows, setEditingRows] = useState({});
   const [savedBills, setSavedBills] = useState<Bill[]>([]);
   const [bill, setBill] = useState<Bill>(defaultBill());
 
