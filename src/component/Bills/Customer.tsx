@@ -1,4 +1,4 @@
-import { db } from "api";
+import { db, getCustomers } from "api";
 import { CustomerType } from "component/Customers/types";
 import { Dropdown } from "primereact/dropdown";
 import { useEffect, useState } from "react";
@@ -6,24 +6,7 @@ import { useEffect, useState } from "react";
 function Customer({ selectedCustomer, setSelectedCustomer }: any) {
   const [customers, setCustomers] = useState<CustomerType[]>([]);
   useEffect(() => {
-    const collection = db.collection("customers");
-
-    collection.get().then((querySnapshot) => {
-      const allCustomers: CustomerType[] = [];
-      querySnapshot.forEach((customer) => {
-        console.log(customer.id);
-        const customerData = customer.data();
-        console.log(JSON.stringify(customerData));
-        allCustomers.push({
-          name: customerData.name,
-          mobile: customerData.mobile,
-          place: customerData.place,
-          address: customerData.address,
-          id: customer.id,
-        });
-      });
-      setCustomers(allCustomers);
-    });
+    getCustomers().then((allCustomers) => setCustomers(allCustomers));
   }, []);
   return (
     <div className="p-col-8">

@@ -152,6 +152,7 @@ export function OldItems({
     <div className="card">
       <Toolbar left={toolBarOldItem}></Toolbar>
       <DataTable
+        id="oldItems"
         value={oldItems}
         editMode="row"
         dataKey="id"

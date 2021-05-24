@@ -181,6 +181,7 @@ export function NewItems({
     <div className="card">
       <Toolbar left={toolBarNewItem} style={{ padding: 5 }}></Toolbar>
       <DataTable
+        id="newItems"
         value={newItems}
         editMode="row"
         dataKey="id"

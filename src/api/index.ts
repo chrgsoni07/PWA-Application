@@ -1,3 +1,4 @@
+import { CustomerType } from "component/Customers/types";
 import firebase from "firebase";
 import { CollectionNameType } from "./types";
 
@@ -23,4 +24,26 @@ export const save = async <T>(
   delete data["id"];
   const { id } = await db.collection(collectionName).add(data);
   return { ...data, id };
+};
+
+export const getCustomers = async (): Promise<CustomerType[]> => {
+  const collection = db.collection("customers");
+
+  return collection.get().then((querySnapshot) => {
+    const allCustomers: CustomerType[] = [];
+    querySnapshot.forEach((customer) => {
+      console.log(customer.id);
+      const customerData = customer.data();
+
+      allCustomers.push({
+        name: customerData.name,
+        mobile: customerData.mobile,
+        place: customerData.place,
+        address: customerData.address,
+        id: customer.id,
+      });
+    });
+
+    return allCustomers;
+  });
 };
