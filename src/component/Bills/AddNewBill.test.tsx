@@ -1,6 +1,6 @@
 import React from "react";
 
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AddNewBill } from "./AddNewBill";
 import { defaultBill } from "./commonData";
@@ -16,13 +16,9 @@ jest.mock("api", () => ({
 let mockSetBill = jest.fn();
 let mockSetDisplayDialog = jest.fn();
 
-import * as api from "api";
-
 describe("Add new bill component", () => {
-  beforeEach(() => {
-    console.log("api", api);
-  });
-  it("should add new items", () => {
+  beforeEach(() => {});
+  it("should add new items", async () => {
     render(
       <AddNewBill
         displayDialog={true}
@@ -31,5 +27,9 @@ describe("Add new bill component", () => {
         setBill={mockSetBill}
       />
     );
+    // console.log(screen);
+
+    userEvent.click(screen.getByRole("button", { name: /addNewItemRow/i }));
+    // await waitFor();
   });
 });

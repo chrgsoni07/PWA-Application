@@ -95,6 +95,7 @@ export function NewItems({
       style: "currency",
       currency: "INR",
       maximumFractionDigits: 0,
+      minimumFractionDigits: 0,
     }).format(rowData.otherCharges);
   };
   const newItemTypeEditor = (props: any) => {
@@ -139,6 +140,7 @@ export function NewItems({
       style: "currency",
       currency: "INR",
       maximumFractionDigits: 0,
+      minimumFractionDigits: 0,
     }).format(rowData.makingCharges);
   };
   const newOtherChargesEditor = (props: any) => {
@@ -173,7 +175,10 @@ export function NewItems({
           icon="pi pi-plus"
           className="p-button-rounded"
           onClick={addBlankRowForNewItem}
-        />
+          name="addNewItemRow"
+        >
+          addNewItemRow
+        </Button>
       </>
     );
   };
