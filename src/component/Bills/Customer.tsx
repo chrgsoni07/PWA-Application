@@ -1,4 +1,4 @@
-import { db, getCustomers } from "api";
+import { getCustomers } from "api";
 import { CustomerType } from "component/Customers/types";
 import { Dropdown } from "primereact/dropdown";
 import { useEffect, useState } from "react";

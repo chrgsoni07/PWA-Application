@@ -11,7 +11,6 @@ import { amountBodyTemplate, formatCurrency } from "utils/currency.utils";
 import { itemType } from "./commonData";
 import { NewItem } from "./types";
 import "./DataTableDemo.css";
-import { createNextState } from "@reduxjs/toolkit";
 
 export function NewItems({
   newItems,

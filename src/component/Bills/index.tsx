@@ -3,7 +3,7 @@ import ViewBill from "./ViewBill";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { TabView, TabPanel } from "primereact/tabview";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import "./DataTableDemo.css";
 import { Bill } from "./types";
 import { Column } from "primereact/column";
