@@ -47,6 +47,8 @@ const clickEditButton = () => {
 const fillDetails = () => {
   const row = screen.getAllByRole("row")[1];
   const cells = within(row).getAllByRole("cell");
-  userEvent.click(cells[0]);
-  userEvent.click(screen.getByRole("option", { name: /Gold/i }));
+
+  userEvent.click(within(cells[0]).getByRole("button"));
+
+  userEvent.click(screen.getByLabelText(/Gold/i));
 };
