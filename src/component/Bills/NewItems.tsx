@@ -60,7 +60,7 @@ export function NewItems({
     updatedProducts[props.rowIndex]["amount"] = amount;
     setNewItems(updatedProducts);
   };
-  const onEditorValueChangeNew = (props: any, value: string) => {
+  const onEditorValueChangeNew = (props: any, value: any) => {
     let updatedProducts = [...props.value];
     updatedProducts[props.rowIndex][props.field] = value;
     setNewItems(updatedProducts);
@@ -168,23 +168,17 @@ export function NewItems({
     );
   };
 
-  const toolBarNewItem = () => {
-    return (
-      <>
-        <Button
-          icon="pi pi-plus"
-          className="p-button-rounded"
-          onClick={addBlankRowForNewItem}
-          name="addNewItemRow"
-        >
-          addNewItemRow
-        </Button>
-      </>
-    );
-  };
+  const newItemButton = () => (
+    <Button
+      aria-label="addNewItemRow"
+      icon="pi pi-plus"
+      className="p-button-rounded"
+      onClick={addBlankRowForNewItem}
+    />
+  );
   return (
     <div className="card">
-      <Toolbar left={toolBarNewItem} style={{ padding: 5 }}></Toolbar>
+      <Toolbar left={newItemButton} style={{ padding: 5 }}></Toolbar>
       <DataTable
         id="newItems"
         value={newItems}

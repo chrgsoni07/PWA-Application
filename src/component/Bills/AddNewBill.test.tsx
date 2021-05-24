@@ -1,6 +1,6 @@
 import React from "react";
 
-import { render, screen, waitFor } from "@testing-library/react";
+import { findByRole, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AddNewBill } from "./AddNewBill";
 import { defaultBill } from "./commonData";
@@ -27,9 +27,8 @@ describe("Add new bill component", () => {
         setBill={mockSetBill}
       />
     );
-    // console.log(screen);
 
     userEvent.click(screen.getByRole("button", { name: /addNewItemRow/i }));
-    // await waitFor();
+    await screen.findByRole("cell", { name: "gold" });
   });
 });

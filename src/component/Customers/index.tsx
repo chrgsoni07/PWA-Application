@@ -329,7 +329,6 @@ const Customers = () => {
             <label htmlFor="address">Address</label>
             <InputTextarea
               id="address"
-              type="text"
               onChange={(e) =>
                 setSelectedItem({
                   ...selectedItem,

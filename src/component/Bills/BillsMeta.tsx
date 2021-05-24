@@ -3,8 +3,8 @@ import { InputNumber } from "primereact/inputnumber";
 import { InputText } from "primereact/inputtext";
 import React, { useState } from "react";
 export function BillsMeta({ invoiceDate, setInvoiceDate }: any) {
-  const [previousAmount, setPreviousAmount] = useState();
-  const [advanceAmount, setAdvanceAmount] = useState();
+  const [previousAmount, setPreviousAmount] = useState(0);
+  const [advanceAmount, setAdvanceAmount] = useState(0);
   return (
     <div className="p-col-4">
       <div className="p-formgrid p-grid">

@@ -51,7 +51,7 @@ export function OldItems({
     updatedProducts[props.rowIndex]["netWeight"] = updatedNetWeight;
     setOldItems(updatedProducts);
   };
-  const onEditorValueChangeOld = (props: any, value: string) => {
+  const onEditorValueChangeOld = (props: any, value: any) => {
     let updatedProducts = [...props.value];
     updatedProducts[props.rowIndex][props.field] = value;
     setOldItems(updatedProducts);
