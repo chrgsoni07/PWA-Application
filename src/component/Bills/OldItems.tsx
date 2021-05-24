@@ -62,6 +62,21 @@ export function OldItems({
     return formatCurrency(billDetails.oldTotal);
   };
 
+  const confirmDeleteRow = (rowData: any, rowIndex: any) => {
+    const updateOldItems = [...oldItems];
+    updateOldItems.splice(rowIndex, 1);
+
+    setOldItems(updateOldItems);
+  };
+
+  const deleteOldItemRow = (rowData: any, { rowIndex }: any) => (
+    <Button
+      icon="pi pi-trash"
+      className="p-button-rounded p-button-warning p-button-sm"
+      onClick={() => confirmDeleteRow(rowData, rowIndex)}
+    />
+  );
+
   const inputTextEditorOld = (props: any, field: string) => {
     return (
       <InputText
@@ -141,16 +156,12 @@ export function OldItems({
           className="p-button-rounded"
           onClick={addBlankRowForOldItem}
         />
-        <Button
-          icon="pi pi-times"
-          className="p-button-rounded p-button-danger"
-        />
       </>
     );
   };
   return (
     <div className="card">
-      <Toolbar left={toolBarOldItem}></Toolbar>
+      <Toolbar left={toolBarOldItem} style={{ padding: 5 }}></Toolbar>
       <DataTable
         id="oldItems"
         value={oldItems}
@@ -209,6 +220,7 @@ export function OldItems({
             textAlign: "center",
           }}
         ></Column>
+        <Column body={deleteOldItemRow}></Column>
       </DataTable>
     </div>
   );

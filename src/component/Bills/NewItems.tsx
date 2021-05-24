@@ -156,13 +156,18 @@ export function NewItems({
     );
   };
 
-  const confirmDeleteRow = (rowData: any) => {};
+  const confirmDeleteRow = (rowData: any, rowIndex: any) => {
+    const updatedNewItems = [...newItems];
+    updatedNewItems.splice(rowIndex, 1);
 
-  const deleteNewItemRow = (rowData: any) => (
+    setNewItems(updatedNewItems);
+  };
+
+  const deleteNewItemRow = (rowData: any, { rowIndex }: any) => (
     <Button
       icon="pi pi-trash"
       className="p-button-rounded p-button-warning p-button-sm"
-      onClick={() => confirmDeleteRow(rowData)}
+      onClick={() => confirmDeleteRow(rowData, rowIndex)}
     />
   );
 
