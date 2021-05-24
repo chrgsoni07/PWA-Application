@@ -158,15 +158,13 @@ export function NewItems({
 
   const confirmDeleteRow = (rowData: any) => {};
 
-  const newItemFieldToDelete = (rowData: any) => {
-    return (
-      <Button
-        icon="pi pi-trash"
-        className="p-button-rounded p-button-warning p-button-sm"
-        onClick={() => confirmDeleteRow(rowData)}
-      />
-    );
-  };
+  const deleteNewItemRow = (rowData: any) => (
+    <Button
+      icon="pi pi-trash"
+      className="p-button-rounded p-button-warning p-button-sm"
+      onClick={() => confirmDeleteRow(rowData)}
+    />
+  );
 
   const newItemButton = () => (
     <Button
@@ -239,7 +237,7 @@ export function NewItems({
             textAlign: "center",
           }}
         ></Column>
-        <Column body={newItemFieldToDelete}></Column>
+        <Column body={deleteNewItemRow}></Column>
       </DataTable>
     </div>
   );
