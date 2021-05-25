@@ -90,7 +90,7 @@ export function OldItems({
     return (
       <InputNumber
         value={props.rowData["purity"]}
-        onValueChange={(e) => onEditorValueChangeOld(props, e.value)}
+        onChange={(e) => onEditorValueChangeOld(props, e.value)}
         suffix="%"
       />
     );
@@ -152,6 +152,7 @@ export function OldItems({
     return (
       <>
         <Button
+          aria-label="addOldItemRow"
           icon="pi pi-plus"
           className="p-button-rounded"
           onClick={addBlankRowForOldItem}
