@@ -87,9 +87,16 @@ describe("Add new bill component", () => {
       />
     );
 
-    bill.newItems.forEach((item, i) => editNewItemsRow(item, i + 1));
+    bill.newItems.forEach((item, i) => addNewItemsRow(item, i + 1));
+    //Add and remove new item
+    addNewItemsRow(bill.newItems[1], 4);
+    deleteRow(4);
     userEvent.click(screen.getByRole("tab", { name: /old item/i }));
-    bill.oldItems.forEach((item, i) => editOldItemsRow(item, i + 1));
+    bill.oldItems.forEach((item, i) => addOldItemsRow(item, i + 1));
+    //Add and remove old item
+    addOldItemsRow(bill.oldItems[1], 3);
+    deleteRow(3);
+
     expect(screen.getByLabelText("Total new")).toHaveValue(bill.totalNew);
     expect(screen.getByLabelText("Total old")).toHaveValue(bill.totalOld);
     expect(screen.getByLabelText("Old New Difference")).toHaveValue(bill.diff);
@@ -97,10 +104,12 @@ describe("Add new bill component", () => {
     expect(screen.getByLabelText("Amount payable")).toHaveValue(bill.payable);
     userEvent.type(screen.getByLabelText("Amount paid"), bill.paid);
     expect(screen.getByLabelText("Due")).toHaveValue(bill.due);
+    userEvent.click(screen.getByRole("button", { name: /save/i }));
+    expect(mockSetBill).toHaveBeenCalled();
   });
 });
 
-const editNewItemsRow = (item: any, i: number) => {
+const addNewItemsRow = (item: any, i: number) => {
   const cells = addRowAndGetCells(/addNewItemRow/i, i);
   fillNewItemDetails(cells, item);
   saveRowAndVerifyAmount(cells, item.amount);
@@ -118,7 +127,7 @@ const saveRowAndVerifyAmount = (cells: HTMLElement[], amount: string) => {
   checkAmount(cells[6], amount);
 };
 
-const editOldItemsRow = (item: any, i: number) => {
+const addOldItemsRow = (item: any, i: number) => {
   const cells = addRowAndGetCells(/addOldItemRow/i, i);
   fillOldItemsDetails(cells, item);
   saveRowAndVerifyAmount(cells, item.amount);
@@ -182,4 +191,10 @@ const checkNetWeight = (cell: HTMLElement, netWeight: string) => {
 
 const checkAmount = (cell: HTMLElement, amount: string) => {
   expect(within(cell).getByText(amount)).toBeInTheDocument();
+};
+
+const deleteRow = (rowIndex: number) => {
+  const row = screen.getAllByRole("row")[rowIndex];
+  const deleteCell = within(row).getAllByRole("cell")[8];
+  userEvent.click(within(deleteCell).getByRole("button"));
 };
