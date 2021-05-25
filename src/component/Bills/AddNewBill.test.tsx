@@ -103,31 +103,28 @@ describe("Add new bill component", () => {
 const editNewItemsRow = (item: any, i: number) => {
   userEvent.click(screen.getByRole("button", { name: /addNewItemRow/i }));
   const row = screen.getAllByRole("row")[i];
-  clickEditButton(i);
+  clickEditButton(row);
   const cells = within(row).getAllByRole("cell");
-  fillDetails(item, i);
-  saveRow(i);
+  fillDetails(cells, item);
+  saveRow(cells[7]);
   checkAmount(cells[6], item.amount);
 };
 
 const editOldItemsRow = (item: any, i: number) => {
   userEvent.click(screen.getByRole("button", { name: /addOldItemRow/i }));
   const row = screen.getAllByRole("row")[i];
-  clickEditButton(i);
+  clickEditButton(row);
   const cells = within(row).getAllByRole("cell");
-  fillOldItemsDetails(item, i);
-  saveRow(i);
+  fillOldItemsDetails(cells, item);
+  saveRow(cells[7]);
   checkAmount(cells[6], item.amount);
 };
 
-const clickEditButton = (index: number) => {
-  const row = screen.getAllByRole("row")[index];
+const clickEditButton = (row: HTMLElement) => {
   userEvent.click(within(row).getAllByRole("button")[0]);
 };
 
-const fillDetails = (item: any, i: number) => {
-  const row = screen.getAllByRole("row")[i];
-  const cells = within(row).getAllByRole("cell");
+const fillDetails = (cells: HTMLElement[], item: any) => {
   selectType(cells[0], item.type);
   enterName(cells[1], item.name);
   enterWeight(cells[2], item.weight);
@@ -157,21 +154,11 @@ const enterOtherCharges = (cell: HTMLElement, otherCharges: string) => {
   userEvent.type(within(cell).getByRole("spinbutton"), otherCharges);
 };
 
-// const rowTotal = () => {
-//   const row = screen.getAllByRole("row")[1];
-//   const cells = within(row).getAllByRole("cell");
-//   return cells[6];
-// };
-
-const saveRow = (i: number) => {
-  const row = screen.getAllByRole("row")[i];
-  const cells = within(row).getAllByRole("cell");
-  userEvent.click(within(cells[7]).getAllByRole("button")[0]);
+const saveRow = (cell: HTMLElement) => {
+  userEvent.click(within(cell).getAllByRole("button")[0]);
 };
 
-const fillOldItemsDetails = (item: any, i: number) => {
-  const row = screen.getAllByRole("row")[i];
-  const cells = within(row).getAllByRole("cell");
+const fillOldItemsDetails = (cells: HTMLElement[], item: any) => {
   selectType(cells[0], item.type);
   enterName(cells[1], item.name);
   enterWeight(cells[2], item.weight);
