@@ -101,30 +101,34 @@ describe("Add new bill component", () => {
 });
 
 const editNewItemsRow = (item: any, i: number) => {
-  userEvent.click(screen.getByRole("button", { name: /addNewItemRow/i }));
-  const row = screen.getAllByRole("row")[i];
+  const cells = addRowAndGetCells(/addNewItemRow/i, i);
+  fillNewItemDetails(cells, item);
+  saveRowAndVerifyAmount(cells, item.amount);
+};
+
+const addRowAndGetCells = (buttonName: RegExp, rowIndex: number) => {
+  userEvent.click(screen.getByRole("button", { name: buttonName }));
+  const row = screen.getAllByRole("row")[rowIndex];
   clickEditButton(row);
-  const cells = within(row).getAllByRole("cell");
-  fillDetails(cells, item);
+  return within(row).getAllByRole("cell");
+};
+
+const saveRowAndVerifyAmount = (cells: HTMLElement[], amount: string) => {
   saveRow(cells[7]);
-  checkAmount(cells[6], item.amount);
+  checkAmount(cells[6], amount);
 };
 
 const editOldItemsRow = (item: any, i: number) => {
-  userEvent.click(screen.getByRole("button", { name: /addOldItemRow/i }));
-  const row = screen.getAllByRole("row")[i];
-  clickEditButton(row);
-  const cells = within(row).getAllByRole("cell");
+  const cells = addRowAndGetCells(/addOldItemRow/i, i);
   fillOldItemsDetails(cells, item);
-  saveRow(cells[7]);
-  checkAmount(cells[6], item.amount);
+  saveRowAndVerifyAmount(cells, item.amount);
 };
 
 const clickEditButton = (row: HTMLElement) => {
   userEvent.click(within(row).getAllByRole("button")[0]);
 };
 
-const fillDetails = (cells: HTMLElement[], item: any) => {
+const fillNewItemDetails = (cells: HTMLElement[], item: any) => {
   selectType(cells[0], item.type);
   enterName(cells[1], item.name);
   enterWeight(cells[2], item.weight);
