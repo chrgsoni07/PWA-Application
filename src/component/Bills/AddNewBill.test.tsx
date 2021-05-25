@@ -1,6 +1,6 @@
 import React from "react";
 
-import { logRoles, render, screen, within } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AddNewBill } from "./AddNewBill";
 import { defaultBill } from "./commonData";
@@ -31,6 +31,8 @@ describe("Add new bill component", () => {
     userEvent.click(screen.getByRole("button", { name: /addNewItemRow/i }));
 
     editRow();
+
+    expect(screen.getByLabelText("Total new")).toHaveValue("1,080,000");
   });
 });
 
@@ -38,7 +40,7 @@ const editRow = () => {
   clickEditButton();
   fillDetails();
   saveRow();
-  expect(rowTotal()).toBe("₹10,80,000");
+  expect(within(rowTotal()).getByText("₹10,80,000")).toBeInTheDocument();
 };
 
 const clickEditButton = () => {
@@ -86,7 +88,7 @@ const enterOtherCharges = (row: HTMLElement) => {
 const rowTotal = () => {
   const row = screen.getAllByRole("row")[1];
   const cells = within(row).getAllByRole("cell");
-  return cells[6].innerHTML;
+  return cells[6];
 };
 
 const saveRow = () => {

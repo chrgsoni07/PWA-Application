@@ -10,18 +10,24 @@ export function BillTotals({
     <div className="p-fluid p-formgrid p-grid">
       <div className="p-field p-col">
         <label htmlFor="totalNew"> Total new </label>
-        <InputNumber id="totalNew" value={defaultNum(billDetails.newTotal)} />
+        <InputNumber
+          inputId="totalNew"
+          value={defaultNum(billDetails.newTotal)}
+        />
       </div>
 
       <div className="p-field p-col">
         <label htmlFor="totalOld">Total old </label>
-        <InputNumber id="totalOld" value={defaultNum(billDetails.oldTotal)} />
+        <InputNumber
+          inputId="totalOld"
+          value={defaultNum(billDetails.oldTotal)}
+        />
       </div>
 
       <div className="p-field p-col">
         <label htmlFor="oldNewDifference"> Old New Difference </label>
         <InputNumber
-          id="oldNewDifference"
+          inputId="oldNewDifference"
           value={defaultNum(billDetails.oldNewDifference)}
         />
       </div>
@@ -29,7 +35,7 @@ export function BillTotals({
       <div className="p-field p-col">
         <label htmlFor="discount">Discount</label>
         <InputNumber
-          id="discount"
+          inputId="discount"
           value={defaultNum(billDetails.discount)}
           onChange={(e) => onDiscoutChange(e.value)}
         />
@@ -38,7 +44,7 @@ export function BillTotals({
       <div className="p-field p-col">
         <label htmlFor="amountPayable"> Amount payable </label>
         <InputNumber
-          id="amountPayable"
+          inputId="amountPayable"
           value={defaultNum(billDetails.amountPayable)}
         />
       </div>
@@ -46,7 +52,7 @@ export function BillTotals({
       <div className="p-field p-col">
         <label htmlFor="paid"> Amount paid </label>
         <InputNumber
-          id="paid"
+          inputId="paid"
           value={defaultNum(billDetails.paid)}
           onChange={(e) => onAmountPaidChange(e.value)}
         />
@@ -54,7 +60,7 @@ export function BillTotals({
 
       <div className="p-field p-col">
         <label htmlFor="due"> Due </label>
-        <InputNumber id="due" value={defaultNum(billDetails.due)} />
+        <InputNumber inputId="due" value={defaultNum(billDetails.due)} />
       </div>
     </div>
   );
