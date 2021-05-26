@@ -7,6 +7,7 @@ jest.mock("api", () => ({
 
   default: {
     getBills: jest.fn().mockImplementation(() => Promise.resolve([])),
+    getCustomers: jest.fn().mockImplementation(() => Promise.resolve([])),
   },
 }));
 
