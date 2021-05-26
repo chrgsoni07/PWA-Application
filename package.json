@@ -70,5 +70,13 @@
   },
   "lint-staged": {
     "*.{ts,tsx,js,css,md}": "prettier --write"
+  },
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "src/serviceWorkerRegistration.ts",
+      "src/index.tsx",
+      "src/service-worker.ts",
+      "src/reportWebVitals.ts"
+    ]
   }
 }
