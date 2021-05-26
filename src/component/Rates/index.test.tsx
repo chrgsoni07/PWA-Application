@@ -1,17 +1,10 @@
 import { render } from "@testing-library/react";
 import Rates from ".";
 
-jest.mock("api", () => ({
-  ...jest.requireActual("api"),
-
-  default: {
-    getRates: jest.fn().mockImplementation(() => Promise.resolve([])),
-  },
-}));
+jest.mock("api");
 
 describe("Rates", () => {
   it("should render", () => {
-    // render(<Rates />);
-    expect(1).toBe(1);
+    render(<Rates />);
   });
 });

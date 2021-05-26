@@ -4,13 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { AddNewBill } from "./AddNewBill";
 import { Bill } from "../types";
 
-jest.mock("api", () => ({
-  ...jest.requireActual("api"),
-
-  default: {
-    getCustomers: jest.fn().mockImplementation(() => Promise.resolve([])),
-  },
-}));
+jest.mock("api");
 
 let mockSetBill = jest.fn();
 let mockSetDisplayDialog = jest.fn();
