@@ -1,4 +1,4 @@
-import { AddNewBill } from "./AddNewBill";
+import { AddNewBill } from "./AddBill/AddNewBill";
 import ViewBill from "./ViewBill";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
@@ -10,6 +10,7 @@ import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { createNextState } from "@reduxjs/toolkit";
 import { db } from "api";
+import { Dialog } from "primereact/dialog";
 
 const Bills = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -35,6 +36,7 @@ const Bills = () => {
           billDetail: billData.billDetail,
         });
       });
+      console.log(allBills);
       setSavedBills(allBills);
     });
   }, []);
@@ -175,12 +177,22 @@ const Bills = () => {
         displayDialog={displayDialog}
         setDisplayDialog={setDisplayDialog}
       />
-
-      <ViewBill
-        bill={bill}
-        displayDialog={displayViewDialog}
-        setDisplayDialog={setDisplayViewDialog}
-      />
+      <Dialog
+        visible={displayViewDialog}
+        onHide={() => setDisplayViewDialog(false)}
+        header="R K JEWELLERS JAWAD"
+        modal
+        breakpoints={{
+          "960px": "75vw",
+          "640px": "100vw",
+        }}
+        style={{
+          width: "50vw",
+        }}
+        maximized={true}
+      >
+        <ViewBill bill={bill} />
+      </Dialog>
     </>
   );
 };

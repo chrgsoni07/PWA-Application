@@ -8,9 +8,8 @@ import { InputText } from "primereact/inputtext";
 import { Row } from "primereact/row";
 import { Toolbar } from "primereact/toolbar";
 import { amountBodyTemplate, formatCurrency } from "utils/currency.utils";
-import { itemType } from "./commonData";
-import { NewItem } from "./types";
-import "./DataTableDemo.css";
+import { itemType } from "../commonData";
+import { NewItem } from "../types";
 
 export function NewItems({
   newItems,

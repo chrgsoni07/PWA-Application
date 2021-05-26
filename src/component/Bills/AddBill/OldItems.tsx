@@ -6,8 +6,8 @@ import { Dropdown } from "primereact/dropdown";
 import { InputNumber } from "primereact/inputnumber";
 import { Row } from "primereact/row";
 import { Toolbar } from "primereact/toolbar";
-import { itemType } from "./commonData";
-import { OldItem } from "./types";
+import { itemType } from "../commonData";
+import { OldItem } from "../types";
 import {
   amountBodyTemplate,
   formatCurrency,

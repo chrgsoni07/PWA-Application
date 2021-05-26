@@ -9,8 +9,8 @@ import { BillTotals } from "./BillTotals";
 import Customer from "./Customer";
 import { NewItems } from "./NewItems";
 import { OldItems } from "./OldItems";
-import { Bill, BillDetails, NewItem, OldItem } from "./types";
-import { db, save } from "api";
+import { Bill, BillDetails, NewItem, OldItem } from "../types";
+import { save } from "api";
 
 type AddNewBillProps = {
   displayDialog: boolean;
