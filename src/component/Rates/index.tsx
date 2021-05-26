@@ -7,7 +7,7 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import React, { useState, useEffect } from "react";
 import { RateType } from "./types";
-import { db, save } from "api";
+import { db, getRates, save } from "api";
 import { createNextState } from "@reduxjs/toolkit";
 
 const Rates = () => {
@@ -28,23 +28,7 @@ const Rates = () => {
   };
 
   useEffect(() => {
-    const collection = db.collection("goldSilverRates");
-
-    collection.get().then((querySnapshot) => {
-      const allRates: RateType[] = [];
-      querySnapshot.forEach((rate) => {
-        console.log(rate.id);
-        const rateData = rate.data();
-        console.log(JSON.stringify(rateData));
-        allRates.push({
-          silverRate: rateData.silverRate,
-          goldRate: rateData.goldRate,
-          date: rateData.date,
-          id: rate.id,
-        });
-      });
-      setRates(allRates);
-    });
+    getRates().then((response) => setRates(response));
   }, []);
 
   const actionBodyTemplate = (rowData: any) => {

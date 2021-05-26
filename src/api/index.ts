@@ -1,5 +1,6 @@
 import { Bill } from "component/Bills/types";
 import { CustomerType } from "component/Customers/types";
+import { RateType } from "component/Rates/types";
 import firebase from "firebase";
 import { CollectionNameType } from "./types";
 
@@ -67,5 +68,25 @@ export const getBills = async (): Promise<Bill[]> => {
       });
     });
     return allBills;
+  });
+};
+
+export const getRates = async (): Promise<RateType[]> => {
+  const collection = db.collection("goldSilverRates");
+
+  return collection.get().then((querySnapshot) => {
+    const allRates: RateType[] = [];
+    querySnapshot.forEach((rate) => {
+      // console.log(rate.id);
+      const rateData = rate.data();
+      // console.log(JSON.stringify(rateData));
+      allRates.push({
+        silverRate: rateData.silverRate,
+        goldRate: rateData.goldRate,
+        date: rateData.date,
+        id: rate.id,
+      });
+    });
+    return allRates;
   });
 };
