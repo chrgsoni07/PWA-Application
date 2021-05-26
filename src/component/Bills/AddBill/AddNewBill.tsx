@@ -2,7 +2,7 @@ import { CustomerType } from "component/Customers/types";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { TabPanel, TabView } from "primereact/tabview";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useReducer, useState } from "react";
 import { sum } from "utils/number.utils";
 import { BillsMeta } from "./BillsMeta";
 import { BillTotals } from "./BillTotals";
@@ -10,6 +10,11 @@ import Customer from "./Customer";
 import { NewItems } from "./NewItems";
 import { OldItems } from "./OldItems";
 import { Bill, BillDetails, NewItem, OldItem } from "../types";
+import reducer, {
+  amountPaidChanged,
+  discountChanged,
+  updateTotalAmount,
+} from "./slice";
 import { save } from "api";
 
 type AddNewBillProps = {
@@ -24,52 +29,41 @@ export const AddNewBill: FC<AddNewBillProps> = ({
   bill,
   setBill,
 }) => {
-  const [newItems, setNewItems] = useState<NewItem[]>(bill.newItems || []);
-  const [oldItems, setOldItems] = useState<OldItem[]>(bill.oldItems || []);
   const [invoiceDate, setInvoiceDate] = useState<Date>(
     bill.invoiceDate || new Date()
   );
-
   const [selectedCustomer, setSelectedCustomer] = useState<CustomerType>(
     bill.customer
   );
-  const [billDetails, setBillDetails] = useState<BillDetails>(bill.billDetail);
+  const [{ newItems, oldItems, billDetails }, dispatch] = useReducer(reducer, {
+    newItems: bill.newItems || [],
+    oldItems: bill.oldItems || [],
+    billDetails: bill.billDetail || {},
+  });
 
   const onDiscoutChange = (discount: number) => {
     let amountPayable = billDetails.oldNewDifference - discount;
 
-    if (discount) {
-      setBillDetails({ ...billDetails, discount, amountPayable });
-    }
+    // if (discount) {
+    dispatch(discountChanged(discount));
+    // setBillDetails({ ...billDetails, discount, amountPayable });
+    // }
   };
 
   const onAmountPaidChange = (paid: number) => {
-    let due = billDetails.amountPayable - paid;
-    setBillDetails({ ...billDetails, paid, due });
+    // let due = billDetails.amountPayable - paid;
+    // setBillDetails({ ...billDetails, paid, due });
+    dispatch(amountPaidChanged(paid));
   };
 
   useEffect(() => {
-    const newTotal = sum(newItems);
-    const oldTotal = sum(oldItems);
-    const oldNewDifference = newTotal - oldTotal;
-
-    setBillDetails((oldBill) => ({
-      ...oldBill,
-      oldTotal,
-      newTotal,
-      oldNewDifference,
-      amountPayable: oldNewDifference > 0 ? oldNewDifference : 0,
-    }));
+    dispatch(updateTotalAmount());
   }, [newItems, oldItems]);
 
   const onHide = () => {
     setDisplayDialog(false);
     setBill({} as Bill);
   };
-
-  const onRowEditInit = () => {};
-
-  const onRowEditCancel = () => {};
 
   const onSave = () => {
     const newBill = {
@@ -136,19 +130,15 @@ export const AddNewBill: FC<AddNewBillProps> = ({
         <TabPanel header="New Item">
           <NewItems
             newItems={newItems}
-            onRowEditInit={onRowEditInit}
-            onRowEditCancel={onRowEditCancel}
             billDetails={billDetails}
-            setNewItems={setNewItems}
+            dispatch={dispatch}
           />
         </TabPanel>
         <TabPanel header="Old Item">
           <OldItems
-            setOldItems={setOldItems}
             oldItems={oldItems}
-            onRowEditInit={onRowEditInit}
-            onRowEditCancel={onRowEditCancel}
             billDetails={billDetails}
+            dispatch={dispatch}
           />
         </TabPanel>
       </TabView>

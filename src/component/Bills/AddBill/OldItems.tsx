@@ -14,59 +14,58 @@ import {
   netWeightTemplate,
 } from "utils/currency.utils";
 import { InputText } from "primereact/inputtext";
-export function OldItems({
-  oldItems,
-  setOldItems,
-  onRowEditInit,
-  onRowEditCancel,
-  billDetails,
-}: any) {
-  const calculateOldItemAmount = (updatedProd: OldItem) => {
-    let amount = 0;
-    if (updatedProd.type === "gold") {
-      amount =
-        updatedProd.grossWeight *
-        (updatedProd.purity / 100) *
-        (updatedProd.rate / 10);
-    }
+import { addOldItem, deleteOldItem, updateOldItemField } from "./slice";
+export function OldItems({ oldItems, billDetails, dispatch }: any) {
+  // const calculateOldItemAmount = (updatedProd: OldItem) => {
+  //   let amount = 0;
+  //   if (updatedProd.type === "gold") {
+  //     amount =
+  //       updatedProd.grossWeight *
+  //       (updatedProd.purity / 100) *
+  //       (updatedProd.rate / 10);
+  //   }
 
-    if (updatedProd.type === "silver") {
-      amount = updatedProd.grossWeight * (updatedProd.rate / 1000);
-    }
+  //   if (updatedProd.type === "silver") {
+  //     amount = updatedProd.grossWeight * (updatedProd.rate / 1000);
+  //   }
 
-    return Math.round(amount);
-  };
-  const updateOldAmount = (props: any) => {
-    let amount = calculateOldItemAmount(props.rowData);
-    let updatedProducts = [...props.value];
-    updatedProducts[props.rowIndex]["amount"] = amount;
-    setOldItems(updatedProducts);
-  };
+  //   return Math.round(amount);
+  // };
+  // const updateOldAmount = (props: any) => {
+  //   let amount = calculateOldItemAmount(props.rowData);
+  //   let updatedProducts = [...props.value];
+  //   updatedProducts[props.rowIndex]["amount"] = amount;
+  //   setOldItems(updatedProducts);
+  // };
 
-  const updateNetWeight = (props: any) => {
-    let updatedOldItem: OldItem = props.rowData;
-    let updatedNetWeight =
-      (updatedOldItem.grossWeight * updatedOldItem.purity) / 100;
-    let updatedProducts = [...props.value];
-    updatedProducts[props.rowIndex]["netWeight"] = updatedNetWeight;
-    setOldItems(updatedProducts);
-  };
+  // const updateNetWeight = (props: any) => {
+  //   let updatedOldItem: OldItem = props.rowData;
+  //   let updatedNetWeight =
+  //     (updatedOldItem.grossWeight * updatedOldItem.purity) / 100;
+  //   let updatedProducts = [...props.value];
+  //   updatedProducts[props.rowIndex]["netWeight"] = updatedNetWeight;
+  //   setOldItems(updatedProducts);
+  // };
   const onEditorValueChangeOld = (props: any, value: any) => {
-    let updatedProducts = [...props.value];
-    updatedProducts[props.rowIndex][props.field] = value;
-    setOldItems(updatedProducts);
-    updateOldAmount(props);
-    updateNetWeight(props);
+    // let updatedProducts = [...props.value];
+    // updatedProducts[props.rowIndex][props.field] = value;
+    // setOldItems(updatedProducts);
+    // updateOldAmount(props);
+    // updateNetWeight(props);
+    dispatch(
+      updateOldItemField({ index: props.rowIndex, value, field: props.field })
+    );
   };
   const oldItemsTotalAmount = () => {
     return formatCurrency(billDetails.oldTotal);
   };
 
   const confirmDeleteRow = (rowData: any, rowIndex: any) => {
-    const updateOldItems = [...oldItems];
-    updateOldItems.splice(rowIndex, 1);
+    dispatch(deleteOldItem(rowIndex));
+    // const updateOldItems = [...oldItems];
+    // updateOldItems.splice(rowIndex, 1);
 
-    setOldItems(updateOldItems);
+    // setOldItems(updateOldItems);
   };
 
   const deleteOldItemRow = (rowData: any, { rowIndex }: any) => (
@@ -135,19 +134,19 @@ export function OldItems({
     </ColumnGroup>
   );
 
-  const addBlankRowForOldItem = () => {
-    let blankOldItem: OldItem = {
-      amount: 0,
-      item: "",
-      purity: 100,
-      rate: 0,
-      grossWeight: 0,
-      netWeight: 0,
-      type: "gold",
-    };
+  // const addBlankRowForOldItem = () => {
+  //   let blankOldItem: OldItem = {
+  //     amount: 0,
+  //     item: "",
+  //     purity: 100,
+  //     rate: 0,
+  //     grossWeight: 0,
+  //     netWeight: 0,
+  //     type: "gold",
+  //   };
 
-    setOldItems([...oldItems, blankOldItem]);
-  };
+  //   setOldItems([...oldItems, blankOldItem]);
+  // };
   const toolBarOldItem = () => {
     return (
       <>
@@ -155,7 +154,7 @@ export function OldItems({
           aria-label="addOldItemRow"
           icon="pi pi-plus"
           className="p-button-rounded"
-          onClick={addBlankRowForOldItem}
+          onClick={() => dispatch(addOldItem())}
         />
       </>
     );
@@ -168,8 +167,6 @@ export function OldItems({
         value={oldItems}
         editMode="row"
         dataKey="id"
-        onRowEditInit={onRowEditInit}
-        onRowEditCancel={onRowEditCancel}
         className="p-datatable-sm"
         resizableColumns
         columnResizeMode="expand"

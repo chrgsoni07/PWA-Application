@@ -10,59 +10,23 @@ import { Toolbar } from "primereact/toolbar";
 import { amountBodyTemplate, formatCurrency } from "utils/currency.utils";
 import { itemType } from "../commonData";
 import { NewItem } from "../types";
+import { addNewItem, deleteNewItem, updateNewItemField } from "./slice";
 
-export function NewItems({
-  newItems,
-  onRowEditInit,
-  onRowEditCancel,
-  setNewItems,
-  billDetails,
-}: any) {
-  const addBlankRowForNewItem = () => {
-    let blankNewItem: NewItem = {
-      amount: 0,
-      item: "",
-      makingCharges: 0,
-      rate: 0,
-      weight: 0,
-      otherCharges: 0,
-      type: "gold",
-    };
-
-    setNewItems([...newItems, blankNewItem]);
-  };
-  const calculateNewItemAmount = (updatedProd: NewItem) => {
-    let amount = 0;
-    if (updatedProd.type === "gold") {
-      amount =
-        updatedProd.weight * (updatedProd.rate / 10) +
-        updatedProd.weight * updatedProd.makingCharges +
-        updatedProd.otherCharges;
-    }
-
-    if (updatedProd.type === "silver") {
-      amount =
-        updatedProd.weight * (updatedProd.rate / 1000) +
-        updatedProd.otherCharges;
-    }
-
-    if (updatedProd.type === "silverPerPiece") {
-      amount = updatedProd.otherCharges;
-    }
-
-    return Math.round(amount);
-  };
-  const updateNewAmount = (props: any) => {
-    let amount = calculateNewItemAmount(props.rowData);
-    let updatedProducts = [...props.value];
-    updatedProducts[props.rowIndex]["amount"] = amount;
-    setNewItems(updatedProducts);
-  };
+export function NewItems({ newItems, billDetails, dispatch }: any) {
+  // const updateNewAmount = (props: any) => {
+  //   // let amount = calculateNewItemAmount(props.rowData);
+  //   let updatedProducts = [...props.value];
+  //   updatedProducts[props.rowIndex]["amount"] = amount;
+  //   setNewItems(updatedProducts);
+  // };
   const onEditorValueChangeNew = (props: any, value: any) => {
-    let updatedProducts = [...props.value];
-    updatedProducts[props.rowIndex][props.field] = value;
-    setNewItems(updatedProducts);
-    updateNewAmount(props);
+    // let updatedProducts = [...props.value];
+    // updatedProducts[props.rowIndex][props.field] = value;
+    // setNewItems(updatedProducts);
+    dispatch(
+      updateNewItemField({ index: props.rowIndex, value, field: props.field })
+    );
+    // updateNewAmount(props);
   };
   const inputTextEditorNew = (props: any, field: string) => {
     return (
@@ -74,7 +38,7 @@ export function NewItems({
     );
   };
   const newItemsTotalAmount = () => {
-    return formatCurrency(billDetails.newTotal);
+    return formatCurrency(billDetails?.newTotal);
   };
   const newItemfooterGroup = (
     <ColumnGroup>
@@ -154,18 +118,11 @@ export function NewItems({
     );
   };
 
-  const confirmDeleteRow = (rowData: any, rowIndex: any) => {
-    const updatedNewItems = [...newItems];
-    updatedNewItems.splice(rowIndex, 1);
-
-    setNewItems(updatedNewItems);
-  };
-
   const deleteNewItemRow = (rowData: any, { rowIndex }: any) => (
     <Button
       icon="pi pi-trash"
       className="p-button-rounded p-button-warning p-button-sm"
-      onClick={() => confirmDeleteRow(rowData, rowIndex)}
+      onClick={() => dispatch(deleteNewItem(rowIndex))}
     />
   );
 
@@ -174,7 +131,7 @@ export function NewItems({
       aria-label="addNewItemRow"
       icon="pi pi-plus"
       className="p-button-rounded"
-      onClick={addBlankRowForNewItem}
+      onClick={() => dispatch(addNewItem())}
     />
   );
   return (
@@ -185,8 +142,6 @@ export function NewItems({
         value={newItems}
         editMode="row"
         dataKey="id"
-        onRowEditInit={onRowEditInit}
-        onRowEditCancel={onRowEditCancel}
         scrollable
         scrollHeight="150px"
         footerColumnGroup={newItemfooterGroup}
