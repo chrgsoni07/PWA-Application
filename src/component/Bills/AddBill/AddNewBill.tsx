@@ -3,13 +3,13 @@ import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { TabPanel, TabView } from "primereact/tabview";
 import { FC, useEffect, useReducer, useState } from "react";
-import { sum } from "utils/number.utils";
+
 import { BillsMeta } from "./BillsMeta";
 import { BillTotals } from "./BillTotals";
 import Customer from "./Customer";
 import { NewItems } from "./NewItems";
 import { OldItems } from "./OldItems";
-import { Bill, BillDetails, NewItem, OldItem } from "../types";
+import { Bill } from "../types";
 import reducer, {
   amountPaidChanged,
   discountChanged,
@@ -41,20 +41,11 @@ export const AddNewBill: FC<AddNewBillProps> = ({
     billDetails: bill.billDetail || {},
   });
 
-  const onDiscoutChange = (discount: number) => {
-    let amountPayable = billDetails.oldNewDifference - discount;
-
-    // if (discount) {
+  const onDiscoutChange = (discount: number) =>
     dispatch(discountChanged(discount));
-    // setBillDetails({ ...billDetails, discount, amountPayable });
-    // }
-  };
 
-  const onAmountPaidChange = (paid: number) => {
-    // let due = billDetails.amountPayable - paid;
-    // setBillDetails({ ...billDetails, paid, due });
+  const onAmountPaidChange = (paid: number) =>
     dispatch(amountPaidChanged(paid));
-  };
 
   useEffect(() => {
     dispatch(updateTotalAmount());

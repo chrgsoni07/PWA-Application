@@ -9,24 +9,13 @@ import { Row } from "primereact/row";
 import { Toolbar } from "primereact/toolbar";
 import { amountBodyTemplate, formatCurrency } from "utils/currency.utils";
 import { itemType } from "../commonData";
-import { NewItem } from "../types";
 import { addNewItem, deleteNewItem, updateNewItemField } from "./slice";
 
 export function NewItems({ newItems, billDetails, dispatch }: any) {
-  // const updateNewAmount = (props: any) => {
-  //   // let amount = calculateNewItemAmount(props.rowData);
-  //   let updatedProducts = [...props.value];
-  //   updatedProducts[props.rowIndex]["amount"] = amount;
-  //   setNewItems(updatedProducts);
-  // };
   const onEditorValueChangeNew = (props: any, value: any) => {
-    // let updatedProducts = [...props.value];
-    // updatedProducts[props.rowIndex][props.field] = value;
-    // setNewItems(updatedProducts);
     dispatch(
       updateNewItemField({ index: props.rowIndex, value, field: props.field })
     );
-    // updateNewAmount(props);
   };
   const inputTextEditorNew = (props: any, field: string) => {
     return (
@@ -37,9 +26,7 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
       />
     );
   };
-  const newItemsTotalAmount = () => {
-    return formatCurrency(billDetails?.newTotal);
-  };
+  const newItemsTotalAmount = () => formatCurrency(billDetails?.newTotal);
   const newItemfooterGroup = (
     <ColumnGroup>
       <Row>

@@ -2,37 +2,35 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { sum } from "utils/number.utils";
 import { BillDetails, NewItem, OldItem } from "../types";
 
-const calculateNewItemAmount = (updatedProd: NewItem) => {
+const calculateNewItemAmount = ({
+  type,
+  weight,
+  makingCharges,
+  rate,
+  otherCharges,
+}: NewItem) => {
   let amount = 0;
-  if (updatedProd.type === "gold") {
-    amount =
-      updatedProd.weight * (updatedProd.rate / 10) +
-      updatedProd.weight * updatedProd.makingCharges +
-      updatedProd.otherCharges;
-  }
-
-  if (updatedProd.type === "silver") {
-    amount =
-      updatedProd.weight * (updatedProd.rate / 1000) + updatedProd.otherCharges;
-  }
-
-  if (updatedProd.type === "silverPerPiece") {
-    amount = updatedProd.otherCharges;
+  if (type === "gold") {
+    amount = weight * (rate / 10) + weight * makingCharges + otherCharges;
+  } else if (type === "silver") {
+    amount = weight * (rate / 1000) + otherCharges;
+  } else if (type === "silverPerPiece") {
+    amount = otherCharges;
   }
 
   return Math.round(amount);
 };
-const calculateOldItemAmount = (updatedProd: OldItem) => {
+const calculateOldItemAmount = ({
+  type,
+  grossWeight,
+  purity,
+  rate,
+}: OldItem) => {
   let amount = 0;
-  if (updatedProd.type === "gold") {
-    amount =
-      updatedProd.grossWeight *
-      (updatedProd.purity / 100) *
-      (updatedProd.rate / 10);
-  }
-
-  if (updatedProd.type === "silver") {
-    amount = updatedProd.grossWeight * (updatedProd.rate / 1000);
+  if (type === "gold") {
+    amount = grossWeight * (purity / 100) * (rate / 10);
+  } else if (type === "silver") {
+    amount = grossWeight * (rate / 1000);
   }
 
   return Math.round(amount);
@@ -50,14 +48,11 @@ const slice = createSlice({
     addNewItem: (state) => {
       state.newItems.push({ type: "gold" } as NewItem);
     },
-    deleteNewItem: (
-      { oldItems, newItems, billDetails },
-      { payload }: PayloadAction<number>
-    ) => {
+    deleteNewItem: ({ newItems }, { payload }: PayloadAction<number>) => {
       newItems.splice(payload, 1);
     },
     updateNewItemField: (
-      { newItems, oldItems, billDetails },
+      { newItems },
       {
         payload: { field, value, index },
       }: PayloadAction<{ index: number; value: string; field: string }>
@@ -70,14 +65,11 @@ const slice = createSlice({
     addOldItem: (state) => {
       state.oldItems.push({ type: "gold" } as OldItem);
     },
-    deleteOldItem: (
-      { oldItems, newItems, billDetails },
-      { payload }: PayloadAction<number>
-    ) => {
+    deleteOldItem: ({ oldItems }, { payload }: PayloadAction<number>) => {
       oldItems.splice(payload, 1);
     },
     updateOldItemField: (
-      { newItems, oldItems, billDetails },
+      { oldItems },
       {
         payload: { field, value, index },
       }: PayloadAction<{ index: number; value: string; field: string }>
