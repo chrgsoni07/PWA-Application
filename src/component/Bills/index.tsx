@@ -9,7 +9,7 @@ import { Bill } from "./types";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { createNextState } from "@reduxjs/toolkit";
-import { db } from "api";
+import { db, getBills } from "api";
 import { Dialog } from "primereact/dialog";
 
 const Bills = () => {
@@ -20,25 +20,7 @@ const Bills = () => {
   const [bill, setBill] = useState<Bill>({} as Bill);
 
   useEffect(() => {
-    const collection = db.collection("bills");
-
-    collection.get().then((querySnapshot) => {
-      const allBills: Bill[] = [];
-      querySnapshot.forEach((bill) => {
-        const billData = bill.data();
-        allBills.push({
-          id: bill.id,
-          billNo: billData.billNo,
-          invoiceDate: billData.invoiceDate,
-          newItems: billData.newItems,
-          customer: billData.customer,
-          oldItems: billData.oldItems,
-          billDetail: billData.billDetail,
-        });
-      });
-      console.log(allBills);
-      setSavedBills(allBills);
-    });
+    getBills().then((bills) => setSavedBills(bills));
   }, []);
 
   const header = () => {
