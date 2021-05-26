@@ -48,7 +48,7 @@ const ViewBill: FC<ViewBillProps> = ({
       <Divider align="right">
         <div className="p-d-inline-flex p-ai-center">
           <i className="pi pi-calendar p-mr-2"></i>
-          <b>{invoiceDate.toDateString()}</b>
+          <b>{invoiceDate}</b>
         </div>
       </Divider>
 

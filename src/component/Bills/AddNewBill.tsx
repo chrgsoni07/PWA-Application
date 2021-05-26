@@ -11,6 +11,7 @@ import Customer from "./Customer";
 import { NewItems } from "./NewItems";
 import { OldItems } from "./OldItems";
 import { Bill, BillDetails, NewItem, OldItem } from "./types";
+import { db, save } from "api";
 
 type AddNewBillProps = {
   displayDialog: boolean;
@@ -93,7 +94,12 @@ export const AddNewBill: FC<AddNewBillProps> = ({
       billDetail: billDetails,
     };
     setBill(newBill);
-    console.log(newBill); //  saveBillToFirestore(newBill);
+    saveBillToFirestore(newBill);
+  };
+
+  const saveBillToFirestore = async (newBill: Bill) => {
+    const savedBill: Bill = await save("bills", newBill);
+    console.log(savedBill);
   };
 
   const footer = (

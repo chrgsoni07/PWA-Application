@@ -40,38 +40,27 @@ const Bills = () => {
     });
   }, []);
 
-  // const saveBillToFirestore = async (newBill: Bill) => {
-  //   const savedBill: Bill = await save("bills", newBill);
-  //   console.log(savedBill);
-  // };
-
   const header = () => {
     <Button label="New" icon="pi pi-plus" className="p-button-sm" />;
   };
-
-  // let originalRows: any = {};
 
   const displayModel = () => {
     setDisplayDialog(true);
   };
 
-  // const onRowEditChange = (event: any) => {
-  //   setEditingRows(event.data);
-  // };
-
   const dateBodyTemplate = (rowData: any) => {
-    var invoiceDate = new Date(rowData.invoiceDate);
-    return invoiceDate.toLocaleDateString();
+    var invoiceDate = rowData.invoiceDate.toDate();
+    return invoiceDate.toLocaleDateString("en-In");
   };
 
   const actionBodyTemplate = (rowData: any) => {
     function viewBill(rowData: any): void {
-      setBill({ ...rowData, invoiceDate: new Date(rowData.invoiceDate) });
+      setBill({ ...rowData, invoiceDate: dateBodyTemplate(rowData) });
       setDisplayViewDialog(true);
     }
 
     function editBill(rowData: any): void {
-      setBill({ ...rowData, invoiceDate: new Date(rowData.invoiceDate) });
+      setBill({ ...rowData, invoiceDate: rowData.invoiceDate.toDate() });
       setDisplayDialog(true);
     }
 

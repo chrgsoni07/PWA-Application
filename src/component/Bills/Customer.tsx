@@ -10,7 +10,6 @@ function Customer({ selectedCustomer, setSelectedCustomer }: any) {
   }, []);
   return (
     <div className="p-col-8">
-      {/* drop down */}
       <div className="p-formgrid p-grid">
         <div className="p-field p-col-12">
           <label htmlFor="customerSelect">Select customer</label>
