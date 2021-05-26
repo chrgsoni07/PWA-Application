@@ -1,4 +1,5 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import Bills from ".";
 
 jest.mock("api", () => ({
@@ -12,5 +13,7 @@ jest.mock("api", () => ({
 describe("Bills", () => {
   it("should render", () => {
     render(<Bills />);
+    userEvent.click(screen.getByRole("button", { name: "New" }));
+    userEvent.click(screen.getByRole("button", { name: /close/i }));
   });
 });
