@@ -6,7 +6,6 @@ import { FC, useEffect, useState } from "react";
 import { sum } from "utils/number.utils";
 import { BillsMeta } from "./BillsMeta";
 import { BillTotals } from "./BillTotals";
-import { defaultBill } from "./commonData";
 import Customer from "./Customer";
 import { NewItems } from "./NewItems";
 import { OldItems } from "./OldItems";
@@ -25,8 +24,8 @@ export const AddNewBill: FC<AddNewBillProps> = ({
   bill,
   setBill,
 }) => {
-  const [newItems, setNewItems] = useState<NewItem[]>(bill.newItems);
-  const [oldItems, setOldItems] = useState<OldItem[]>(bill.oldItems);
+  const [newItems, setNewItems] = useState<NewItem[]>(bill.newItems || []);
+  const [oldItems, setOldItems] = useState<OldItem[]>(bill.oldItems || []);
   const [invoiceDate, setInvoiceDate] = useState<Date>(
     bill.invoiceDate || new Date()
   );

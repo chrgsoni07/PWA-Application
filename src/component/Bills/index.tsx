@@ -8,7 +8,6 @@ import "./DataTableDemo.css";
 import { Bill } from "./types";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import { defaultBill } from "./commonData";
 import { createNextState } from "@reduxjs/toolkit";
 import { db } from "api";
 
