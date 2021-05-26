@@ -25,20 +25,16 @@ export const AddNewBill: FC<AddNewBillProps> = ({
   bill,
   setBill,
 }) => {
-  const [newItems, setNewItems] = useState<NewItem[]>([]);
-  const [oldItems, setOldItems] = useState<OldItem[]>([]);
-  const [invoiceDate, setInvoiceDate] = useState<Date>(new Date());
+  const [newItems, setNewItems] = useState<NewItem[]>(bill.newItems);
+  const [oldItems, setOldItems] = useState<OldItem[]>(bill.oldItems);
+  const [invoiceDate, setInvoiceDate] = useState<Date>(
+    bill.invoiceDate || new Date()
+  );
 
-  const [selectedCustomer, setSelectedCustomer] = useState<CustomerType>();
-  const [billDetails, setBillDetails] = useState<BillDetails>({
-    newTotal: 0,
-    oldTotal: 0,
-    oldNewDifference: 0,
-    discount: 0,
-    paid: 0,
-    due: 0,
-    amountPayable: 0,
-  });
+  const [selectedCustomer, setSelectedCustomer] = useState<CustomerType>(
+    bill.customer
+  );
+  const [billDetails, setBillDetails] = useState<BillDetails>(bill.billDetail);
 
   const onDiscoutChange = (discount: number) => {
     let amountPayable = billDetails.oldNewDifference - discount;
@@ -52,14 +48,6 @@ export const AddNewBill: FC<AddNewBillProps> = ({
     let due = billDetails.amountPayable - paid;
     setBillDetails({ ...billDetails, paid, due });
   };
-
-  useEffect(() => {
-    setNewItems(bill.newItems);
-    setOldItems(bill.oldItems);
-    bill.billDetail && setBillDetails(bill.billDetail);
-    setInvoiceDate(bill.invoiceDate);
-    setSelectedCustomer(bill.customer);
-  }, [bill]);
 
   useEffect(() => {
     const newTotal = sum(newItems);
@@ -77,7 +65,7 @@ export const AddNewBill: FC<AddNewBillProps> = ({
 
   const onHide = () => {
     setDisplayDialog(false);
-    setBill(defaultBill());
+    setBill({} as Bill);
   };
 
   const onRowEditInit = () => {};

@@ -17,7 +17,7 @@ const Bills = () => {
   const [displayDialog, setDisplayDialog] = useState(false);
   const [displayViewDialog, setDisplayViewDialog] = useState(false);
   const [savedBills, setSavedBills] = useState<Bill[]>([]);
-  const [bill, setBill] = useState<Bill>(defaultBill());
+  const [bill, setBill] = useState<Bill>({} as Bill);
 
   useEffect(() => {
     const collection = db.collection("bills");

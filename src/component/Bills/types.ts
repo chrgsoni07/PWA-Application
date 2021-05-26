@@ -29,8 +29,8 @@ export type Bill = {
   id: string;
   billNo: number;
   invoiceDate: Date;
-  customer?: CustomerType;
+  customer: CustomerType;
   newItems: NewItem[];
   oldItems: OldItem[];
-  billDetail?: BillDetails;
+  billDetail: BillDetails;
 };
