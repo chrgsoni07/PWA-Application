@@ -9,3 +9,7 @@ export const getCustomers = async () => {
 export const getRates = async () => {
   return [];
 };
+
+export const save = async (collection: any, data: any) => {
+  return {};
+};
