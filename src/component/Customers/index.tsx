@@ -4,7 +4,7 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import { CustomerType } from "./types";
-import { db } from "api";
+import { db, getCustomers } from "api";
 import { createNextState } from "@reduxjs/toolkit";
 import { Dialog } from "primereact/dialog";
 import { InputTextarea } from "primereact/inputtextarea";
@@ -24,24 +24,7 @@ const Customers = () => {
   });
 
   useEffect(() => {
-    const collection = db.collection("customers");
-
-    collection.get().then((querySnapshot) => {
-      const allCustomers: CustomerType[] = [];
-      querySnapshot.forEach((customer) => {
-        console.log(customer.id);
-        const customerData = customer.data();
-        console.log(JSON.stringify(customerData));
-        allCustomers.push({
-          name: customerData.name,
-          mobile: customerData.mobile,
-          place: customerData.place,
-          address: customerData.address,
-          id: customer.id,
-        });
-      });
-      setCustomers(allCustomers);
-    });
+    getCustomers().then((allCustomers) => setCustomers(allCustomers));
   }, []);
 
   const editSelectedCustomer = (rowData: any) => {

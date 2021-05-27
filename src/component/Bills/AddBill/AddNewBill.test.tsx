@@ -1,17 +1,10 @@
 import React from "react";
-
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AddNewBill } from "./AddNewBill";
-import { defaultBill } from "./commonData";
+import { Bill } from "../types";
 
-jest.mock("api", () => ({
-  ...jest.requireActual("api"),
-
-  default: {
-    getCustomers: jest.fn().mockImplementation(() => Promise.resolve([])),
-  },
-}));
+jest.mock("api");
 
 let mockSetBill = jest.fn();
 let mockSetDisplayDialog = jest.fn();
@@ -82,7 +75,7 @@ describe("Add new bill component", () => {
       <AddNewBill
         displayDialog={true}
         setDisplayDialog={mockSetDisplayDialog}
-        bill={defaultBill()}
+        bill={{} as Bill}
         setBill={mockSetBill}
       />
     );

@@ -1,4 +1,4 @@
-import { AddNewBill } from "./AddNewBill";
+import { AddNewBill } from "./AddBill/AddNewBill";
 import ViewBill from "./ViewBill";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
@@ -8,36 +8,19 @@ import "./DataTableDemo.css";
 import { Bill } from "./types";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import { defaultBill } from "./commonData";
 import { createNextState } from "@reduxjs/toolkit";
-import { db } from "api";
+import { db, getBills } from "api";
+import { Dialog } from "primereact/dialog";
 
 const Bills = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [displayDialog, setDisplayDialog] = useState(false);
   const [displayViewDialog, setDisplayViewDialog] = useState(false);
   const [savedBills, setSavedBills] = useState<Bill[]>([]);
-  const [bill, setBill] = useState<Bill>(defaultBill());
+  const [bill, setBill] = useState<Bill>({} as Bill);
 
   useEffect(() => {
-    const collection = db.collection("bills");
-
-    collection.get().then((querySnapshot) => {
-      const allBills: Bill[] = [];
-      querySnapshot.forEach((bill) => {
-        const billData = bill.data();
-        allBills.push({
-          id: bill.id,
-          billNo: billData.billNo,
-          invoiceDate: billData.invoiceDate,
-          newItems: billData.newItems,
-          customer: billData.customer,
-          oldItems: billData.oldItems,
-          billDetail: billData.billDetail,
-        });
-      });
-      setSavedBills(allBills);
-    });
+    getBills().then((bills) => setSavedBills(bills));
   }, []);
 
   const header = () => {
@@ -176,12 +159,22 @@ const Bills = () => {
         displayDialog={displayDialog}
         setDisplayDialog={setDisplayDialog}
       />
-
-      <ViewBill
-        bill={bill}
-        displayDialog={displayViewDialog}
-        setDisplayDialog={setDisplayViewDialog}
-      />
+      <Dialog
+        visible={displayViewDialog}
+        onHide={() => setDisplayViewDialog(false)}
+        header="R K JEWELLERS JAWAD"
+        modal
+        breakpoints={{
+          "960px": "75vw",
+          "640px": "100vw",
+        }}
+        style={{
+          width: "50vw",
+        }}
+        maximized={true}
+      >
+        <ViewBill bill={bill} />
+      </Dialog>
     </>
   );
 };

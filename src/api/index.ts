@@ -1,4 +1,6 @@
+import { Bill } from "component/Bills/types";
 import { CustomerType } from "component/Customers/types";
+import { RateType } from "component/Rates/types";
 import firebase from "firebase";
 import { CollectionNameType } from "./types";
 
@@ -32,7 +34,7 @@ export const getCustomers = async (): Promise<CustomerType[]> => {
   return collection.get().then((querySnapshot) => {
     const allCustomers: CustomerType[] = [];
     querySnapshot.forEach((customer) => {
-      console.log(customer.id);
+      // console.log(customer.id);
       const customerData = customer.data();
 
       allCustomers.push({
@@ -45,5 +47,46 @@ export const getCustomers = async (): Promise<CustomerType[]> => {
     });
 
     return allCustomers;
+  });
+};
+
+export const getBills = async (): Promise<Bill[]> => {
+  const collection = db.collection("bills");
+
+  return collection.get().then((querySnapshot) => {
+    const allBills: Bill[] = [];
+    querySnapshot.forEach((bill) => {
+      const billData = bill.data();
+      allBills.push({
+        id: bill.id,
+        billNo: billData.billNo,
+        invoiceDate: billData.invoiceDate,
+        newItems: billData.newItems,
+        customer: billData.customer,
+        oldItems: billData.oldItems,
+        billDetail: billData.billDetail,
+      });
+    });
+    return allBills;
+  });
+};
+
+export const getRates = async (): Promise<RateType[]> => {
+  const collection = db.collection("goldSilverRates");
+
+  return collection.get().then((querySnapshot) => {
+    const allRates: RateType[] = [];
+    querySnapshot.forEach((rate) => {
+      // console.log(rate.id);
+      const rateData = rate.data();
+      // console.log(JSON.stringify(rateData));
+      allRates.push({
+        silverRate: rateData.silverRate,
+        goldRate: rateData.goldRate,
+        date: rateData.date,
+        id: rate.id,
+      });
+    });
+    return allRates;
   });
 };

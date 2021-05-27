@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { Bill } from "../types";
-import { Dialog } from "primereact/dialog";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Divider } from "primereact/divider";
@@ -15,36 +14,14 @@ import {
 } from "utils/currency.utils";
 
 type ViewBillProps = {
-  displayDialog: boolean;
   bill: Bill;
-  setDisplayDialog: (flag: boolean) => void;
 };
 
-const ViewBill: FC<ViewBillProps> = ({
-  bill,
-  displayDialog,
-  setDisplayDialog,
-}) => {
+const ViewBill: FC<ViewBillProps> = ({ bill }) => {
   const { customer, oldItems, newItems, billDetail, invoiceDate } = bill;
-  const onHide = () => {
-    setDisplayDialog(false);
-  };
 
   return (
-    <Dialog
-      visible={displayDialog}
-      onHide={onHide}
-      header="R K JEWELLERS JAWAD"
-      modal
-      breakpoints={{
-        "960px": "75vw",
-        "640px": "100vw",
-      }}
-      style={{
-        width: "50vw",
-      }}
-      maximized={true}
-    >
+    <>
       <Divider align="right">
         <div className="p-d-inline-flex p-ai-center">
           <i className="pi pi-calendar p-mr-2"></i>
@@ -146,7 +123,7 @@ const ViewBill: FC<ViewBillProps> = ({
       )}
 
       <ViewAmountDetails billDetail={billDetail} />
-    </Dialog>
+    </>
   );
 };
 

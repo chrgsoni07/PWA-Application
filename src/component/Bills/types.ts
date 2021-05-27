@@ -2,7 +2,7 @@ import { CustomerType } from "component/Customers/types";
 
 type CommonItemType = {
   item: string;
-  type: string;
+  type: "gold" | "silver" | "silverPerPiece";
   rate: number;
   amount: number;
 };
@@ -29,8 +29,8 @@ export type Bill = {
   id: string;
   billNo: number;
   invoiceDate: Date;
-  customer?: CustomerType;
+  customer: CustomerType;
   newItems: NewItem[];
   oldItems: OldItem[];
-  billDetail?: BillDetails;
+  billDetail: BillDetails;
 };
