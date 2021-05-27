@@ -78,9 +78,7 @@ export const getRates = async (): Promise<RateType[]> => {
   return collection.get().then((querySnapshot) => {
     const allRates: RateType[] = [];
     querySnapshot.forEach((rate) => {
-      // console.log(rate.id);
       const rateData = rate.data();
-      // console.log(JSON.stringify(rateData));
       allRates.push({
         silverRate: rateData.silverRate,
         goldRate: rateData.goldRate,
