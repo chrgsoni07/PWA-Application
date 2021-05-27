@@ -16,6 +16,7 @@ const firebaseApp = firebase.initializeApp({
 });
 
 const db = firebaseApp.firestore();
+const increment = firebase.firestore.FieldValue.increment(1);
 
 export { db };
 
@@ -89,4 +90,16 @@ export const getRates = async (): Promise<RateType[]> => {
     });
     return allRates;
   });
+};
+
+export const increaseCounterValue = async () => {
+  const counterRef = db.collection("counters").doc("invoice-counter");
+  counterRef.update({ count: increment });
+};
+
+export const getCounterValue = async (): Promise<Number> => {
+  const counterRef = db.collection("counters").doc("invoice-counter");
+  const doc = await counterRef.get();
+  const counterData = doc.data();
+  return counterData?.count;
 };
