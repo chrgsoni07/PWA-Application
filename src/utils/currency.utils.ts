@@ -23,7 +23,7 @@ export const formatCurrencyNoFraction = (value: number | undefined) => {
 export const netWeightTemplate = (rowData: any) => {
   return (
     new Intl.NumberFormat("en-IN", {
-      maximumFractionDigits: 2,
+      maximumFractionDigits: 3,
     }).format(rowData.netWeight) + "0"
   );
 };
