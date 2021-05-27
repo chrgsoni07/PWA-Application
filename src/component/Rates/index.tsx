@@ -134,8 +134,7 @@ const Rates = () => {
   };
 
   const showSuccessToast = (message: any) => {
-    console.log("running success");
-    toast?.current?.show({
+    toast.current?.show({
       severity: "success",
       summary: "Success Message",
       detail: message,
