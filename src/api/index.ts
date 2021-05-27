@@ -35,7 +35,6 @@ export const getCustomers = async (): Promise<CustomerType[]> => {
   return collection.get().then((querySnapshot) => {
     const allCustomers: CustomerType[] = [];
     querySnapshot.forEach((customer) => {
-      console.log(customer.id);
       const customerData = customer.data();
 
       allCustomers.push({
