@@ -4,7 +4,7 @@ import { defaultNum } from "utils/number.utils";
 export function BillTotals({
   onDiscoutChange,
   onAmountPaidChange,
-  billDetails,
+  billDetails = {},
 }: any) {
   return (
     <div className="p-fluid p-formgrid p-grid">

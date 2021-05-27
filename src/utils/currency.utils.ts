@@ -3,7 +3,7 @@ export const amountBodyTemplate = (rowData: any) => {
 };
 
 export const formatCurrency = (value: any) => {
-  return value.toLocaleString("en-IN", {
+  return value?.toLocaleString("en-IN", {
     style: "currency",
     currency: "INR",
   });

@@ -3,12 +3,3 @@ export const itemType = [
   { label: "Silver", value: "silver" },
   { label: "Silver per piece", value: "silverPerPiece" },
 ];
-
-export const defaultBill = () => ({
-  id: "",
-  billNo: 101,
-  invoiceDate: new Date(),
-  customer: undefined,
-  newItems: [],
-  oldItems: [],
-});
