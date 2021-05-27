@@ -12,8 +12,8 @@ let mockSetDisplayDialog = jest.fn();
 const bill = {
   totalNew: "109,566",
   totalOld: "74,290",
-  diff: "35,266",
-  discount: "66",
+  diff: "35,276",
+  discount: "76",
   payable: "35,200",
   paid: "30000",
   due: "5,200",
