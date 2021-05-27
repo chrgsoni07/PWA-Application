@@ -52,7 +52,7 @@ const bill = {
       name: "Purana Haar",
       weight: "15.780",
       purity: "90",
-      netWeight: "14.20",
+      netWeight: "14.2",
       rate: "49500",
       amount: "₹70,290",
     },
