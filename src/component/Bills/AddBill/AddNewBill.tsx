@@ -41,8 +41,6 @@ export const AddNewBill: FC<AddNewBillProps> = ({
     billDetails: bill.billDetail || {},
   });
 
-  const [billNo, setBillNo] = useState<Number>(bill.billNo);
-
   const onDiscoutChange = (discount: number) =>
     dispatch(discountChanged(discount));
 
@@ -60,7 +58,6 @@ export const AddNewBill: FC<AddNewBillProps> = ({
 
   const onShow = async () => {
     const invoiceNumber = await getCounterValue();
-    setBillNo(invoiceNumber);
   };
 
   const onSave = () => {
@@ -78,8 +75,7 @@ export const AddNewBill: FC<AddNewBillProps> = ({
 
   const saveBillToFirestore = async (newBill: Bill) => {
     const savedBill: Bill = await save("bills", newBill);
-    // update counter for bill no
-    // await increaseCounterValue();
+    await increaseCounterValue();
     console.log(savedBill);
   };
 

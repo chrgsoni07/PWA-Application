@@ -97,7 +97,7 @@ export const increaseCounterValue = async () => {
   counterRef.update({ count: increment });
 };
 
-export const getCounterValue = async (): Promise<Number> => {
+export const getCounterValue = async (): Promise<number> => {
   const counterRef = db.collection("counters").doc("invoice-counter");
   const doc = await counterRef.get();
   const counterData = doc.data();
