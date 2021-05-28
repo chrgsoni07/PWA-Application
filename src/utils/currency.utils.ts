@@ -32,22 +32,30 @@ export const netWeightTemplate = ({ netWeight }: any) => {
   }).format(netWeight);
 };
 
-export const weightTemplate = (rowData: any) => {
-  return `${rowData.weight} gram`;
+export const weightTemplate = ({ weight }: any) => {
+  return isValidValue(weight) ? "" : `${weight} gram`;
 };
 
-export const grossWeightTemplate = (rowData: any) => {
-  return `${rowData.grossWeight} gram`;
+export const grossWeightTemplate = ({ grossWeight }: any) => {
+  return isValidValue(grossWeight) ? "" : `${grossWeight} gram`;
 };
 
-export const viewNetWeightTemplate = (rowData: any) => {
-  return `${rowData.netWeight} gram`;
+export const viewNetWeightTemplate = ({ netWeight }: any) => {
+  return isValidValue(netWeight) ? "" : `${netWeight} gram`;
 };
 
-export const makingChargeTemplate = (rowData: any) => {
-  return `${rowData.makingCharges} / gram`;
+export const makingChargeTemplate = ({ makingCharges }: any) => {
+  return isValidValue(makingCharges) ? "" : `${makingCharges}/gram`;
 };
 
-export const purityTemplate = (rowData: any) => {
-  return `${rowData.purity}%`;
+export const purityTemplate = ({ purity }: any) => {
+  return isValidValue(purity) ? "" : `${purity}%`;
+};
+
+const isValidValue = (value: any) => {
+  if (value === undefined || value === null || !value || isNaN(value)) {
+    return true;
+  } else {
+    return false;
+  }
 };
