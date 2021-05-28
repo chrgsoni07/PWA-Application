@@ -7,7 +7,11 @@ import { InputNumber } from "primereact/inputnumber";
 import { InputText } from "primereact/inputtext";
 import { Row } from "primereact/row";
 import { Toolbar } from "primereact/toolbar";
-import { amountBodyTemplate, formatCurrency } from "utils/currency.utils";
+import {
+  amountBodyTemplate,
+  formatCurrency,
+  formatCurrencyNoFraction,
+} from "utils/currency.utils";
 import { itemType } from "../commonData";
 import { addNewItem, deleteNewItem, updateNewItemField } from "./slice";
 
@@ -40,12 +44,7 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
     </ColumnGroup>
   );
   const otherChargesTemplate = (rowData: any) => {
-    return new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
-      maximumFractionDigits: 0,
-      minimumFractionDigits: 0,
-    }).format(rowData.otherCharges);
+    return formatCurrencyNoFraction(rowData.otherCharges);
   };
   const newItemTypeEditor = (props: any) => {
     return (
@@ -85,12 +84,7 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
     return inputTextEditorNew(props, "weight");
   };
   const makingChargesTemplate = (rowData: any) => {
-    return new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
-      maximumFractionDigits: 0,
-      minimumFractionDigits: 0,
-    }).format(rowData.makingCharges);
+    return formatCurrencyNoFraction(rowData.makingCharges);
   };
   const newOtherChargesEditor = (props: any) => {
     return (

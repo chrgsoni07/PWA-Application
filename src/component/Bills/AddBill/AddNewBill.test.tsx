@@ -69,7 +69,6 @@ const bill = {
 };
 
 describe("Add new bill component", () => {
-  beforeEach(() => {});
   it("should add new items", () => {
     render(
       <AddNewBill

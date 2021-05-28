@@ -3,6 +3,9 @@ export const amountBodyTemplate = (rowData: any) => {
 };
 
 export const formatCurrency = (value: any) => {
+  if (!value || isNaN(value)) {
+    return "";
+  }
   return value?.toLocaleString("en-IN", {
     style: "currency",
     currency: "INR",
@@ -10,8 +13,8 @@ export const formatCurrency = (value: any) => {
 };
 
 export const formatCurrencyNoFraction = (value: number | undefined) => {
-  if (!value) {
-    return value;
+  if (!value || isNaN(value)) {
+    return "";
   }
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -20,10 +23,13 @@ export const formatCurrencyNoFraction = (value: number | undefined) => {
   }).format(value);
 };
 
-export const netWeightTemplate = (rowData: any) => {
+export const netWeightTemplate = ({ netWeight }: any) => {
+  if (!netWeight || isNaN(netWeight)) {
+    return "";
+  }
   return new Intl.NumberFormat("en-IN", {
-    maximumFractionDigits: 2,
-  }).format(rowData.netWeight);
+    maximumFractionDigits: 3,
+  }).format(netWeight);
 };
 
 export const weightTemplate = (rowData: any) => {

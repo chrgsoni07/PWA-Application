@@ -55,12 +55,11 @@ const slice = createSlice({
       { newItems },
       {
         payload: { field, value, index },
-      }: PayloadAction<{ index: number; value: string; field: string }>
+      }: PayloadAction<{ index: number; value: string; field: keyof NewItem }>
     ) => {
-      (newItems[index] as any)[field] = value;
-      (newItems[index] as any)["amount"] = calculateNewItemAmount(
-        newItems[index]
-      );
+      const newItem = newItems[index];
+      (newItem[field] as any) = value;
+      newItem.amount = calculateNewItemAmount(newItem);
     },
     addOldItem: (state) => {
       state.oldItems.push({ type: "gold" } as OldItem);
@@ -72,15 +71,16 @@ const slice = createSlice({
       { oldItems },
       {
         payload: { field, value, index },
-      }: PayloadAction<{ index: number; value: string; field: string }>
+      }: PayloadAction<{ index: number; value: string; field: keyof OldItem }>
     ) => {
       const oldItem = oldItems[index];
-      (oldItem as any)[field] = value;
-
+      (oldItem[field] as any) = value;
       const { grossWeight, purity } = oldItem;
 
-      (oldItem as any)["netWeight"] = ((grossWeight * purity) / 100).toFixed(2);
-      (oldItem as any)["amount"] = calculateOldItemAmount(oldItem);
+      oldItem.netWeight = Number.parseFloat(
+        ((grossWeight * purity) / 100).toFixed(2)
+      );
+      oldItem.amount = calculateOldItemAmount(oldItem);
     },
     amountPaidChanged: (
       { billDetails },
