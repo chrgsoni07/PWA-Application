@@ -77,7 +77,9 @@ const slice = createSlice({
       (oldItem[field] as any) = value;
       const { grossWeight, purity } = oldItem;
 
-      oldItem.netWeight = (grossWeight * purity) / 100;
+      oldItem.netWeight = Number.parseFloat(
+        ((grossWeight * purity) / 100).toFixed(2)
+      );
       oldItem.amount = calculateOldItemAmount(oldItem);
     },
     amountPaidChanged: (
