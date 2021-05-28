@@ -1,5 +1,5 @@
 import { Button } from "primereact/button";
-import { Column } from "primereact/column";
+import { Column, ColumnProps } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
 import { DataTable } from "primereact/datatable";
 import { Dropdown } from "primereact/dropdown";
@@ -15,6 +15,7 @@ import {
 } from "utils/currency.utils";
 import { InputText } from "primereact/inputtext";
 import { addOldItem, deleteOldItem, updateOldItemField } from "./slice";
+import { OldItem } from "../types";
 export function OldItems({ oldItems, billDetails, dispatch }: any) {
   const onEditorValueChangeOld = (props: any, value: any) => {
     dispatch(
@@ -25,19 +26,15 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
     return formatCurrency(billDetails.oldTotal);
   };
 
-  const confirmDeleteRow = (rowData: any, rowIndex: any) => {
-    dispatch(deleteOldItem(rowIndex));
-  };
-
   const deleteOldItemRow = (rowData: any, { rowIndex }: any) => (
     <Button
       icon="pi pi-trash"
       className="p-button-rounded p-button-warning p-button-sm"
-      onClick={() => confirmDeleteRow(rowData, rowIndex)}
+      onClick={() => dispatch(deleteOldItem(rowIndex))}
     />
   );
 
-  const inputTextEditorOld = (props: any, field: string) => {
+  const inputTextEditorOld = (props: any, field: keyof OldItem) => {
     return (
       <InputText
         type="text"
