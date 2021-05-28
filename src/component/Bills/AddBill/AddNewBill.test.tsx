@@ -11,9 +11,9 @@ let mockSetDisplayDialog = jest.fn();
 
 const bill = {
   totalNew: "109,566",
-  totalOld: "74,300",
-  diff: "35,266",
-  discount: "66",
+  totalOld: "74,290",
+  diff: "35,276",
+  discount: "76",
   payable: "35,200",
   paid: "30000",
   due: "5,200",
@@ -52,9 +52,9 @@ const bill = {
       name: "Purana Haar",
       weight: "15.780",
       purity: "90",
-      netWeight: "14.202",
+      netWeight: "14.2",
       rate: "49500",
-      amount: "₹70,300",
+      amount: "₹70,290",
     },
     {
       type: "Silver",

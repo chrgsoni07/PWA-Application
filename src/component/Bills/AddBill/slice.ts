@@ -23,12 +23,12 @@ const calculateNewItemAmount = ({
 const calculateOldItemAmount = ({
   type,
   grossWeight,
-  purity,
+  netWeight,
   rate,
 }: OldItem) => {
   let amount = 0;
   if (type === "gold") {
-    amount = grossWeight * (purity / 100) * (rate / 10);
+    amount = netWeight * (rate / 10);
   } else if (type === "silver") {
     amount = grossWeight * (rate / 1000);
   }
@@ -79,7 +79,7 @@ const slice = createSlice({
 
       const { grossWeight, purity } = oldItem;
 
-      (oldItem as any)["netWeight"] = (grossWeight * purity) / 100;
+      (oldItem as any)["netWeight"] = ((grossWeight * purity) / 100).toFixed(2);
       (oldItem as any)["amount"] = calculateOldItemAmount(oldItem);
     },
     amountPaidChanged: (
