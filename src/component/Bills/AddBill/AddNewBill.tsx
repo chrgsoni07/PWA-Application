@@ -57,7 +57,7 @@ export const AddNewBill: FC<AddNewBillProps> = ({
   };
 
   const onShow = async () => {
-    const invoiceNumber = await getCounterValue();
+    //  const invoiceNumber = await getCounterValue();
   };
 
   const onSave = () => {
@@ -75,7 +75,7 @@ export const AddNewBill: FC<AddNewBillProps> = ({
 
   const saveBillToFirestore = async (newBill: Bill) => {
     const savedBill: Bill = await save("bills", newBill);
-    await increaseCounterValue();
+    // await increaseCounterValue();
     console.log(savedBill);
   };
 
