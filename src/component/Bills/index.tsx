@@ -18,11 +18,15 @@ const Bills = () => {
   const [displayDialog, setDisplayDialog] = useState(false);
   const [displayViewDialog, setDisplayViewDialog] = useState(false);
   const [savedBills, setSavedBills] = useState<Bill[]>([]);
+  const [draftBills, setDraftBills] = useState<Bill[]>([]);
   const [bill, setBill] = useState<Bill>({} as Bill);
   const { toastSuccess, toastError } = useToast();
 
   useEffect(() => {
     getBills().then((bills) => setSavedBills(bills));
+    let draftBills = JSON.parse(localStorage.getItem("draftBills") || "[]");
+    console.log("draftbills => ", draftBills);
+    setDraftBills(draftBills);
   }, []);
 
   const header = () => {
@@ -153,7 +157,36 @@ const Bills = () => {
               </DataTable>
             </div>
           </TabPanel>
-          <TabPanel header="Draft">Draft</TabPanel>
+          <TabPanel header="Draft">
+            <div className="card">
+              <DataTable
+                value={draftBills}
+                selectionMode="single"
+                dataKey="id"
+                className="p-datatable-gridlines p-datatable-sm"
+              >
+                <Column
+                  field="id"
+                  header="Id"
+                  sortable
+                  body={(_: any, prop: any) => prop.rowIndex + 1}
+                ></Column>
+                <Column
+                  field="invoiceDate"
+                  header="Date"
+                  //    body={dateBodyTemplate}
+                ></Column>
+                <Column field="customer.name" header="Customer"></Column>
+                <Column
+                  field="billDetail.amountPayable"
+                  header="Amount Payable"
+                ></Column>
+                <Column field="billDetail.paid" header="Paid"></Column>
+                <Column field="billDetail.due" header="Due"></Column>
+                <Column body={actionBodyTemplate}></Column>
+              </DataTable>
+            </div>
+          </TabPanel>
         </TabView>
       </Card>
 

@@ -152,7 +152,7 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
         ></Column>
         <Column
           field="makingCharges"
-          header="MAKING CHARGES(per gram)"
+          header="MAKING CHARGES"
           body={makingChargesTemplate}
           editor={(props) => newMakingChargesEditor(props)}
         ></Column>
