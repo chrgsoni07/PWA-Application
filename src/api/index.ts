@@ -29,6 +29,12 @@ export const save = async <T>(
   return { ...data, id };
 };
 
+export const saveBill = async (bill: Bill): Promise<void> => {
+  const billNo = await getCounterValue();
+  const savedBill: Bill = await save("bills", { ...bill, billNo });
+  await increaseCounterValue();
+  console.log(savedBill);
+};
 export const getCustomers = async (): Promise<CustomerType[]> => {
   const collection = db.collection("customers");
 
@@ -89,12 +95,12 @@ export const getRates = async (): Promise<RateType[]> => {
   });
 };
 
-export const increaseCounterValue = async () => {
+const increaseCounterValue = async () => {
   const counterRef = db.collection("counters").doc("invoice-counter");
   counterRef.update({ count: increment });
 };
 
-export const getCounterValue = async (): Promise<number> => {
+const getCounterValue = async (): Promise<number> => {
   const counterRef = db.collection("counters").doc("invoice-counter");
   const doc = await counterRef.get();
   const counterData = doc.data();

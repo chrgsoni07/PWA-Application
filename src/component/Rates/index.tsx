@@ -36,7 +36,7 @@ const Rates = () => {
 
   const actionBodyTemplate = (rowData: any) => {
     return (
-      <React.Fragment>
+      <>
         <Button
           icon="pi pi-pencil"
           className="p-button-rounded p-button-success p-mr-2"
@@ -47,20 +47,20 @@ const Rates = () => {
           className="p-button-rounded p-button-warning"
           onClick={() => confirmDeleteSelected(rowData)}
         />
-      </React.Fragment>
+      </>
     );
   };
 
   const leftToolbarTemplate = () => {
     return (
-      <React.Fragment>
+      <>
         <Button
           label="New"
           icon="pi pi-plus"
           className="p-button-success p-mr-2"
           onClick={openNew}
         />
-      </React.Fragment>
+      </>
     );
   };
 

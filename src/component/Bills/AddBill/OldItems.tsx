@@ -1,5 +1,5 @@
 import { Button } from "primereact/button";
-import { Column, ColumnProps } from "primereact/column";
+import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
 import { DataTable } from "primereact/datatable";
 import { Dropdown } from "primereact/dropdown";
