@@ -10,6 +10,7 @@ import { RateType } from "./types";
 import { db, getRates, save } from "api";
 import { createNextState } from "@reduxjs/toolkit";
 import { Toast } from "primereact/toast";
+import { showSuccessToast, showError } from "utils/toast.utils";
 
 const Rates = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -68,7 +69,7 @@ const Rates = () => {
       .doc(rowData.id)
       .delete()
       .then(() => {
-        showSuccessToast("rate deleted successfully");
+        showSuccessToast("rate deleted successfully", toast);
         setRates(
           createNextState(rates, (draft) =>
             draft.filter((i) => i.id !== rowData.id)
@@ -116,7 +117,7 @@ const Rates = () => {
       })
       .then(() => {
         console.log("Document successfully updated!");
-        showSuccessToast("rate updated successfully");
+        showSuccessToast("rate updated successfully", toast);
         const newRates = createNextState(rates, (draft) =>
           draft.forEach((i) => {
             if (i.id === selectedItem?.id) {
@@ -133,19 +134,14 @@ const Rates = () => {
       });
   };
 
-  const showSuccessToast = (message: any) => {
-    toast.current?.show({
-      severity: "success",
-      summary: "Success Message",
-      detail: message,
-      life: 3000,
-    });
-  };
-
   const saveRateToFireStore = async () => {
-    const savedItem: RateType = await save("goldSilverRates", selectedItem);
-    showSuccessToast("rate saved successfully");
-    setRates([...rates, savedItem]);
+    try {
+      const savedItem: RateType = await save("goldSilverRates", selectedItem);
+      showSuccessToast("rate saved successfully", toast);
+      setRates([...rates, savedItem]);
+    } catch (err) {
+      showError("failed", toast);
+    }
   };
 
   const itemDialogFooter = (

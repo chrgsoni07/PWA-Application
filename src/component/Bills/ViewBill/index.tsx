@@ -18,16 +18,35 @@ type ViewBillProps = {
 };
 
 const ViewBill: FC<ViewBillProps> = ({ bill }) => {
-  const { customer, oldItems, newItems, billDetail, invoiceDate } = bill;
+  const {
+    customer,
+    oldItems,
+    newItems,
+    billDetail,
+    invoiceDate,
+    billNo,
+  } = bill;
 
   return (
     <>
-      <Divider align="right">
-        <div className="p-d-inline-flex p-ai-center">
-          <i className="pi pi-calendar p-mr-2"></i>
-          <b>{invoiceDate}</b>
+      <div className="p-grid">
+        <div className="p-col">
+          <Divider align="left">
+            <div className="p-d-inline-flex p-ai-center">
+              <i className="pi pi-book p-mr-2"></i>
+              <b>Bill No. {billNo}</b>
+            </div>
+          </Divider>
         </div>
-      </Divider>
+        <div className="p-col">
+          <Divider align="left">
+            <div className="p-d-inline-flex p-ai-center">
+              <i className="pi pi-calendar p-mr-2"></i>
+              <b>Date {invoiceDate}</b>
+            </div>
+          </Divider>
+        </div>
+      </div>
 
       <Divider align="left">
         <div className="p-d-inline-flex p-ai-center">
