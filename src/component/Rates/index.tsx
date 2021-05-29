@@ -5,16 +5,14 @@ import { Toolbar } from "primereact/toolbar";
 import { Card } from "primereact/card";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { RateType } from "./types";
 import { db, getRates, save } from "api";
 import { createNextState } from "@reduxjs/toolkit";
-import { Toast } from "primereact/toast";
-import { showSuccessToast, showError } from "utils/toast.utils";
+import { useToast } from "toasts";
 
 const Rates = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const toast = useRef<Toast>(null);
   const [rates, setRates] = useState<RateType[]>([]);
   const [selectedItem, setSelectedItem] = useState<RateType>({
     id: "",
@@ -24,6 +22,8 @@ const Rates = () => {
   });
   const [submitted, setSubmitted] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
+
+  const { toastSuccess, toastError } = useToast();
 
   const editSelectedRate = (rowData: any) => {
     setShowDialog(true);
@@ -69,7 +69,7 @@ const Rates = () => {
       .doc(rowData.id)
       .delete()
       .then(() => {
-        showSuccessToast("rate deleted successfully", toast);
+        toastSuccess("rate deleted successfully");
         setRates(
           createNextState(rates, (draft) =>
             draft.filter((i) => i.id !== rowData.id)
@@ -117,7 +117,7 @@ const Rates = () => {
       })
       .then(() => {
         console.log("Document successfully updated!");
-        showSuccessToast("rate updated successfully", toast);
+        toastSuccess("rate updated successfully");
         const newRates = createNextState(rates, (draft) =>
           draft.forEach((i) => {
             if (i.id === selectedItem?.id) {
@@ -137,10 +137,10 @@ const Rates = () => {
   const saveRateToFireStore = async () => {
     try {
       const savedItem: RateType = await save("goldSilverRates", selectedItem);
-      showSuccessToast("rate saved successfully", toast);
+      toastSuccess("rate saved successfully");
       setRates([...rates, savedItem]);
     } catch (err) {
-      showError("failed", toast);
+      toastError("failed to save rates");
     }
   };
 
@@ -164,7 +164,6 @@ const Rates = () => {
   return (
     <>
       <Card>
-        <Toast ref={toast} position="top-left" />
         <div style={{ height: 235 }}>
           <iframe
             title="current rates"
