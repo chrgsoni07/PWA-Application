@@ -11,6 +11,7 @@ import { DataTable } from "primereact/datatable";
 import { createNextState } from "@reduxjs/toolkit";
 import { db, getBills } from "api";
 import { Dialog } from "primereact/dialog";
+import { useToast } from "toasts";
 
 const Bills = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -18,6 +19,7 @@ const Bills = () => {
   const [displayViewDialog, setDisplayViewDialog] = useState(false);
   const [savedBills, setSavedBills] = useState<Bill[]>([]);
   const [bill, setBill] = useState<Bill>({} as Bill);
+  const { toastSuccess, toastError } = useToast();
 
   useEffect(() => {
     getBills().then((bills) => setSavedBills(bills));
@@ -53,7 +55,7 @@ const Bills = () => {
         .doc(rowData.id)
         .delete()
         .then(() => {
-          console.log("Document successfully deleted!");
+          toastSuccess("bill successfully deleted");
           setSavedBills(
             createNextState(savedBills, (draft) =>
               draft.filter((i) => i.id !== rowData.id)
@@ -61,7 +63,7 @@ const Bills = () => {
           );
         })
         .catch((error: Error) => {
-          console.error("Error removing document: ", error);
+          toastError("Error deleting bill" + error.message);
         });
     }
 
@@ -124,6 +126,7 @@ const Bills = () => {
                   data-testid="test"
                   key="test3"
                   filter
+                  sortable
                   filterPlaceholder="Search by bill no"
                 ></Column>
                 <Column
@@ -137,6 +140,7 @@ const Bills = () => {
                   field="customer.name"
                   header="Customer"
                   filter
+                  sortable
                   filterPlaceholder="Search by customer no"
                 ></Column>
                 <Column
