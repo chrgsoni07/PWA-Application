@@ -78,10 +78,25 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
     );
   };
   const newRateEditor = (props: any) => {
-    return inputTextEditorNew(props, "rate");
+    return (
+      <InputNumber
+        value={props.rowData["rate"]}
+        onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
+        locale="en-IN"
+      />
+    );
   };
   const newWeightEditor = (props: any) => {
-    return inputTextEditorNew(props, "weight");
+    return (
+      <InputNumber
+        value={props.rowData["weight"]}
+        onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
+        locale="en-IN"
+        mode="decimal"
+        minFractionDigits={1}
+        maxFractionDigits={3}
+      />
+    );
   };
   const makingChargesTemplate = (rowData: any) => {
     return formatCurrencyNoFraction(rowData.makingCharges);

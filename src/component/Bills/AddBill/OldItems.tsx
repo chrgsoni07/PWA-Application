@@ -74,10 +74,25 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
   };
 
   const oldRateEditor = (props: any) => {
-    return inputTextEditorOld(props, "rate");
+    return (
+      <InputNumber
+        value={props.rowData["rate"]}
+        onValueChange={(e) => onEditorValueChangeOld(props, e.value)}
+        locale="en-IN"
+      />
+    );
   };
   const oldGrossWeightEditor = (props: any) => {
-    return inputTextEditorOld(props, "grossWeight");
+    return (
+      <InputNumber
+        value={props.rowData["grossWeight"]}
+        onValueChange={(e) => onEditorValueChangeOld(props, e.value)}
+        locale="en-IN"
+        mode="decimal"
+        minFractionDigits={1}
+        maxFractionDigits={3}
+      />
+    );
   };
   let oldItemfooterGroup = (
     <ColumnGroup>

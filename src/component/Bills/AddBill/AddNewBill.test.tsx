@@ -147,10 +147,10 @@ const enterName = (cell: HTMLElement, name: string) => {
   userEvent.type(within(cell).getByRole("textbox"), name);
 };
 const enterWeight = (cell: HTMLElement, weight: string) => {
-  userEvent.type(within(cell).getByRole("textbox"), weight);
+  userEvent.type(within(cell).getByRole("spinbutton"), weight);
 };
 const enterRate = (cell: HTMLElement, rate: string) => {
-  userEvent.type(within(cell).getByRole("textbox"), rate);
+  userEvent.type(within(cell).getByRole("spinbutton"), rate);
 };
 const enterMakingCharges = (cell: HTMLElement, makingCharges: string) => {
   userEvent.type(within(cell).getByRole("spinbutton"), makingCharges);
