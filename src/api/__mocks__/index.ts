@@ -26,4 +26,4 @@ export const save = async <T>(collection: any, data: any): Promise<T> => {
   return {} as T;
 };
 
-export const saveBill = async (bill: Bill): Promise<void> => {};
+export const saveBill = jest.fn();

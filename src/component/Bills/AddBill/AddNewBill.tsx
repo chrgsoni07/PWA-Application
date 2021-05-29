@@ -67,6 +67,7 @@ export const AddNewBill: FC<AddNewBillProps> = ({
     };
     setBill(newBill);
     saveBillToFirestore(newBill);
+    setDisplayDialog(false);
   };
 
   const saveBillToFirestore = async (newBill: Bill) => {
