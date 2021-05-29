@@ -56,10 +56,6 @@ export const AddNewBill: FC<AddNewBillProps> = ({
     setBill({} as Bill);
   };
 
-  const onShow = async () => {
-    //  const invoiceNumber = await getCounterValue();
-  };
-
   const onSave = () => {
     const newBill = {
       ...bill,
@@ -99,7 +95,6 @@ export const AddNewBill: FC<AddNewBillProps> = ({
     <Dialog
       visible={displayDialog}
       onHide={onHide}
-      onShow={onShow}
       header="New Bill"
       footer={footer}
       modal
