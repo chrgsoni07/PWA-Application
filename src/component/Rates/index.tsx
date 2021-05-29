@@ -10,7 +10,7 @@ import { RateType } from "./types";
 import { db, getRates, save } from "api";
 import { createNextState } from "@reduxjs/toolkit";
 import { Toast } from "primereact/toast";
-import { showSuccessToast } from "utils/toast.utils";
+import { showSuccessToast, showError } from "utils/toast.utils";
 
 const Rates = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -135,9 +135,13 @@ const Rates = () => {
   };
 
   const saveRateToFireStore = async () => {
-    const savedItem: RateType = await save("goldSilverRates", selectedItem);
-    showSuccessToast("rate saved successfully", toast);
-    setRates([...rates, savedItem]);
+    try {
+      const savedItem: RateType = await save("goldSilverRates", selectedItem);
+      showSuccessToast("rate saved successfully", toast);
+      setRates([...rates, savedItem]);
+    } catch (err) {
+      showError("failed", toast);
+    }
   };
 
   const itemDialogFooter = (
