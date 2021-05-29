@@ -15,7 +15,7 @@ import reducer, {
   discountChanged,
   updateTotalAmount,
 } from "./slice";
-import { save, getCounterValue, increaseCounterValue } from "api";
+import { saveBill } from "api";
 
 type AddNewBillProps = {
   displayDialog: boolean;
@@ -74,9 +74,7 @@ export const AddNewBill: FC<AddNewBillProps> = ({
   };
 
   const saveBillToFirestore = async (newBill: Bill) => {
-    const savedBill: Bill = await save("bills", newBill);
-    // await increaseCounterValue();
-    console.log(savedBill);
+    await saveBill(newBill);
   };
 
   const footer = (
