@@ -18,7 +18,6 @@ export const ToastsProvider: FC = ({ children }) => {
       severity: "success",
       summary: "Success Message",
       detail: message,
-      life: 3000,
     });
   }, []);
   const toastError = useCallback((message) => {
@@ -26,7 +25,6 @@ export const ToastsProvider: FC = ({ children }) => {
       severity: "error",
       summary: "Error Message",
       detail: message,
-      life: 3000,
     });
   }, []);
   const toastWarn = useCallback((message) => {
@@ -34,7 +32,6 @@ export const ToastsProvider: FC = ({ children }) => {
       severity: "warn",
       summary: "Warn Message",
       detail: message,
-      life: 3000,
     });
   }, []);
   const toastInfo = useCallback((message) => {
@@ -42,7 +39,6 @@ export const ToastsProvider: FC = ({ children }) => {
       severity: "info",
       summary: "info Message",
       detail: message,
-      life: 3000,
     });
   }, []);
   return (
