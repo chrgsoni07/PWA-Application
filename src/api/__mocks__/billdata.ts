@@ -4,7 +4,7 @@ export const bills: Bill[] = [
   {
     billNo: 1,
     id: "testid",
-    invoiceDate: new Date(),
+    invoiceDate: new Date(1995, 11, 17),
     customer: {
       address: "andheri gali",
       id: "adharId",

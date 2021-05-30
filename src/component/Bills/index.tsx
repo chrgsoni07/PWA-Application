@@ -77,6 +77,7 @@ const Bills = () => {
     return (
       <>
         <Button
+          aria-label="viewBill"
           icon="pi pi-eye"
           className="p-button-rounded p-button-help p-mr-2"
           onClick={() => viewBill(rowData)}

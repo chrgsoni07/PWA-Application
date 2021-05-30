@@ -5,7 +5,7 @@ exports[`Bills should render 1`] = `
 - First value
 + Second value
 
-@@ -259,11 +259,102 @@
+@@ -259,11 +259,103 @@
                             />
                           </tr>
                         </thead>
@@ -33,7 +33,7 @@ exports[`Bills should render 1`] = `
 +                             class=\\"\\"
 +                             role=\\"cell\\"
 +                           >
-+                             30/5/2021
++                             17/12/1995
 +                           </td>
 +                           <td
 +                             class=\\"\\"
@@ -64,6 +64,7 @@ exports[`Bills should render 1`] = `
 +                             role=\\"cell\\"
 +                           >
 +                             <button
++                               aria-label=\\"viewBill\\"
 +                               class=\\"p-button p-component p-button-rounded p-button-help p-mr-2 p-button-icon-only\\"
 +                             >
 +                               <span
@@ -108,7 +109,7 @@ exports[`Bills should render 1`] = `
                     <div
                       class=\\"p-paginator p-component p-paginator-bottom\\"
                     >
-@@ -314,11 +405,11 @@
+@@ -314,11 +406,11 @@
                         />
                       </button>
                       <span

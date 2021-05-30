@@ -14,8 +14,6 @@ describe("Bills", () => {
     );
     const firstRender = asFragment();
     await screen.findByRole("button", { name: "editBill" });
-    userEvent.click(screen.getByRole("button", { name: "New" }));
-    userEvent.click(screen.getByRole("button", { name: /close/i }));
 
     const tableloaded = asFragment();
     expect(firstRender).toMatchDiffSnapshot(tableloaded);
@@ -24,6 +22,7 @@ describe("Bills", () => {
     expect(screen.getByText("2020202020")).toBeInTheDocument();
     const newItemTab = screen.getByRole("tabpanel", { name: "New Item" });
     expect(within(newItemTab).getAllByRole("row")).toHaveLength(4);
+    userEvent.click(screen.getByRole("button", { name: /close/i }));
     // const dialogOpened = asFragment();
     // expect(tableloaded).toMatchDiffSnapshot(dialogOpened);
   });
