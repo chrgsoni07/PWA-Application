@@ -1,11 +1,18 @@
-import { createContext, FC, useCallback, useContext, useRef } from "react";
+import {
+  createContext,
+  FC,
+  ReactNode,
+  useCallback,
+  useContext,
+  useRef,
+} from "react";
 import { Toast } from "primereact/toast";
 
 type ContextType = {
-  toastSuccess: (msg: string) => void;
-  toastError: (msg: string) => void;
-  toastWarn: (msg: string) => void;
-  toastInfo: (msg: string) => void;
+  toastSuccess: (msg: ReactNode) => void;
+  toastError: (msg: ReactNode) => void;
+  toastWarn: (msg: ReactNode) => void;
+  toastInfo: (msg: ReactNode) => void;
 };
 const ToastContext = createContext<ContextType>({} as ContextType);
 
@@ -13,32 +20,32 @@ export const useToast = () => useContext(ToastContext);
 export const ToastsProvider: FC = ({ children }) => {
   const toast = useRef<Toast>(null);
 
-  const toastSuccess = useCallback((message) => {
+  const toastSuccess = useCallback((detail: ReactNode) => {
     toast.current?.show({
       severity: "success",
       summary: "Success Message",
-      detail: message,
+      detail,
     });
   }, []);
-  const toastError = useCallback((message) => {
+  const toastError = useCallback((detail: ReactNode) => {
     toast.current?.show({
       severity: "error",
       summary: "Error Message",
-      detail: message,
+      detail,
     });
   }, []);
-  const toastWarn = useCallback((message) => {
+  const toastWarn = useCallback((detail: ReactNode) => {
     toast.current?.show({
       severity: "warn",
       summary: "Warn Message",
-      detail: message,
+      detail,
     });
   }, []);
-  const toastInfo = useCallback((message) => {
+  const toastInfo = useCallback((detail: ReactNode) => {
     toast.current?.show({
       severity: "info",
       summary: "info Message",
-      detail: message,
+      detail,
     });
   }, []);
   return (
