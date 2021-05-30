@@ -13,15 +13,12 @@ import {
   formatCurrencyNoFraction,
 } from "utils/currency.utils";
 import { itemType } from "../commonData";
-import { DeleteButton, FooterAmount } from "./common";
+import { DeleteButton, FooterAmount, ItemTypeEditor } from "./common";
 import { addNewItem, deleteNewItem, updateNewItemField } from "./slice";
 
 export function NewItems({ newItems, billDetails, dispatch }: any) {
-  const onEditorValueChangeNew = (props: any, value: any) => {
-    dispatch(
-      updateNewItemField({ index: props.rowIndex, value, field: props.field })
-    );
-  };
+  const onEditorValueChangeNew = ({ rowIndex, field }: any, value: any) =>
+    dispatch(updateNewItemField({ index: rowIndex, value, field }));
   const inputTextEditorNew = (props: any, field: string) => {
     return (
       <InputText
@@ -35,22 +32,12 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
   const otherChargesTemplate = (rowData: any) => {
     return formatCurrencyNoFraction(rowData.otherCharges);
   };
-  const newItemTypeEditor = (props: any) => {
-    return (
-      <Dropdown
-        value={props.rowData["type"]}
-        options={itemType}
-        optionLabel="label"
-        optionValue="value"
-        onChange={(e) => onEditorValueChangeNew(props, e.value)}
-        style={{ width: "100%" }}
-        placeholder="Select a item type"
-        itemTemplate={(option) => {
-          return <span>{option.label}</span>;
-        }}
-      />
-    );
-  };
+  const newItemTypeEditor = (props: any) => (
+    <ItemTypeEditor
+      value={props.rowData["type"]}
+      onChange={(e) => onEditorValueChangeNew(props, e.value)}
+    />
+  );
   const newItemNameEditor = (props: any) => {
     return inputTextEditorNew(props, "item");
   };

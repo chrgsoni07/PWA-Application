@@ -16,7 +16,7 @@ import {
 import { InputText } from "primereact/inputtext";
 import { addOldItem, deleteOldItem, updateOldItemField } from "./slice";
 import { OldItem } from "../types";
-import { DeleteButton, FooterAmount } from "./common";
+import { DeleteButton, FooterAmount, ItemTypeEditor } from "./common";
 export function OldItems({ oldItems, billDetails, dispatch }: any) {
   const onEditorValueChangeOld = (props: any, value: any) => {
     dispatch(
@@ -47,22 +47,13 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
     );
   };
 
-  const oldItemTypeEditor = (props: any) => {
-    return (
-      <Dropdown
-        value={props.rowData["type"]}
-        options={itemType}
-        optionLabel="label"
-        optionValue="value"
-        onChange={(e) => onEditorValueChangeOld(props, e.value)}
-        style={{ width: "100%" }}
-        placeholder="Select a item type"
-        itemTemplate={(option) => {
-          return <span>{option.label}</span>;
-        }}
-      />
-    );
-  };
+  const oldItemTypeEditor = (props: any) => (
+    <ItemTypeEditor
+      value={props.rowData["type"]}
+      onChange={(e) => onEditorValueChangeOld(props, e.value)}
+    />
+  );
+
   const oldItemEditor = (props: any) => {
     return inputTextEditorOld(props, "item");
   };
