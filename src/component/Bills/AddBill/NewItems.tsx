@@ -1,172 +1,111 @@
-import { Button } from "primereact/button";
 import { Column } from "primereact/column";
-import { ColumnGroup } from "primereact/columngroup";
-import { DataTable } from "primereact/datatable";
-import { Dropdown } from "primereact/dropdown";
 import { InputNumber } from "primereact/inputnumber";
 import { InputText } from "primereact/inputtext";
-import { Row } from "primereact/row";
-import { Toolbar } from "primereact/toolbar";
 import {
   amountBodyTemplate,
   formatCurrency,
   formatCurrencyNoFraction,
 } from "utils/currency.utils";
-import { itemType } from "../commonData";
+import {
+  AddNewRow,
+  DeleteButton,
+  FooterAmount,
+  ItemsTable,
+  ItemTypeEditor,
+} from "./common";
 import { addNewItem, deleteNewItem, updateNewItemField } from "./slice";
 
 export function NewItems({ newItems, billDetails, dispatch }: any) {
-  const onEditorValueChangeNew = (props: any, value: any) => {
-    dispatch(
-      updateNewItemField({ index: props.rowIndex, value, field: props.field })
-    );
-  };
-  const inputTextEditorNew = (props: any, field: string) => {
-    return (
-      <InputText
-        type="text"
-        value={props.rowData[field]}
-        onChange={(e) => onEditorValueChangeNew(props, e.currentTarget.value)}
-      />
-    );
-  };
-  const newItemsTotalAmount = () => formatCurrency(billDetails?.newTotal);
-  const newItemfooterGroup = (
-    <ColumnGroup>
-      <Row>
-        <Column
-          footer="Totals:"
-          colSpan={6}
-          footerStyle={{ textAlign: "right" }}
-        />
-        <Column footer={newItemsTotalAmount} />
-      </Row>
-    </ColumnGroup>
-  );
-  const otherChargesTemplate = (rowData: any) => {
-    return formatCurrencyNoFraction(rowData.otherCharges);
-  };
-  const newItemTypeEditor = (props: any) => {
-    return (
-      <Dropdown
-        value={props.rowData["type"]}
-        options={itemType}
-        optionLabel="label"
-        optionValue="value"
-        onChange={(e) => onEditorValueChangeNew(props, e.value)}
-        style={{ width: "100%" }}
-        placeholder="Select a item type"
-        itemTemplate={(option) => {
-          return <span>{option.label}</span>;
-        }}
-      />
-    );
-  };
-  const newItemNameEditor = (props: any) => {
-    return inputTextEditorNew(props, "item");
-  };
-  const newMakingChargesEditor = (props: any) => {
-    return (
-      <InputNumber
-        value={props.rowData["makingCharges"]}
-        onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
-        mode="currency"
-        currency="INR"
-        locale="en-IN"
-        minFractionDigits={0}
-      />
-    );
-  };
-  const newRateEditor = (props: any) => {
-    return inputTextEditorNew(props, "rate");
-  };
-  const newWeightEditor = (props: any) => {
-    return inputTextEditorNew(props, "weight");
-  };
-  const makingChargesTemplate = (rowData: any) => {
-    return formatCurrencyNoFraction(rowData.makingCharges);
-  };
-  const newOtherChargesEditor = (props: any) => {
-    return (
-      <InputNumber
-        value={props.rowData["otherCharges"]}
-        onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
-        mode="currency"
-        currency="INR"
-        locale="en-IN"
-        minFractionDigits={0}
-      />
-    );
-  };
-
-  const deleteNewItemRow = (rowData: any, { rowIndex }: any) => (
-    <Button
-      icon="pi pi-trash"
-      className="p-button-rounded p-button-warning p-button-sm"
-      onClick={() => dispatch(deleteNewItem(rowIndex))}
+  const onEditorValueChangeNew = ({ rowIndex, field }: any, value: any) =>
+    dispatch(updateNewItemField({ index: rowIndex, value, field }));
+  const inputTextEditorNew = (props: any, field: string) => (
+    <InputText
+      type="text"
+      value={props.rowData[field]}
+      onChange={(e) => onEditorValueChangeNew(props, e.currentTarget.value)}
     />
   );
 
-  const newItemButton = () => (
-    <Button
-      aria-label="addNewItemRow"
-      icon="pi pi-plus"
-      className="p-button-rounded"
-      onClick={() => dispatch(addNewItem())}
+  const otherChargesTemplate = ({ otherCharges }: any) =>
+    formatCurrencyNoFraction(otherCharges);
+  const newItemTypeEditor = (props: any) => (
+    <ItemTypeEditor
+      value={props.rowData["type"]}
+      onChange={(e) => onEditorValueChangeNew(props, e.value)}
     />
   );
+  const newItemNameEditor = (props: any) => inputTextEditorNew(props, "item");
+  const newMakingChargesEditor = (props: any) => (
+    <InputNumber
+      value={props.rowData["makingCharges"]}
+      onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
+      mode="currency"
+      currency="INR"
+      locale="en-IN"
+      minFractionDigits={0}
+    />
+  );
+  const newRateEditor = (props: any) => (
+    <InputNumber
+      value={props.rowData["rate"]}
+      onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
+      locale="en-IN"
+    />
+  );
+  const newWeightEditor = (props: any) => (
+    <InputNumber
+      value={props.rowData["weight"]}
+      onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
+      locale="en-IN"
+      mode="decimal"
+      minFractionDigits={1}
+      maxFractionDigits={3}
+    />
+  );
+  const makingChargesTemplate = ({ makingCharges }: any) =>
+    formatCurrencyNoFraction(makingCharges);
+  const newOtherChargesEditor = (props: any) => (
+    <InputNumber
+      value={props.rowData["otherCharges"]}
+      onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
+      mode="currency"
+      currency="INR"
+      locale="en-IN"
+      minFractionDigits={0}
+    />
+  );
+
+  const deleteNewItemRow = (_: any, { rowIndex }: any) => (
+    <DeleteButton onClick={() => dispatch(deleteNewItem(rowIndex))} />
+  );
+
   return (
     <div className="card">
-      <Toolbar left={newItemButton} style={{ padding: 5 }}></Toolbar>
-      <DataTable
+      <AddNewRow onClick={() => dispatch(addNewItem())} />
+      <ItemsTable
         id="newItems"
         value={newItems}
-        editMode="row"
-        dataKey="id"
-        scrollable
-        scrollHeight="150px"
-        footerColumnGroup={newItemfooterGroup}
-        className="p-datatable-sm"
-        resizableColumns
-        columnResizeMode="expand"
+        footerColumnGroup={
+          <FooterAmount amount={formatCurrency(billDetails?.newTotal)} />
+        }
       >
-        <Column
-          field="type"
-          header="TYPE"
-          editor={(props) => newItemTypeEditor(props)}
-        ></Column>
-        <Column
-          field="item"
-          header="ITEM"
-          editor={(props) => newItemNameEditor(props)}
-        ></Column>
-        <Column
-          field="weight"
-          header="WEIGHT(gram)"
-          editor={(props) => newWeightEditor(props)}
-        ></Column>
-        <Column
-          field="rate"
-          header="RATE"
-          editor={(props) => newRateEditor(props)}
-        ></Column>
+        <Column field="type" header="TYPE" editor={newItemTypeEditor} />
+        <Column field="item" header="ITEM" editor={newItemNameEditor} />
+        <Column field="weight" header="WEIGHT(gram)" editor={newWeightEditor} />
+        <Column field="rate" header="RATE" editor={newRateEditor} />
         <Column
           field="makingCharges"
           header="MAKING CHARGES"
           body={makingChargesTemplate}
-          editor={(props) => newMakingChargesEditor(props)}
-        ></Column>
+          editor={newMakingChargesEditor}
+        />
         <Column
           field="otherCharges"
           header="OTHER CHARGES"
           body={otherChargesTemplate}
-          editor={(props) => newOtherChargesEditor(props)}
-        ></Column>
-        <Column
-          field="amount"
-          header="AMOUNT"
-          body={amountBodyTemplate}
-        ></Column>
+          editor={newOtherChargesEditor}
+        />
+        <Column field="amount" header="AMOUNT" body={amountBodyTemplate} />
         <Column
           rowEditor
           headerStyle={{
@@ -176,8 +115,8 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
             textAlign: "center",
           }}
         ></Column>
-        <Column body={deleteNewItemRow}></Column>
-      </DataTable>
+        <Column body={deleteNewItemRow} />
+      </ItemsTable>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AddNewBill } from "./AddNewBill";
 import { Bill } from "../types";
@@ -69,7 +69,7 @@ const bill = {
 };
 
 describe("Add new bill component", () => {
-  it("should add new items", () => {
+  it("should add new items", async () => {
     render(
       <AddNewBill
         displayDialog={true}
@@ -78,7 +78,11 @@ describe("Add new bill component", () => {
         setBill={mockSetBill}
       />
     );
-
+    await waitFor(() => {
+      expect(screen.getByLabelText("Select customer")).not.toBeDisabled();
+    });
+    userEvent.type(screen.getByLabelText("Select customer"), "ram");
+    expect(screen.getByText("9009009000")).toBeInTheDocument();
     bill.newItems.forEach((item, i) => addNewItemsRow(item, i + 1));
     //Add and remove new item
     addNewItemsRow(bill.newItems[1], 4);
@@ -102,13 +106,13 @@ describe("Add new bill component", () => {
 });
 
 const addNewItemsRow = (item: any, i: number) => {
-  const cells = addRowAndGetCells(/addNewItemRow/i, i);
+  const cells = addRowAndGetCells(i);
   fillNewItemDetails(cells, item);
   saveRowAndVerifyAmount(cells, item.amount);
 };
 
-const addRowAndGetCells = (buttonName: RegExp, rowIndex: number) => {
-  userEvent.click(screen.getByRole("button", { name: buttonName }));
+const addRowAndGetCells = (rowIndex: number) => {
+  userEvent.click(screen.getByRole("button", { name: /addNewRow/i }));
   const row = screen.getAllByRole("row")[rowIndex];
   clickEditButton(row);
   return within(row).getAllByRole("cell");
@@ -120,7 +124,7 @@ const saveRowAndVerifyAmount = (cells: HTMLElement[], amount: string) => {
 };
 
 const addOldItemsRow = (item: any, i: number) => {
-  const cells = addRowAndGetCells(/addOldItemRow/i, i);
+  const cells = addRowAndGetCells(i);
   fillOldItemsDetails(cells, item);
   saveRowAndVerifyAmount(cells, item.amount);
 };
@@ -147,10 +151,10 @@ const enterName = (cell: HTMLElement, name: string) => {
   userEvent.type(within(cell).getByRole("textbox"), name);
 };
 const enterWeight = (cell: HTMLElement, weight: string) => {
-  userEvent.type(within(cell).getByRole("textbox"), weight);
+  userEvent.type(within(cell).getByRole("spinbutton"), weight);
 };
 const enterRate = (cell: HTMLElement, rate: string) => {
-  userEvent.type(within(cell).getByRole("textbox"), rate);
+  userEvent.type(within(cell).getByRole("spinbutton"), rate);
 };
 const enterMakingCharges = (cell: HTMLElement, makingCharges: string) => {
   userEvent.type(within(cell).getByRole("spinbutton"), makingCharges);
