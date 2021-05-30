@@ -3,6 +3,7 @@ import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AddNewBill } from "./AddNewBill";
 import { Bill } from "../types";
+import { ToastsProvider } from "toasts";
 
 jest.mock("api");
 
@@ -71,12 +72,14 @@ const bill = {
 describe("Add new bill component", () => {
   it("should add new items", async () => {
     render(
-      <AddNewBill
-        displayDialog={true}
-        setDisplayDialog={mockSetDisplayDialog}
-        bill={{} as Bill}
-        setBill={mockSetBill}
-      />
+      <ToastsProvider>
+        <AddNewBill
+          displayDialog={true}
+          setDisplayDialog={mockSetDisplayDialog}
+          bill={{} as Bill}
+          setBill={mockSetBill}
+        />
+      </ToastsProvider>
     );
     await waitFor(() => {
       expect(screen.getByLabelText("Select customer")).not.toBeDisabled();

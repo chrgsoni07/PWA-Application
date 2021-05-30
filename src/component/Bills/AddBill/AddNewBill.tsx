@@ -3,7 +3,6 @@ import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { TabPanel, TabView } from "primereact/tabview";
 import { FC, useEffect, useReducer, useState } from "react";
-
 import { BillsMeta } from "./BillsMeta";
 import { BillTotals } from "./BillTotals";
 import Customer from "./Customer";
