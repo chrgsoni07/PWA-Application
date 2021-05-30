@@ -1,9 +1,10 @@
 import { Bill } from "component/Bills/types";
 import { CustomerType } from "component/Customers/types";
 import { RateType } from "component/Rates/types";
+import { bills } from "./billdata";
 
 export const getBills = async (): Promise<Bill[]> => {
-  return [];
+  return bills;
 };
 
 export const getCustomers = async (): Promise<CustomerType[]> => {

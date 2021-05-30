@@ -66,7 +66,7 @@ export const getBills = async (): Promise<Bill[]> => {
       allBills.push({
         id: bill.id,
         billNo: billData.billNo,
-        invoiceDate: billData.invoiceDate,
+        invoiceDate: billData.invoiceDate.toDate(),
         newItems: billData.newItems,
         customer: billData.customer,
         oldItems: billData.oldItems,

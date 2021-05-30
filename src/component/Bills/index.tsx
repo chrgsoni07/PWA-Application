@@ -38,7 +38,7 @@ const Bills = () => {
   };
 
   const dateBodyTemplate = (rowData: any) => {
-    var invoiceDate = rowData.invoiceDate.toDate();
+    var invoiceDate = rowData.invoiceDate;
     return invoiceDate.toLocaleDateString("en-In");
   };
 
@@ -79,6 +79,7 @@ const Bills = () => {
           onClick={() => viewBill(rowData)}
         />
         <Button
+          aria-label="editBill"
           icon="pi pi-pencil"
           className="p-button-rounded p-button-success p-mr-2"
           onClick={() => editBill(rowData)}
