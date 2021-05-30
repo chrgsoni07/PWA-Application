@@ -3,18 +3,16 @@ import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
 import { Dropdown, DropdownProps } from "primereact/dropdown";
 import { Row } from "primereact/row";
-import React, { FC } from "react";
+import { FC } from "react";
 import { itemType } from "../commonData";
 
-export const DeleteButton: FC<ButtonProps> = ({ onClick }) => {
-  return (
-    <Button
-      icon="pi pi-trash"
-      className="p-button-rounded p-button-warning p-button-sm"
-      onClick={onClick}
-    />
-  );
-};
+export const DeleteButton: FC<ButtonProps> = ({ onClick }) => (
+  <Button
+    icon="pi pi-trash"
+    className="p-button-rounded p-button-warning p-button-sm"
+    onClick={onClick}
+  />
+);
 
 export const FooterAmount = ({ amount }: { amount: number }) => (
   <ColumnGroup>
@@ -29,19 +27,17 @@ export const FooterAmount = ({ amount }: { amount: number }) => (
   </ColumnGroup>
 );
 
-export const ItemTypeEditor: FC<DropdownProps> = ({ onChange, value }) => {
-  return (
-    <Dropdown
-      value={value}
-      options={itemType}
-      optionLabel="label"
-      optionValue="value"
-      onChange={onChange}
-      style={{ width: "100%" }}
-      placeholder="Select a item type"
-      itemTemplate={(option) => {
-        return <span>{option.label}</span>;
-      }}
-    />
-  );
-};
+export const ItemTypeEditor: FC<DropdownProps> = ({ onChange, value }) => (
+  <Dropdown
+    value={value}
+    options={itemType}
+    optionLabel="label"
+    optionValue="value"
+    onChange={onChange}
+    style={{ width: "100%" }}
+    placeholder="Select a item type"
+    itemTemplate={(option) => {
+      return <span>{option.label}</span>;
+    }}
+  />
+);
