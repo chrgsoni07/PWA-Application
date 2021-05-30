@@ -49,7 +49,7 @@ const Bills = () => {
     }
 
     function editBill(rowData: any): void {
-      setBill({ ...rowData, invoiceDate: rowData.invoiceDate.toDate() });
+      setBill({ ...rowData, invoiceDate: rowData.invoiceDate });
       setDisplayDialog(true);
     }
 
