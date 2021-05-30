@@ -8,12 +8,13 @@ import { BillTotals } from "./BillTotals";
 import Customer from "./Customer";
 import { NewItems } from "./NewItems";
 import { OldItems } from "./OldItems";
-import { Bill } from "../types";
+import { Bill, BillDetails } from "../types";
 import { useToast } from "toasts";
 
 import reducer, {
   amountPaidChanged,
   discountChanged,
+  updateState,
   updateTotalAmount,
 } from "./slice";
 import { saveBill } from "api";
@@ -30,16 +31,14 @@ export const AddNewBill: FC<AddNewBillProps> = ({
   bill,
   setBill,
 }) => {
-  const [invoiceDate, setInvoiceDate] = useState<Date>(
-    bill.invoiceDate || new Date()
-  );
+  const [invoiceDate, setInvoiceDate] = useState<Date>(new Date());
   const [selectedCustomer, setSelectedCustomer] = useState<CustomerType>(
-    bill.customer
+    {} as CustomerType
   );
   const [{ newItems, oldItems, billDetails }, dispatch] = useReducer(reducer, {
-    newItems: bill.newItems || [],
-    oldItems: bill.oldItems || [],
-    billDetails: bill.billDetail || {},
+    newItems: [],
+    oldItems: [],
+    billDetails: {} as BillDetails,
   });
 
   const { toastSuccess, toastError } = useToast();
@@ -50,6 +49,19 @@ export const AddNewBill: FC<AddNewBillProps> = ({
   const onAmountPaidChange = (paid: number) =>
     dispatch(amountPaidChanged(paid));
 
+  useEffect(() => {
+    if (bill) {
+      setInvoiceDate(bill.invoiceDate);
+      setSelectedCustomer(bill.customer);
+      dispatch(
+        updateState({
+          newItems: bill.newItems || [],
+          oldItems: bill.oldItems || [],
+          billDetails: bill.billDetail || {},
+        })
+      );
+    }
+  }, [bill]);
   useEffect(() => {
     dispatch(updateTotalAmount());
   }, [newItems, oldItems]);
