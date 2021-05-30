@@ -16,6 +16,7 @@ import {
 import { InputText } from "primereact/inputtext";
 import { addOldItem, deleteOldItem, updateOldItemField } from "./slice";
 import { OldItem } from "../types";
+import { DeleteButton } from "./common";
 export function OldItems({ oldItems, billDetails, dispatch }: any) {
   const onEditorValueChangeOld = (props: any, value: any) => {
     dispatch(
@@ -26,12 +27,8 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
     return formatCurrency(billDetails.oldTotal);
   };
 
-  const deleteOldItemRow = (rowData: any, { rowIndex }: any) => (
-    <Button
-      icon="pi pi-trash"
-      className="p-button-rounded p-button-warning p-button-sm"
-      onClick={() => dispatch(deleteOldItem(rowIndex))}
-    />
+  const deleteOldItemRow = (_: any, { rowIndex }: any) => (
+    <DeleteButton onClick={() => dispatch(deleteOldItem(rowIndex))} />
   );
 
   const inputTextEditorOld = (props: any, field: keyof OldItem) => {

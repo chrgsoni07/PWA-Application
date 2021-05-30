@@ -13,6 +13,7 @@ import {
   formatCurrencyNoFraction,
 } from "utils/currency.utils";
 import { itemType } from "../commonData";
+import { DeleteButton, FooterAmount } from "./common";
 import { addNewItem, deleteNewItem, updateNewItemField } from "./slice";
 
 export function NewItems({ newItems, billDetails, dispatch }: any) {
@@ -30,19 +31,7 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
       />
     );
   };
-  const newItemsTotalAmount = () => formatCurrency(billDetails?.newTotal);
-  const newItemfooterGroup = (
-    <ColumnGroup>
-      <Row>
-        <Column
-          footer="Totals:"
-          colSpan={6}
-          footerStyle={{ textAlign: "right" }}
-        />
-        <Column footer={newItemsTotalAmount} />
-      </Row>
-    </ColumnGroup>
-  );
+
   const otherChargesTemplate = (rowData: any) => {
     return formatCurrencyNoFraction(rowData.otherCharges);
   };
@@ -114,12 +103,8 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
     );
   };
 
-  const deleteNewItemRow = (rowData: any, { rowIndex }: any) => (
-    <Button
-      icon="pi pi-trash"
-      className="p-button-rounded p-button-warning p-button-sm"
-      onClick={() => dispatch(deleteNewItem(rowIndex))}
-    />
+  const deleteNewItemRow = (_: any, { rowIndex }: any) => (
+    <DeleteButton onClick={() => dispatch(deleteNewItem(rowIndex))} />
   );
 
   const newItemButton = () => (
@@ -140,7 +125,9 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
         dataKey="id"
         scrollable
         scrollHeight="150px"
-        footerColumnGroup={newItemfooterGroup}
+        footerColumnGroup={
+          <FooterAmount amount={formatCurrency(billDetails?.newTotal)} />
+        }
         className="p-datatable-sm"
         resizableColumns
         columnResizeMode="expand"
