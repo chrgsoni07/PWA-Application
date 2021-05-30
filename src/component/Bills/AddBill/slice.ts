@@ -103,6 +103,7 @@ const slice = createSlice({
       billDetails.oldTotal = oldTotal;
       billDetails.amountPayable = oldNewDifference > 0 ? oldNewDifference : 0;
     },
+    updateState: (state, { payload }: PayloadAction<State>) => payload,
   },
 });
 
@@ -116,5 +117,6 @@ export const {
   amountPaidChanged,
   discountChanged,
   updateTotalAmount,
+  updateState,
 } = slice.actions;
 export default slice.reducer;
