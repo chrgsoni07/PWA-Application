@@ -3,5 +3,6 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom";
-require("snapshot-diff/extend-expect");
+import "snapshot-diff";
+import "snapshot-diff/extend-expect";
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
