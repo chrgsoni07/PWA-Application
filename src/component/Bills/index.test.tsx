@@ -44,12 +44,11 @@ describe("Bills", () => {
         <Bills />
       </ToastsProvider>
     );
-    await screen.findByRole("button", { name: "editBill" });
+    await screen.findByRole("button", { name: /viewBill/i });
     const beforeViewBill = asFragment();
     userEvent.click(screen.getByRole("button", { name: /viewBill/i }));
-    expect(
-      screen.getByRole("dialog", { name: /r k jewellers jawad/i })
-    ).toBeInTheDocument();
+    await screen.findByRole("dialog", { name: /r k jewellers jawad/i });
+
     expect(beforeViewBill).toMatchDiffSnapshot(asFragment());
     userEvent.click(screen.getByRole("button", { name: /close/i }));
   });
