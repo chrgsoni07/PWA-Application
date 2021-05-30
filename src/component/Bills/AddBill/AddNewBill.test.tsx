@@ -81,6 +81,8 @@ describe("Add new bill component", () => {
     await waitFor(() => {
       expect(screen.getByLabelText("Select customer")).not.toBeDisabled();
     });
+    userEvent.type(screen.getByLabelText("Select customer"), "ram");
+    expect(screen.getByText("9009009000")).toBeInTheDocument();
     bill.newItems.forEach((item, i) => addNewItemsRow(item, i + 1));
     //Add and remove new item
     addNewItemsRow(bill.newItems[1], 4);
