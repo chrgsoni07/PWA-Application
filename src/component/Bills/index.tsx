@@ -11,16 +11,22 @@ import { DataTable } from "primereact/datatable";
 import { createNextState } from "@reduxjs/toolkit";
 import { db, getBills } from "api";
 import { Dialog } from "primereact/dialog";
+import { useToast } from "toasts";
 
 const Bills = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [displayDialog, setDisplayDialog] = useState(false);
   const [displayViewDialog, setDisplayViewDialog] = useState(false);
   const [savedBills, setSavedBills] = useState<Bill[]>([]);
+  const [draftBills, setDraftBills] = useState<Bill[]>([]);
   const [bill, setBill] = useState<Bill>({} as Bill);
+  const { toastSuccess, toastError } = useToast();
 
   useEffect(() => {
     getBills().then((bills) => setSavedBills(bills));
+    let draftBills = JSON.parse(localStorage.getItem("draftBills") || "[]");
+    console.log("draftbills => ", draftBills);
+    setDraftBills(draftBills);
   }, []);
 
   const header = () => {
@@ -53,7 +59,7 @@ const Bills = () => {
         .doc(rowData.id)
         .delete()
         .then(() => {
-          console.log("Document successfully deleted!");
+          toastSuccess("bill successfully deleted");
           setSavedBills(
             createNextState(savedBills, (draft) =>
               draft.filter((i) => i.id !== rowData.id)
@@ -61,7 +67,7 @@ const Bills = () => {
           );
         })
         .catch((error: Error) => {
-          console.error("Error removing document: ", error);
+          toastError("Error deleting bill" + error.message);
         });
     }
 
@@ -124,6 +130,7 @@ const Bills = () => {
                   data-testid="test"
                   key="test3"
                   filter
+                  sortable
                   filterPlaceholder="Search by bill no"
                 ></Column>
                 <Column
@@ -137,6 +144,7 @@ const Bills = () => {
                   field="customer.name"
                   header="Customer"
                   filter
+                  sortable
                   filterPlaceholder="Search by customer no"
                 ></Column>
                 <Column
@@ -149,7 +157,36 @@ const Bills = () => {
               </DataTable>
             </div>
           </TabPanel>
-          <TabPanel header="Draft">Draft</TabPanel>
+          <TabPanel header="Draft">
+            <div className="card">
+              <DataTable
+                value={draftBills}
+                selectionMode="single"
+                dataKey="id"
+                className="p-datatable-gridlines p-datatable-sm"
+              >
+                <Column
+                  field="id"
+                  header="Id"
+                  sortable
+                  body={(_: any, prop: any) => prop.rowIndex + 1}
+                ></Column>
+                <Column
+                  field="invoiceDate"
+                  header="Date"
+                  //    body={dateBodyTemplate}
+                ></Column>
+                <Column field="customer.name" header="Customer"></Column>
+                <Column
+                  field="billDetail.amountPayable"
+                  header="Amount Payable"
+                ></Column>
+                <Column field="billDetail.paid" header="Paid"></Column>
+                <Column field="billDetail.due" header="Due"></Column>
+                <Column body={actionBodyTemplate}></Column>
+              </DataTable>
+            </div>
+          </TabPanel>
         </TabView>
       </Card>
 

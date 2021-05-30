@@ -95,7 +95,7 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
         <Column field="rate" header="RATE" editor={newRateEditor} />
         <Column
           field="makingCharges"
-          header="MAKING CHARGES(per gram)"
+          header="MAKING CHARGES"
           body={makingChargesTemplate}
           editor={newMakingChargesEditor}
         />

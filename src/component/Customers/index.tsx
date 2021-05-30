@@ -8,6 +8,7 @@ import { db, getCustomers } from "api";
 import { createNextState } from "@reduxjs/toolkit";
 import { Dialog } from "primereact/dialog";
 import { InputTextarea } from "primereact/inputtextarea";
+import { useToast } from "toasts";
 
 const Customers = () => {
   const [globalFilter, setGlobalFilter] = useState("");
@@ -22,6 +23,8 @@ const Customers = () => {
     address: "",
     name: "",
   });
+
+  const { toastSuccess, toastError } = useToast();
 
   useEffect(() => {
     getCustomers().then((allCustomers) => setCustomers(allCustomers));
@@ -82,6 +85,7 @@ const Customers = () => {
   );
 
   const saveNewCustomer = () => {
+    //    console.log('selected item '+ JSON.stringify(selectedItem));
     if (selectedItem?.id) {
       editCustomerToFireStore();
     } else {
@@ -102,10 +106,10 @@ const Customers = () => {
       })
       .then(() => {
         setCustomers([...customers, selectedItem]);
-        console.log("Document successfully updated!");
+        toastSuccess("customer details successfully saved");
       })
       .catch(function () {
-        console.error("Error writing document: ");
+        toastError("Error saving customer details");
       });
   };
 
@@ -119,7 +123,7 @@ const Customers = () => {
         address: selectedItem.address,
       })
       .then(() => {
-        console.log("Document successfully updated!");
+        toastSuccess("customer details successfully updated");
         const newCustomer = createNextState(customers, (draft) =>
           draft.forEach((i) => {
             if (i.id === selectedItem?.id) {
@@ -133,7 +137,7 @@ const Customers = () => {
         setCustomers(newCustomer);
       })
       .catch(function () {
-        console.error("Error writing document: ");
+        toastError("Error updating customer details");
       });
   };
 
@@ -164,7 +168,7 @@ const Customers = () => {
       .doc(rowData.id)
       .delete()
       .then(() => {
-        console.log("Document successfully deleted!");
+        toastSuccess("customer details deleted successfully");
         setCustomers(
           createNextState(customers, (draft) =>
             draft.filter((i) => i.id !== rowData.id)
@@ -172,7 +176,7 @@ const Customers = () => {
         );
       })
       .catch((error: any) => {
-        console.error("Error removing document: ", error);
+        toastError("Error deleting customer details");
       });
   };
 

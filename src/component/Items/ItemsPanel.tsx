@@ -9,6 +9,7 @@ import { createNextState } from "@reduxjs/toolkit";
 import { ItemType } from "./types";
 import { db, save } from "api";
 import { ItemCategoryType } from "api/types";
+import { useToast } from "toasts";
 
 const categoryMap = {
   goldItems: "Gold",
@@ -27,6 +28,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
   });
   const [submitted, setSubmitted] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
+  const { toastSuccess, toastError } = useToast();
 
   const editItem = (rowData: any) => {
     setShowDialog(true);
@@ -38,7 +40,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
       .doc(rowData.id)
       .delete()
       .then(() => {
-        console.log("Document successfully deleted!");
+        toastSuccess("item successfully deleted");
         setItems(
           createNextState(items, (draft) =>
             draft.filter((i) => i.id !== rowData.id)
@@ -46,7 +48,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
         );
       })
       .catch((error: Error) => {
-        console.error("Error removing document: ", error);
+        toastError("Error deleting item " + error.message);
       });
   };
 
@@ -79,9 +81,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
     collection.get().then((querySnapshot) => {
       const allItems: ItemType[] = [];
       querySnapshot.forEach((item) => {
-        console.log(item.id);
         const itemData = item.data();
-        console.log(JSON.stringify(itemData));
         allItems.push({ name: itemData.name, id: item.id });
       });
       setItems(allItems);
@@ -118,7 +118,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
         name: selectedItem.name,
       })
       .then(() => {
-        console.log("Document successfully updated!");
+        toastSuccess("item successfully updated");
         const newItems = createNextState(items, (draft) =>
           draft.forEach((i) => {
             if (i.id === selectedItem?.id) {
@@ -128,13 +128,19 @@ const ItemsPanel: FC<Props> = ({ category }) => {
         );
         setItems(newItems);
       })
-      .catch(function () {
-        console.error("Error writing document: ");
+      .catch((error: Error) => {
+        toastError("Error updating item " + error.message);
       });
   };
+
   const saveItemToFireStore = async () => {
-    const savedItem: ItemType = await save(category, selectedItem);
-    setItems([...items, savedItem]);
+    try {
+      const savedItem: ItemType = await save(category, selectedItem);
+      setItems([...items, savedItem]);
+      toastSuccess("item successfully saved");
+    } catch (err) {
+      toastError("Error saving item " + err.message);
+    }
   };
 
   const hideDialog = () => {

@@ -3,13 +3,14 @@ import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { TabPanel, TabView } from "primereact/tabview";
 import { FC, useEffect, useReducer, useState } from "react";
-
 import { BillsMeta } from "./BillsMeta";
 import { BillTotals } from "./BillTotals";
 import Customer from "./Customer";
 import { NewItems } from "./NewItems";
 import { OldItems } from "./OldItems";
 import { Bill } from "../types";
+import { useToast } from "toasts";
+
 import reducer, {
   amountPaidChanged,
   discountChanged,
@@ -41,6 +42,8 @@ export const AddNewBill: FC<AddNewBillProps> = ({
     billDetails: bill.billDetail || {},
   });
 
+  const { toastSuccess, toastError } = useToast();
+
   const onDiscoutChange = (discount: number) =>
     dispatch(discountChanged(discount));
 
@@ -71,7 +74,31 @@ export const AddNewBill: FC<AddNewBillProps> = ({
   };
 
   const saveBillToFirestore = async (newBill: Bill) => {
-    await saveBill(newBill);
+    try {
+      await saveBill(newBill);
+      toastSuccess("bill successfully saved");
+    } catch (err) {
+      toastError("Error saving bill");
+    }
+  };
+
+  const saveToDraft = () => {
+    let priviousBills = JSON.parse(localStorage.getItem("draftBills") || "[]");
+
+    const draftBill = {
+      ...bill,
+      invoiceDate,
+      customer: selectedCustomer,
+      newItems,
+      oldItems,
+      billDetail: billDetails,
+    };
+
+    priviousBills.push(draftBill);
+
+    localStorage.setItem("draftBills", JSON.stringify(priviousBills));
+
+    setDisplayDialog(false);
   };
 
   const footer = (
@@ -89,7 +116,12 @@ export const AddNewBill: FC<AddNewBillProps> = ({
         }}
         onClick={onSave}
       />
-      <Button label="Draft" icon="pi pi-check" className="p-button-secondary" />
+      <Button
+        label="Draft"
+        icon="pi pi-check"
+        className="p-button-secondary"
+        onClick={saveToDraft}
+      />
     </span>
   );
   return (

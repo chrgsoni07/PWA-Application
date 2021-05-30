@@ -77,7 +77,7 @@ const Rates = () => {
         );
       })
       .catch((error: any) => {
-        console.error("Error removing document: ", error);
+        console.error("Error deleting rates", error);
       });
   };
 
@@ -116,8 +116,7 @@ const Rates = () => {
         date: selectedItem.date,
       })
       .then(() => {
-        console.log("Document successfully updated!");
-        toastSuccess("rate updated successfully");
+        toastSuccess("rate successfully updated");
         const newRates = createNextState(rates, (draft) =>
           draft.forEach((i) => {
             if (i.id === selectedItem?.id) {
@@ -130,17 +129,17 @@ const Rates = () => {
         setRates(newRates);
       })
       .catch(function () {
-        console.error("Error writing document: ");
+        toastError("Error updating rates");
       });
   };
 
   const saveRateToFireStore = async () => {
     try {
       const savedItem: RateType = await save("goldSilverRates", selectedItem);
-      toastSuccess("rate saved successfully");
+      toastSuccess("rate successfully saved");
       setRates([...rates, savedItem]);
     } catch (err) {
-      toastError("failed to save rates");
+      toastError("Error saving rates");
     }
   };
 
