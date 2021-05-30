@@ -1,7 +1,5 @@
-import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { InputNumber } from "primereact/inputnumber";
-import { Toolbar } from "primereact/toolbar";
 import {
   amountBodyTemplate,
   formatCurrency,
@@ -11,6 +9,7 @@ import { InputText } from "primereact/inputtext";
 import { addOldItem, deleteOldItem, updateOldItemField } from "./slice";
 import { OldItem } from "../types";
 import {
+  AddNewRow,
   DeleteButton,
   FooterAmount,
   ItemsTable,
@@ -66,17 +65,9 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
     />
   );
 
-  const toolBarOldItem = () => (
-    <Button
-      aria-label="addOldItemRow"
-      icon="pi pi-plus"
-      className="p-button-rounded"
-      onClick={() => dispatch(addOldItem())}
-    />
-  );
   return (
     <div className="card">
-      <Toolbar left={toolBarOldItem} style={{ padding: 5 }}></Toolbar>
+      <AddNewRow onClick={() => dispatch(addOldItem())} />
       <ItemsTable
         id="oldItems"
         value={oldItems}

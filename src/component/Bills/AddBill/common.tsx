@@ -4,6 +4,7 @@ import { ColumnGroup } from "primereact/columngroup";
 import { DataTable, DataTableProps } from "primereact/datatable";
 import { Dropdown, DropdownProps } from "primereact/dropdown";
 import { Row } from "primereact/row";
+import { Toolbar } from "primereact/toolbar";
 import { FC } from "react";
 import { amountBodyTemplate } from "utils/currency.utils";
 import { itemType } from "../commonData";
@@ -64,4 +65,18 @@ export const ItemsTable: FC<DataTableProps> = ({
   >
     {children}
   </DataTable>
+);
+
+export const AddNewRow = ({ onClick }: any) => (
+  <Toolbar
+    left={
+      <Button
+        aria-label="addNewRow"
+        icon="pi pi-plus"
+        className="p-button-rounded"
+        onClick={onClick}
+      />
+    }
+    style={{ padding: 5 }}
+  ></Toolbar>
 );

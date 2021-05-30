@@ -1,14 +1,13 @@
-import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { InputNumber } from "primereact/inputnumber";
 import { InputText } from "primereact/inputtext";
-import { Toolbar } from "primereact/toolbar";
 import {
   amountBodyTemplate,
   formatCurrency,
   formatCurrencyNoFraction,
 } from "utils/currency.utils";
 import {
+  AddNewRow,
   DeleteButton,
   FooterAmount,
   ItemsTable,
@@ -80,17 +79,9 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
     <DeleteButton onClick={() => dispatch(deleteNewItem(rowIndex))} />
   );
 
-  const newItemButton = () => (
-    <Button
-      aria-label="addNewItemRow"
-      icon="pi pi-plus"
-      className="p-button-rounded"
-      onClick={() => dispatch(addNewItem())}
-    />
-  );
   return (
     <div className="card">
-      <Toolbar left={newItemButton} style={{ padding: 5 }}></Toolbar>
+      <AddNewRow onClick={() => dispatch(addNewItem())} />
       <ItemsTable
         id="newItems"
         value={newItems}

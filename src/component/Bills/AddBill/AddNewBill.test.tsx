@@ -102,13 +102,13 @@ describe("Add new bill component", () => {
 });
 
 const addNewItemsRow = (item: any, i: number) => {
-  const cells = addRowAndGetCells(/addNewItemRow/i, i);
+  const cells = addRowAndGetCells(i);
   fillNewItemDetails(cells, item);
   saveRowAndVerifyAmount(cells, item.amount);
 };
 
-const addRowAndGetCells = (buttonName: RegExp, rowIndex: number) => {
-  userEvent.click(screen.getByRole("button", { name: buttonName }));
+const addRowAndGetCells = (rowIndex: number) => {
+  userEvent.click(screen.getByRole("button", { name: /addNewRow/i }));
   const row = screen.getAllByRole("row")[rowIndex];
   clickEditButton(row);
   return within(row).getAllByRole("cell");
@@ -120,7 +120,7 @@ const saveRowAndVerifyAmount = (cells: HTMLElement[], amount: string) => {
 };
 
 const addOldItemsRow = (item: any, i: number) => {
-  const cells = addRowAndGetCells(/addOldItemRow/i, i);
+  const cells = addRowAndGetCells(i);
   fillOldItemsDetails(cells, item);
   saveRowAndVerifyAmount(cells, item.amount);
 };
