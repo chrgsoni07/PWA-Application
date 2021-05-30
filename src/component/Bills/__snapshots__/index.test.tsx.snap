@@ -5,7 +5,7 @@ exports[`Bills should render 1`] = `
 - First value
 + Second value
 
-@@ -254,11 +254,102 @@
+@@ -259,11 +259,102 @@
                             />
                           </tr>
                         </thead>
@@ -108,7 +108,7 @@ exports[`Bills should render 1`] = `
                     <div
                       class=\\"p-paginator p-component p-paginator-bottom\\"
                     >
-@@ -309,11 +400,11 @@
+@@ -314,11 +405,11 @@
                         />
                       </button>
                       <span
