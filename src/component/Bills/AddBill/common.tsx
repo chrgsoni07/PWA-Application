@@ -1,12 +1,11 @@
 import { Button, ButtonProps } from "primereact/button";
-import { Column, ColumnProps } from "primereact/column";
+import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
 import { DataTable, DataTableProps } from "primereact/datatable";
 import { Dropdown, DropdownProps } from "primereact/dropdown";
 import { Row } from "primereact/row";
 import { Toolbar } from "primereact/toolbar";
 import { FC } from "react";
-import { amountBodyTemplate } from "utils/currency.utils";
 import { itemType } from "../commonData";
 
 export const DeleteButton: FC<ButtonProps> = ({ onClick }) => (
