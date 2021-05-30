@@ -12,20 +12,15 @@ import {
   makingChargeTemplate,
   purityTemplate,
 } from "utils/currency.utils";
+import { itemTypeBodyTemplate } from "../AddBill/common";
 
 type ViewBillProps = {
   bill: Bill;
 };
 
 const ViewBill: FC<ViewBillProps> = ({ bill }) => {
-  const {
-    customer,
-    oldItems,
-    newItems,
-    billDetail,
-    invoiceDate,
-    billNo,
-  } = bill;
+  const { customer, oldItems, newItems, billDetail, invoiceDate, billNo } =
+    bill;
 
   return (
     <>
@@ -84,7 +79,11 @@ const ViewBill: FC<ViewBillProps> = ({ bill }) => {
             header="New Items"
             className="p-datatable-sm"
           >
-            <Column field="type" header="Type"></Column>
+            <Column
+              field="type"
+              body={itemTypeBodyTemplate}
+              header="Type"
+            ></Column>
             <Column field="item" header="Item"></Column>
             <Column
               field="weight"
@@ -114,7 +113,11 @@ const ViewBill: FC<ViewBillProps> = ({ bill }) => {
             header="Old Items"
             className="p-datatable-sm"
           >
-            <Column field="type" header="Type"></Column>
+            <Column
+              field="type"
+              body={itemTypeBodyTemplate}
+              header="Type"
+            ></Column>
             <Column field="item" header="Item"></Column>
             <Column
               field="grossWeight"
