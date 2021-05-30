@@ -46,7 +46,7 @@ const slice = createSlice({
   initialState: {} as State,
   reducers: {
     addNewItem: (state) => {
-      state.newItems.push({ type: "gold" } as NewItem);
+      state.newItems.push({ type: "gold", item: "" } as NewItem);
     },
     deleteNewItem: ({ newItems }, { payload }: PayloadAction<number>) => {
       newItems.splice(payload, 1);
@@ -62,7 +62,7 @@ const slice = createSlice({
       newItem.amount = calculateNewItemAmount(newItem);
     },
     addOldItem: (state) => {
-      state.oldItems.push({ type: "gold" } as OldItem);
+      state.oldItems.push({ type: "gold", item: "" } as OldItem);
     },
     deleteOldItem: ({ oldItems }, { payload }: PayloadAction<number>) => {
       oldItems.splice(payload, 1);

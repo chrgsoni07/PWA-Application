@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AddNewBill } from "./AddNewBill";
 import { Bill } from "../types";
@@ -69,7 +69,7 @@ const bill = {
 };
 
 describe("Add new bill component", () => {
-  it("should add new items", () => {
+  it("should add new items", async () => {
     render(
       <AddNewBill
         displayDialog={true}
@@ -78,7 +78,9 @@ describe("Add new bill component", () => {
         setBill={mockSetBill}
       />
     );
-
+    await waitFor(() => {
+      expect(screen.getByLabelText("Select customer")).not.toBeDisabled();
+    });
     bill.newItems.forEach((item, i) => addNewItemsRow(item, i + 1));
     //Add and remove new item
     addNewItemsRow(bill.newItems[1], 4);

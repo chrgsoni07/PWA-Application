@@ -14,6 +14,7 @@ function Customer({ selectedCustomer, setSelectedCustomer }: any) {
         <div className="p-field p-col-12">
           <label htmlFor="customerSelect">Select customer</label>
           <Dropdown
+            disabled={!customers.length}
             ariaLabel="Select customer"
             inputId="customerSelect"
             value={selectedCustomer}
