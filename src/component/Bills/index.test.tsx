@@ -1,4 +1,9 @@
-import { render, screen, within } from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+  within,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ToastsProvider } from "toasts";
 import Bills from ".";
@@ -25,5 +30,13 @@ describe("Bills", () => {
     userEvent.click(screen.getByRole("button", { name: /close/i }));
     // const dialogOpened = asFragment();
     // expect(tableloaded).toMatchDiffSnapshot(dialogOpened);
+    await waitForElementToBeRemoved(() =>
+      screen.queryByRole("dialog", { name: /new bill/i })
+    );
+    userEvent.click(screen.getByRole("button", { name: /viewBill/i }));
+    expect(
+      screen.getByRole("dialog", { name: /r k jewellers jawad/i })
+    ).toBeInTheDocument();
+    userEvent.click(screen.getByRole("button", { name: /close/i }));
   });
 });
