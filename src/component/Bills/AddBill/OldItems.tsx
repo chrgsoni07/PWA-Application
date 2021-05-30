@@ -16,15 +16,12 @@ import {
 import { InputText } from "primereact/inputtext";
 import { addOldItem, deleteOldItem, updateOldItemField } from "./slice";
 import { OldItem } from "../types";
-import { DeleteButton } from "./common";
+import { DeleteButton, FooterAmount } from "./common";
 export function OldItems({ oldItems, billDetails, dispatch }: any) {
   const onEditorValueChangeOld = (props: any, value: any) => {
     dispatch(
       updateOldItemField({ index: props.rowIndex, value, field: props.field })
     );
-  };
-  const oldItemsTotalAmount = () => {
-    return formatCurrency(billDetails.oldTotal);
   };
 
   const deleteOldItemRow = (_: any, { rowIndex }: any) => (
@@ -91,18 +88,6 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
       />
     );
   };
-  let oldItemfooterGroup = (
-    <ColumnGroup>
-      <Row>
-        <Column
-          footer="Totals:"
-          colSpan={6}
-          footerStyle={{ textAlign: "right" }}
-        />
-        <Column footer={oldItemsTotalAmount} />
-      </Row>
-    </ColumnGroup>
-  );
 
   const toolBarOldItem = () => {
     return (
@@ -129,7 +114,9 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
         columnResizeMode="expand"
         scrollable
         scrollHeight="150px"
-        footerColumnGroup={oldItemfooterGroup}
+        footerColumnGroup={
+          <FooterAmount amount={formatCurrency(billDetails.oldTotal)} />
+        }
       >
         <Column
           field="type"
