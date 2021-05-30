@@ -1,6 +1,5 @@
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
-import { DataTable } from "primereact/datatable";
 import { InputNumber } from "primereact/inputnumber";
 import { Toolbar } from "primereact/toolbar";
 import {
@@ -11,7 +10,12 @@ import {
 import { InputText } from "primereact/inputtext";
 import { addOldItem, deleteOldItem, updateOldItemField } from "./slice";
 import { OldItem } from "../types";
-import { DeleteButton, FooterAmount, ItemTypeEditor } from "./common";
+import {
+  DeleteButton,
+  FooterAmount,
+  ItemsTable,
+  ItemTypeEditor,
+} from "./common";
 export function OldItems({ oldItems, billDetails, dispatch }: any) {
   const onEditorValueChangeOld = ({ rowIndex, field }: any, value: any) =>
     dispatch(updateOldItemField({ index: rowIndex, value, field }));
@@ -42,9 +46,7 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
     />
   );
 
-  const oldItemEditor = (props: any) => {
-    return inputTextEditorOld(props, "item");
-  };
+  const oldItemEditor = (props: any) => inputTextEditorOld(props, "item");
 
   const oldRateEditor = (props: any) => (
     <InputNumber
@@ -75,50 +77,27 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
   return (
     <div className="card">
       <Toolbar left={toolBarOldItem} style={{ padding: 5 }}></Toolbar>
-      <DataTable
+      <ItemsTable
         id="oldItems"
         value={oldItems}
-        editMode="row"
-        dataKey="id"
-        className="p-datatable-sm"
-        resizableColumns
-        columnResizeMode="expand"
-        scrollable
-        scrollHeight="150px"
         footerColumnGroup={
           <FooterAmount amount={formatCurrency(billDetails.oldTotal)} />
         }
       >
-        <Column
-          field="type"
-          header="TYPE"
-          editor={(props) => oldItemTypeEditor(props)}
-        />
-        <Column
-          field="item"
-          header="ITEM"
-          editor={(props) => oldItemEditor(props)}
-        />
+        <Column field="type" header="TYPE" editor={oldItemTypeEditor} />
+        <Column field="item" header="ITEM" editor={oldItemEditor} />
         <Column
           field="grossWeight"
           header="GR.WT.(gram)"
-          editor={(props) => oldGrossWeightEditor(props)}
+          editor={oldGrossWeightEditor}
         />
-        <Column
-          field="purity"
-          header="PURITY(%)"
-          editor={(props) => oldPurityEditor(props)}
-        />
+        <Column field="purity" header="PURITY(%)" editor={oldPurityEditor} />
         <Column
           field="netWeight"
           header="NET.WT.(gram)"
           body={netWeightTemplate}
         />
-        <Column
-          field="rate"
-          header="RATE"
-          editor={(props) => oldRateEditor(props)}
-        />
+        <Column field="rate" header="RATE" editor={oldRateEditor} />
         <Column field="amount" header="AMOUNT" body={amountBodyTemplate} />
         <Column
           rowEditor
@@ -128,9 +107,9 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
           bodyStyle={{
             textAlign: "center",
           }}
-        />
+        ></Column>
         <Column body={deleteOldItemRow} />
-      </DataTable>
+      </ItemsTable>
     </div>
   );
 }
