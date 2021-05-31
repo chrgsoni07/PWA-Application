@@ -29,12 +29,13 @@ export const save = async <T>(
   return { ...data, id };
 };
 
-export const saveBill = async (bill: Bill): Promise<void> => {
+export const saveBill = async (bill: Bill): Promise<Bill> => {
   const billNo = await getCounterValue();
   const savedBill: Bill = await save("bills", { ...bill, billNo });
   await increaseCounterValue();
-  console.log(savedBill);
+  return savedBill;
 };
+
 export const getCustomers = async (): Promise<CustomerType[]> => {
   const collection = db.collection("customers");
 
