@@ -2,7 +2,7 @@ import { CustomerType } from "component/Customers/types";
 
 type CommonItemType = {
   item: string;
-  type: "gold" | "silver" | "silverPerPiece";
+  type: "gold" | "silver" | "fixed";
   rate: number;
   amount: number;
 };

@@ -76,6 +76,20 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
     />
   );
 
+  const isTypeSilverPerPrice = (props: any) => {
+    let type = props.rowData["type"];
+
+    return type !== "fixed";
+  };
+
+  const newItemAmountEditor = (props: any) => (
+    <InputNumber
+      value={props.rowData["amount"]}
+      onChange={(e) => onEditorValueChangeNew(props, e.value)}
+      disabled={isTypeSilverPerPrice(props)}
+    />
+  );
+
   const deleteNewItemRow = (_: any, { rowIndex }: any) => (
     <DeleteButton onClick={() => dispatch(deleteNewItem(rowIndex))} />
   );
@@ -109,7 +123,12 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
           body={otherChargesTemplate}
           editor={newOtherChargesEditor}
         />
-        <Column field="amount" header="AMOUNT" body={amountBodyTemplate} />
+        <Column
+          field="amount"
+          header="AMOUNT"
+          body={amountBodyTemplate}
+          editor={newItemAmountEditor}
+        />
         <Column
           rowEditor
           headerStyle={{

@@ -49,7 +49,7 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
   const isTypeSilverPerPrice = (props: any) => {
     let type = props.rowData["type"];
 
-    return type !== "silverPerPiece";
+    return type !== "fixed";
   };
 
   const OldAmountEditor = (props: any) => (
