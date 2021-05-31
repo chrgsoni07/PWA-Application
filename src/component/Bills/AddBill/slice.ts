@@ -25,15 +25,18 @@ const calculateOldItemAmount = ({
   grossWeight = 0,
   netWeight = 0,
   rate = 0,
+  amount = 0,
 }: OldItem) => {
-  let amount = 0;
+  let calculatedAmount = 0;
   if (type === "gold") {
-    amount = netWeight * (rate / 10);
+    calculatedAmount = netWeight * (rate / 10);
   } else if (type === "silver") {
-    amount = grossWeight * (rate / 1000);
+    calculatedAmount = grossWeight * (rate / 1000);
+  } else if (type === "silverPerPiece") {
+    calculatedAmount = amount;
   }
 
-  return Math.round(amount);
+  return Math.round(calculatedAmount);
 };
 
 type State = {

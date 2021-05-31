@@ -16,7 +16,6 @@ import {
   itemTypeBodyTemplate,
   ItemTypeEditor,
 } from "./common";
-import { isPropertySignature } from "typescript";
 export function OldItems({ oldItems, billDetails, dispatch }: any) {
   const onEditorValueChangeOld = ({ rowIndex, field }: any, value: any) =>
     dispatch(updateOldItemField({ index: rowIndex, value, field }));
