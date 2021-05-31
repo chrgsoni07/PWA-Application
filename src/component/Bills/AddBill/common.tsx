@@ -16,7 +16,7 @@ export const DeleteButton: FC<ButtonProps> = ({ onClick }) => (
   />
 );
 
-export const FooterAmount = ({ amount }: { amount: number }) => (
+export const FooterAmount = (amount: number) => (
   <ColumnGroup>
     <Row>
       <Column

@@ -4,10 +4,10 @@ import { BillDetails, NewItem, OldItem } from "../types";
 
 const calculateNewItemAmount = ({
   type,
-  weight,
-  makingCharges,
-  rate,
-  otherCharges,
+  weight = 0,
+  makingCharges = 0,
+  rate = 0,
+  otherCharges = 0,
 }: NewItem) => {
   let amount = 0;
   if (type === "gold") {
@@ -22,9 +22,9 @@ const calculateNewItemAmount = ({
 };
 const calculateOldItemAmount = ({
   type,
-  grossWeight,
-  netWeight,
-  rate,
+  grossWeight = 0,
+  netWeight = 0,
+  rate = 0,
 }: OldItem) => {
   let amount = 0;
   if (type === "gold") {
