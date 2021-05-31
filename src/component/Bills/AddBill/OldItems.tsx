@@ -13,6 +13,7 @@ import {
   DeleteButton,
   FooterAmount,
   ItemsTable,
+  itemTypeBodyTemplate,
   ItemTypeEditor,
 } from "./common";
 export function OldItems({ oldItems, billDetails, dispatch }: any) {
@@ -75,7 +76,12 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
           <FooterAmount amount={formatCurrency(billDetails.oldTotal)} />
         }
       >
-        <Column field="type" header="TYPE" editor={oldItemTypeEditor} />
+        <Column
+          field="type"
+          body={itemTypeBodyTemplate}
+          header="TYPE"
+          editor={oldItemTypeEditor}
+        />
         <Column field="item" header="ITEM" editor={oldItemEditor} />
         <Column
           field="grossWeight"

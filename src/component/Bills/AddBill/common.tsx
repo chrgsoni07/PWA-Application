@@ -79,3 +79,6 @@ export const AddNewRow = ({ onClick }: any) => (
     style={{ padding: 5 }}
   ></Toolbar>
 );
+
+export const itemTypeBodyTemplate = (rowData: any) =>
+  itemType.find(({ value }) => rowData.type === value)?.label;

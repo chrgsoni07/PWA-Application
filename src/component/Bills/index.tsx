@@ -3,7 +3,7 @@ import ViewBill from "./ViewBill";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { TabView, TabPanel } from "primereact/tabview";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./DataTableDemo.css";
 import { Bill } from "./types";
 import { Column } from "primereact/column";
@@ -12,6 +12,7 @@ import { createNextState } from "@reduxjs/toolkit";
 import { db, getBills } from "api";
 import { Dialog } from "primereact/dialog";
 import { useToast } from "toasts";
+import { Calendar, CalendarChangeParams } from "primereact/calendar";
 
 const Bills = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -21,6 +22,8 @@ const Bills = () => {
   const [draftBills, setDraftBills] = useState<Bill[]>([]);
   const [bill, setBill] = useState<Bill>({} as Bill);
   const { toastSuccess, toastError } = useToast();
+  const [selectedDate, setSelectedDate] = useState<Date>();
+  const dt = useRef<DataTable>(null);
 
   useEffect(() => {
     getBills().then((bills) => setSavedBills(bills));
@@ -74,6 +77,7 @@ const Bills = () => {
     return (
       <>
         <Button
+          aria-label="viewBill"
           icon="pi pi-eye"
           className="p-button-rounded p-button-help p-mr-2"
           onClick={() => viewBill(rowData)}
@@ -90,6 +94,37 @@ const Bills = () => {
           onClick={() => confirmDeleteBill(rowData)}
         />
       </>
+    );
+  };
+  const onDateChange = (e: CalendarChangeParams) => {
+    dt.current?.filter(e.value, "invoiceDate", "custom");
+    setSelectedDate(e.value as any);
+  };
+
+  const dateFilter = (
+    <Calendar
+      value={selectedDate}
+      onChange={onDateChange}
+      dateFormat="dd/mm/yy"
+      className="p-column-filter"
+      placeholder="Search by date"
+    />
+  );
+  const filterDate = (value: any, filter: any) => {
+    if (
+      filter === undefined ||
+      filter === null ||
+      (typeof filter === "string" && filter.trim() === "")
+    ) {
+      return true;
+    }
+
+    if (value === undefined || value === null) {
+      return false;
+    }
+
+    return (
+      value.toLocaleDateString("en-In") === filter.toLocaleDateString("en-In")
     );
   };
 
@@ -109,6 +144,7 @@ const Bills = () => {
           <TabPanel header="Previous Bills">
             <div className="card">
               <DataTable
+                ref={dt}
                 value={savedBills}
                 paginator
                 rows={10}
@@ -139,7 +175,8 @@ const Bills = () => {
                   header="Date"
                   body={dateBodyTemplate}
                   filter
-                  filterPlaceholder="Search by date"
+                  filterElement={dateFilter}
+                  filterFunction={filterDate}
                 ></Column>
                 <Column
                   field="customer.name"

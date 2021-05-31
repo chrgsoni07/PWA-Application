@@ -11,6 +11,7 @@ import {
   DeleteButton,
   FooterAmount,
   ItemsTable,
+  itemTypeBodyTemplate,
   ItemTypeEditor,
 } from "./common";
 import { addNewItem, deleteNewItem, updateNewItemField } from "./slice";
@@ -89,7 +90,12 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
           <FooterAmount amount={formatCurrency(billDetails?.newTotal)} />
         }
       >
-        <Column field="type" header="TYPE" editor={newItemTypeEditor} />
+        <Column
+          field="type"
+          header="TYPE"
+          body={itemTypeBodyTemplate}
+          editor={newItemTypeEditor}
+        />
         <Column field="item" header="ITEM" editor={newItemNameEditor} />
         <Column field="weight" header="WEIGHT(gram)" editor={newWeightEditor} />
         <Column field="rate" header="RATE" editor={newRateEditor} />
