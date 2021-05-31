@@ -77,7 +77,8 @@
       "src/serviceWorkerRegistration.ts",
       "src/index.tsx",
       "src/service-worker.ts",
-      "src/reportWebVitals.ts"
+      "src/reportWebVitals.ts",
+      "src/api/index.ts"
     ]
   }
 }
