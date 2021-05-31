@@ -46,6 +46,20 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
     />
   );
 
+  const isTypeSilverPerPrice = (props: any) => {
+    let type = props.rowData["type"];
+
+    return type !== "fixed";
+  };
+
+  const OldAmountEditor = (props: any) => (
+    <InputNumber
+      value={props.rowData["amount"]}
+      onChange={(e) => onEditorValueChangeOld(props, e.value)}
+      disabled={isTypeSilverPerPrice(props)}
+    />
+  );
+
   const oldItemEditor = (props: any) => inputTextEditorOld(props, "item");
 
   const oldRateEditor = (props: any) => (
@@ -93,7 +107,12 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
           body={netWeightTemplate}
         />
         <Column field="rate" header="RATE" editor={oldRateEditor} />
-        <Column field="amount" header="AMOUNT" body={amountBodyTemplate} />
+        <Column
+          field="amount"
+          header="AMOUNT"
+          body={amountBodyTemplate}
+          editor={OldAmountEditor}
+        />
         <Column
           rowEditor
           headerStyle={{

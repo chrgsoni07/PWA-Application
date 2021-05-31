@@ -38,7 +38,7 @@ const bill = {
       amount: "₹15,275",
     },
     {
-      type: "Silver per piece",
+      type: "Fixed",
       name: "Bicchi",
       weight: "",
       rate: "",

@@ -45,6 +45,11 @@ const Bills = () => {
     return invoiceDate.toLocaleDateString("en-In");
   };
 
+  const draftInvoiceDateTemplate = (rowData: any) => {
+    var invoiceDate = new Date(rowData.invoiceDate);
+    return invoiceDate.toLocaleDateString("en-In");
+  };
+
   const actionBodyTemplate = (rowData: any) => {
     function viewBill(rowData: any): void {
       setBill({ ...rowData, invoiceDate: dateBodyTemplate(rowData) });
@@ -57,7 +62,6 @@ const Bills = () => {
     }
 
     function confirmDeleteBill(rowData: any): void {
-      alert(JSON.stringify(rowData));
       db.collection("bills")
         .doc(rowData.id)
         .delete()
@@ -212,7 +216,7 @@ const Bills = () => {
                 <Column
                   field="invoiceDate"
                   header="Date"
-                  //    body={dateBodyTemplate}
+                  body={draftInvoiceDateTemplate}
                 ></Column>
                 <Column field="customer.name" header="Customer"></Column>
                 <Column

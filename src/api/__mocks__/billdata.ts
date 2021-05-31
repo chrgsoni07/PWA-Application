@@ -41,7 +41,7 @@ export const bills: Bill[] = [
         amount: 15275,
       },
       {
-        type: "silverPerPiece",
+        type: "fixed",
         item: "Bicchi",
         weight: 0,
         rate: 0,

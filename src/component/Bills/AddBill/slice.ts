@@ -8,32 +8,37 @@ const calculateNewItemAmount = ({
   makingCharges = 0,
   rate = 0,
   otherCharges = 0,
+  amount = 0,
 }: NewItem) => {
-  let amount = 0;
+  let calculatedAmount = 0;
   if (type === "gold") {
-    amount = weight * (rate / 10) + weight * makingCharges + otherCharges;
+    calculatedAmount =
+      weight * (rate / 10) + weight * makingCharges + otherCharges;
   } else if (type === "silver") {
-    amount = weight * (rate / 1000) + otherCharges;
-  } else if (type === "silverPerPiece") {
-    amount = otherCharges;
+    calculatedAmount = weight * (rate / 1000) + otherCharges;
+  } else if (type === "fixed") {
+    calculatedAmount = otherCharges;
   }
 
-  return Math.round(amount);
+  return Math.round(calculatedAmount);
 };
 const calculateOldItemAmount = ({
   type,
   grossWeight = 0,
   netWeight = 0,
   rate = 0,
+  amount = 0,
 }: OldItem) => {
-  let amount = 0;
+  let calculatedAmount = 0;
   if (type === "gold") {
-    amount = netWeight * (rate / 10);
+    calculatedAmount = netWeight * (rate / 10);
   } else if (type === "silver") {
-    amount = grossWeight * (rate / 1000);
+    calculatedAmount = grossWeight * (rate / 1000);
+  } else if (type === "fixed") {
+    calculatedAmount = amount;
   }
 
-  return Math.round(amount);
+  return Math.round(calculatedAmount);
 };
 
 type State = {

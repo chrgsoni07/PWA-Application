@@ -10,6 +10,7 @@ import { NewItems } from "./NewItems";
 import { OldItems } from "./OldItems";
 import { Bill, BillDetails } from "../types";
 import { useToast } from "toasts";
+import { db } from "api";
 
 import reducer, {
   amountPaidChanged,
@@ -80,18 +81,36 @@ export const AddNewBill: FC<AddNewBillProps> = ({
       oldItems,
       billDetail: billDetails,
     };
+
+    if (bill?.id) {
+      editBillToFirestore(newBill);
+    } else {
+      saveBillToFirestore(newBill);
+    }
     setBill(newBill);
-    saveBillToFirestore(newBill);
     setDisplayDialog(false);
   };
 
   const saveBillToFirestore = async (newBill: Bill) => {
     try {
-      await saveBill(newBill);
+      const savedBill: Bill = await saveBill(newBill);
+      console.log("saved bill" + savedBill);
       toastSuccess("bill successfully saved");
     } catch (err) {
       toastError("Error saving bill");
     }
+  };
+
+  const editBillToFirestore = async (newBill: Bill) => {
+    db.collection("bills")
+      .doc(newBill.id)
+      .set(newBill)
+      .then(() => {
+        toastSuccess("bill successfully updated");
+      })
+      .catch(function () {
+        toastError("Error updating bill");
+      });
   };
 
   const saveToDraft = () => {
