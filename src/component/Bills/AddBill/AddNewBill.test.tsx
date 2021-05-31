@@ -6,6 +6,8 @@ import { Bill } from "../types";
 import { ToastsProvider } from "toasts";
 
 jest.mock("api");
+// jest.useFakeTimers("modern");
+// jest.setSystemTime(new Date(2020, 3, 1));
 
 let mockSetBill = jest.fn();
 let mockSetDisplayDialog = jest.fn();
@@ -70,6 +72,10 @@ const bill = {
 };
 
 describe("Add new bill component", () => {
+  beforeAll(() => {
+    jest.useFakeTimers("modern");
+    jest.setSystemTime(new Date(2020, 3, 1));
+  });
   it("should add new items", async () => {
     render(
       <ToastsProvider>
@@ -105,6 +111,27 @@ describe("Add new bill component", () => {
     expect(screen.getByLabelText("Due")).toHaveValue(bill.due);
     userEvent.click(screen.getByRole("button", { name: /save/i }));
     expect(mockSetBill).toHaveBeenCalled();
+  });
+
+  it("should show date auto filled", async () => {
+    console.log(new Date());
+    render(
+      <ToastsProvider>
+        <AddNewBill
+          displayDialog={true}
+          setDisplayDialog={mockSetDisplayDialog}
+          bill={{} as Bill}
+          setBill={mockSetBill}
+        />
+      </ToastsProvider>
+    );
+    await waitFor(() => {
+      expect(screen.getByLabelText("Select customer")).not.toBeDisabled();
+    });
+
+    expect(screen.getByRole("textbox", { name: /invoice date/i })).toHaveValue(
+      "01/04/2020"
+    );
   });
 });
 

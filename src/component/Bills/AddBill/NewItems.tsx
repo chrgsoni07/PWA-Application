@@ -86,9 +86,7 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
       <ItemsTable
         id="newItems"
         value={newItems}
-        footerColumnGroup={
-          <FooterAmount amount={formatCurrency(billDetails?.newTotal)} />
-        }
+        footerColumnGroup={FooterAmount(formatCurrency(billDetails?.newTotal))}
       >
         <Column
           field="type"

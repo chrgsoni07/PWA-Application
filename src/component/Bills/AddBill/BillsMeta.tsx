@@ -16,7 +16,7 @@ export function BillsMeta({ invoiceDate, setInvoiceDate }: any) {
         <div className="p-field p-col">
           <label htmlFor="invoiceDate">Invoice Date</label>
           <Calendar
-            id="invoiceDate"
+            inputId="invoiceDate"
             value={invoiceDate}
             onChange={(e) => setInvoiceDate(e.value)}
             showIcon

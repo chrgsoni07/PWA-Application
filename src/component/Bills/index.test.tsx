@@ -34,7 +34,7 @@ describe("Bills", () => {
     expect(beforeEditBill).toMatchDiffSnapshot(asFragment());
 
     const newItemTab = screen.getByRole("tabpanel", { name: "New Item" });
-    expect(within(newItemTab).getAllByRole("row")).toHaveLength(4);
+    expect(within(newItemTab).getAllByRole("row")).toHaveLength(5);
     userEvent.click(screen.getByRole("button", { name: /close/i }));
   });
 
