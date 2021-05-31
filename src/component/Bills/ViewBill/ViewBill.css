@@ -1,9 +1,9 @@
-table#details {
+#details {
   width: 100%;
 }
 
-table#details > th,
-td {
+#details th,
+#details td {
   border: 1px solid gray;
   border-collapse: collapse;
   padding: 3px;
