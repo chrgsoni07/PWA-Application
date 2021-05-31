@@ -16,6 +16,7 @@ import {
   itemTypeBodyTemplate,
   ItemTypeEditor,
 } from "./common";
+import { isPropertySignature } from "typescript";
 export function OldItems({ oldItems, billDetails, dispatch }: any) {
   const onEditorValueChangeOld = ({ rowIndex, field }: any, value: any) =>
     dispatch(updateOldItemField({ index: rowIndex, value, field }));
@@ -43,6 +44,20 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
     <ItemTypeEditor
       value={props.rowData["type"]}
       onChange={(e) => onEditorValueChangeOld(props, e.value)}
+    />
+  );
+
+  const isTypeSilverPerPrice = (props: any) => {
+    let type = props.rowData["type"];
+
+    return type !== "silverPerPiece";
+  };
+
+  const OldAmountEditor = (props: any) => (
+    <InputNumber
+      value={props.rowData["amount"]}
+      onChange={(e) => onEditorValueChangeOld(props, e.value)}
+      disabled={isTypeSilverPerPrice(props)}
     />
   );
 
@@ -93,7 +108,12 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
           body={netWeightTemplate}
         />
         <Column field="rate" header="RATE" editor={oldRateEditor} />
-        <Column field="amount" header="AMOUNT" body={amountBodyTemplate} />
+        <Column
+          field="amount"
+          header="AMOUNT"
+          body={amountBodyTemplate}
+          editor={OldAmountEditor}
+        />
         <Column
           rowEditor
           headerStyle={{
