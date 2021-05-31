@@ -17,7 +17,7 @@ const calculateNewItemAmount = ({
   } else if (type === "silver") {
     calculatedAmount = weight * (rate / 1000) + otherCharges;
   } else if (type === "fixed") {
-    calculatedAmount = amount;
+    calculatedAmount = otherCharges;
   }
 
   return Math.round(calculatedAmount);
