@@ -6,8 +6,7 @@ import { Bill } from "../types";
 import { ToastsProvider } from "toasts";
 
 jest.mock("api");
-// jest.useFakeTimers("modern");
-// jest.setSystemTime(new Date(2020, 3, 1));
+const FIXED_SYSTEM_TIME = "2020-11-18T00:00:00.000Z";
 
 let mockSetBill = jest.fn();
 let mockSetDisplayDialog = jest.fn();
@@ -70,11 +69,15 @@ const bill = {
     },
   ],
 };
-beforeAll(() => {
-  jest.useFakeTimers("modern");
-  jest.setSystemTime(new Date(2020, 3, 1));
-});
 describe("Add new bill component", () => {
+  beforeEach(() => {
+    jest.useFakeTimers("modern");
+    jest.setSystemTime(Date.parse(FIXED_SYSTEM_TIME));
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
   it("should add new items", async () => {
     render(
       <ToastsProvider>
@@ -127,9 +130,9 @@ describe("Add new bill component", () => {
       expect(screen.getByLabelText("Select customer")).not.toBeDisabled();
     });
 
-    // expect(screen.getByRole("textbox", { name: /invoice date/i })).toHaveValue(
-    //   "01/04/2020"
-    // );
+    expect(screen.getByRole("textbox", { name: /invoice date/i })).toHaveValue(
+      "17/11/2020"
+    );
   });
 });
 
