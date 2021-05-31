@@ -6,11 +6,10 @@ import { Bill } from "../types";
 import { ToastsProvider } from "toasts";
 
 jest.mock("api");
-const FIXED_SYSTEM_TIME = "2020-11-18T00:00:00.000Z";
 
 let mockSetBill = jest.fn();
 let mockSetDisplayDialog = jest.fn();
-
+const mockDate = new Date(2020, 10, 17);
 const bill = {
   totalNew: "109,566",
   totalOld: "74,290",
@@ -72,7 +71,7 @@ const bill = {
 describe("Add new bill component", () => {
   beforeEach(() => {
     jest.useFakeTimers("modern");
-    jest.setSystemTime(Date.parse(FIXED_SYSTEM_TIME));
+    jest.setSystemTime(mockDate);
   });
 
   afterEach(() => {
