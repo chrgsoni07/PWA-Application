@@ -6,7 +6,7 @@ import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { ItemType } from "./types";
-import { deleteFromDB, edit, get, getItems, save } from "api";
+import { deleteFromDB, edit, getItems, save } from "api";
 import { ItemCategoryType } from "api/types";
 import { useToast } from "toasts";
 import { updateList } from "utils/state.utils";
