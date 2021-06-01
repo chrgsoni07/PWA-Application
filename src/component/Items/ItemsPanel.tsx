@@ -46,22 +46,20 @@ const ItemsPanel: FC<Props> = ({ category }) => {
       });
   };
 
-  const actionBodyTemplate = (rowData: any) => {
-    return (
-      <>
-        <Button
-          icon="pi pi-pencil"
-          className="p-button-rounded p-button-success p-mr-2"
-          onClick={() => editItem(rowData)}
-        />
-        <Button
-          icon="pi pi-trash"
-          className="p-button-rounded p-button-warning"
-          onClick={() => confirmDeleteItem(rowData)}
-        />
-      </>
-    );
-  };
+  const actionBodyTemplate = (rowData: any) => (
+    <>
+      <Button
+        icon="pi pi-pencil"
+        className="p-button-rounded p-button-success p-mr-2"
+        onClick={() => editItem(rowData)}
+      />
+      <Button
+        icon="pi pi-trash"
+        className="p-button-rounded p-button-warning"
+        onClick={() => confirmDeleteItem(rowData)}
+      />
+    </>
+  );
 
   const openNew = () => {
     setSelectedItem({ id: "", name: "" });
@@ -73,18 +71,16 @@ const ItemsPanel: FC<Props> = ({ category }) => {
     get<ItemType>(category).then((allItems) => setItems(allItems));
   }, [category]);
 
-  const leftToolbarTemplate = () => {
-    return (
-      <>
-        <Button
-          label="New"
-          icon="pi pi-plus"
-          className="p-button-success p-mr-2"
-          onClick={openNew}
-        />
-      </>
-    );
-  };
+  const leftToolbarTemplate = () => (
+    <>
+      <Button
+        label="New"
+        icon="pi pi-plus"
+        className="p-button-success p-mr-2"
+        onClick={openNew}
+      />
+    </>
+  );
   const saveNewItem = () => {
     if (selectedItem?.id) {
       editItemToFireStore();

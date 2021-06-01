@@ -34,35 +34,31 @@ const Rates = () => {
     getRates().then((response) => setRates(response));
   }, []);
 
-  const actionBodyTemplate = (rowData: any) => {
-    return (
-      <>
-        <Button
-          icon="pi pi-pencil"
-          className="p-button-rounded p-button-success p-mr-2"
-          onClick={() => editSelectedRate(rowData)}
-        />
-        <Button
-          icon="pi pi-trash"
-          className="p-button-rounded p-button-warning"
-          onClick={() => confirmDeleteSelected(rowData)}
-        />
-      </>
-    );
-  };
+  const actionBodyTemplate = (rowData: any) => (
+    <>
+      <Button
+        icon="pi pi-pencil"
+        className="p-button-rounded p-button-success p-mr-2"
+        onClick={() => editSelectedRate(rowData)}
+      />
+      <Button
+        icon="pi pi-trash"
+        className="p-button-rounded p-button-warning"
+        onClick={() => confirmDeleteSelected(rowData)}
+      />
+    </>
+  );
 
-  const leftToolbarTemplate = () => {
-    return (
-      <>
-        <Button
-          label="New"
-          icon="pi pi-plus"
-          className="p-button-success p-mr-2"
-          onClick={openNew}
-        />
-      </>
-    );
-  };
+  const leftToolbarTemplate = () => (
+    <>
+      <Button
+        label="New"
+        icon="pi pi-plus"
+        className="p-button-success p-mr-2"
+        onClick={openNew}
+      />
+    </>
+  );
 
   const confirmDeleteSelected = (rowData: RateType) => {
     deleteFromDB("goldSilverRates", rowData.id)

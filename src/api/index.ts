@@ -57,14 +57,13 @@ export const get = async <T>(
 ): Promise<T[]> => {
   const collection = db.collection(collectionName);
 
-  return collection.get().then((querySnapshot) => {
-    const allItems: T[] = [];
-    querySnapshot.forEach((item) => {
-      const itemData = item.data();
-      allItems.push({ ...itemData, id: item.id } as any);
-    });
-    return allItems;
+  const querySnapshot = await collection.get();
+  const allItems: T[] = [];
+  querySnapshot.forEach((item) => {
+    const itemData = item.data();
+    allItems.push({ ...itemData, id: item.id } as any);
   });
+  return allItems;
 };
 
 export const getCustomers = async (): Promise<CustomerType[]> => {
