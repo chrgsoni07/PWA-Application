@@ -10,11 +10,11 @@ const Items = () => {
           <TabPanel header="Gold Items">
             <ItemsPanel category="goldItems" />
           </TabPanel>
-          <TabPanel header="Silver per price items">
-            <ItemsPanel category="silverPerPriceItems" />
+          <TabPanel header="Silver Items">
+            <ItemsPanel category="silverItems" />
           </TabPanel>
-          <TabPanel header="Silver per weight items">
-            <ItemsPanel category="silverPerWeightItems" />
+          <TabPanel header="Fixed Price Items">
+            <ItemsPanel category="fixed" />
           </TabPanel>
         </TabView>
       </div>

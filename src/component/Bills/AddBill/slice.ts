@@ -8,7 +8,7 @@ const calculateNewItemAmount = ({
   makingCharges = 0,
   rate = 0,
   otherCharges = 0,
-  amount,
+  amount = 0,
 }: NewItem) => {
   let calculatedAmount = 0;
   if (type === "gold") {
