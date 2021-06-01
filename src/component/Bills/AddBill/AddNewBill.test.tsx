@@ -12,12 +12,12 @@ let mockSetDisplayDialog = jest.fn();
 const mockDate = new Date(2020, 10, 17);
 const bill = {
   totalNew: "109,566",
-  totalOld: "74,290",
-  diff: "35,276",
+  totalOld: "74,490",
+  diff: "35,076",
   discount: "76",
-  payable: "35,200",
+  payable: "35,000",
   paid: "30000",
-  due: "5,200",
+  due: "5,000",
   newItems: [
     {
       type: "Gold",
@@ -67,6 +67,16 @@ const bill = {
       rate: "50000",
       amount: "₹4,000",
     },
+    {
+      type: "Fixed",
+      name: "Bicchi",
+      weight: "",
+      purity: "",
+      netWeight: "",
+      rate: "",
+      fixedAmount: "200",
+      amount: "₹200",
+    },
   ],
 };
 describe("Add new bill component", () => {
@@ -96,13 +106,13 @@ describe("Add new bill component", () => {
     expect(screen.getByText("9009009000")).toBeInTheDocument();
     bill.newItems.forEach((item, i) => addNewItemsRow(item, i + 1));
     //Add and remove new item
-    addNewItemsRow(bill.newItems[1], 4);
-    deleteRow(4);
+    addNewItemsRow(bill.newItems[1], bill.newItems.length + 1);
+    deleteRow(bill.newItems.length + 1);
     userEvent.click(screen.getByRole("tab", { name: /old item/i }));
     bill.oldItems.forEach((item, i) => addOldItemsRow(item, i + 1));
     //Add and remove old item
-    addOldItemsRow(bill.oldItems[1], 3);
-    deleteRow(3);
+    addOldItemsRow(bill.oldItems[1], bill.oldItems.length + 1);
+    deleteRow(bill.oldItems.length + 1);
 
     expect(screen.getByLabelText("Total new")).toHaveValue(bill.totalNew);
     expect(screen.getByLabelText("Total old")).toHaveValue(bill.totalOld);
@@ -214,6 +224,9 @@ const fillOldItemsDetails = (cells: HTMLElement[], item: any) => {
   enterPurity(cells[3], item.purity);
   checkNetWeight(cells[4], item.netWeight);
   enterRate(cells[5], item.rate);
+  if (item.type === "Fixed") {
+    enterAmount(cells[6], item.fixedAmount);
+  }
 };
 
 const enterPurity = (cell: HTMLElement, purity: string) => {
