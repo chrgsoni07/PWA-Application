@@ -10,21 +10,13 @@ describe("App", () => {
       expect(screen.queryAllByRole("row")).toHaveLength(2);
     });
 
-    userEvent.click(screen.getByRole("menuitem", { name: "Customers" }));
-    await waitFor(() => {
-      expect(screen.queryAllByRole("row")).toHaveLength(2);
-    });
-    userEvent.click(screen.getByRole("menuitem", { name: "Bills" }));
-    await waitFor(() => {
-      expect(screen.queryAllByRole("row")).toHaveLength(2);
-    });
-    userEvent.click(screen.getByRole("menuitem", { name: "Gold/Silver Rate" }));
-    await waitFor(() => {
-      expect(screen.queryAllByRole("row")).toHaveLength(2);
-    });
-    userEvent.click(screen.getByRole("menuitem", { name: "Item" }));
-    await waitFor(() => {
-      expect(screen.queryAllByRole("row")).toHaveLength(2);
-    });
+    ["Customers", "Bills", "Gold/Silver Rate", "Item"].forEach(
+      async (menuItem) => {
+        userEvent.click(screen.getByRole("menuitem", { name: menuItem }));
+        await waitFor(() =>
+          expect(screen.queryAllByRole("row")).toHaveLength(2)
+        );
+      }
+    );
   });
 });
