@@ -89,21 +89,7 @@ describe("Add new bill component", () => {
     jest.useRealTimers();
   });
   it("should add new items", async () => {
-    render(
-      <ToastsProvider>
-        <AddNewBill
-          displayDialog={true}
-          setDisplayDialog={mockSetDisplayDialog}
-          bill={{} as Bill}
-          setBill={mockSetBill}
-        />
-      </ToastsProvider>
-    );
-    await waitFor(() => {
-      expect(screen.getByLabelText("Select customer")).not.toBeDisabled();
-    });
-    userEvent.type(screen.getByLabelText("Select customer"), "ram");
-    expect(screen.getByText("9009009000")).toBeInTheDocument();
+    await setup();
     bill.newItems.forEach((item, i) => addNewItemsRow(item, i + 1));
     //Add and remove new item
     addNewItemsRow(bill.newItems[1], bill.newItems.length + 1);
@@ -126,25 +112,35 @@ describe("Add new bill component", () => {
   });
 
   it("should show date auto filled", async () => {
-    render(
-      <ToastsProvider>
-        <AddNewBill
-          displayDialog={true}
-          setDisplayDialog={mockSetDisplayDialog}
-          bill={{} as Bill}
-          setBill={mockSetBill}
-        />
-      </ToastsProvider>
-    );
-    await waitFor(() => {
-      expect(screen.getByLabelText("Select customer")).not.toBeDisabled();
-    });
+    await setup();
 
     expect(screen.getByRole("textbox", { name: /invoice date/i })).toHaveValue(
       "17/11/2020"
     );
   });
 });
+
+const setup = async () => {
+  const utils = render(
+    <ToastsProvider>
+      <AddNewBill
+        displayDialog={true}
+        setDisplayDialog={mockSetDisplayDialog}
+        bill={{} as Bill}
+        setBill={mockSetBill}
+        setSavedBills={jest.fn()}
+        setDraftBills={jest.fn()}
+      />
+    </ToastsProvider>
+  );
+  await waitFor(() => {
+    expect(screen.getByLabelText("Select customer")).not.toBeDisabled();
+  });
+  userEvent.type(screen.getByLabelText("Select customer"), "ram");
+  expect(screen.getByText("9009009000")).toBeInTheDocument();
+
+  return utils;
+};
 
 const addNewItemsRow = (item: any, i: number) => {
   const cells = addRowAndGetCells(i);

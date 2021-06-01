@@ -7,9 +7,9 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import React, { useState, useEffect } from "react";
 import { RateType } from "./types";
-import { db, getRates, save } from "api";
-import { createNextState } from "@reduxjs/toolkit";
+import { deleteFromDB, edit, getRates, save } from "api";
 import { useToast } from "toasts";
+import { updateList } from "utils/state.utils";
 
 const Rates = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -34,47 +34,37 @@ const Rates = () => {
     getRates().then((response) => setRates(response));
   }, []);
 
-  const actionBodyTemplate = (rowData: any) => {
-    return (
-      <>
-        <Button
-          icon="pi pi-pencil"
-          className="p-button-rounded p-button-success p-mr-2"
-          onClick={() => editSelectedRate(rowData)}
-        />
-        <Button
-          icon="pi pi-trash"
-          className="p-button-rounded p-button-warning"
-          onClick={() => confirmDeleteSelected(rowData)}
-        />
-      </>
-    );
-  };
+  const actionBodyTemplate = (rowData: any) => (
+    <>
+      <Button
+        icon="pi pi-pencil"
+        className="p-button-rounded p-button-success p-mr-2"
+        onClick={() => editSelectedRate(rowData)}
+      />
+      <Button
+        icon="pi pi-trash"
+        className="p-button-rounded p-button-warning"
+        onClick={() => confirmDeleteSelected(rowData)}
+      />
+    </>
+  );
 
-  const leftToolbarTemplate = () => {
-    return (
-      <>
-        <Button
-          label="New"
-          icon="pi pi-plus"
-          className="p-button-success p-mr-2"
-          onClick={openNew}
-        />
-      </>
-    );
-  };
+  const leftToolbarTemplate = () => (
+    <>
+      <Button
+        label="New"
+        icon="pi pi-plus"
+        className="p-button-success p-mr-2"
+        onClick={openNew}
+      />
+    </>
+  );
 
   const confirmDeleteSelected = (rowData: RateType) => {
-    db.collection("goldSilverRates")
-      .doc(rowData.id)
-      .delete()
+    deleteFromDB("goldSilverRates", rowData.id)
       .then(() => {
         toastSuccess("rate deleted successfully");
-        setRates(
-          createNextState(rates, (draft) =>
-            draft.filter((i) => i.id !== rowData.id)
-          )
-        );
+        setRates(rates.filter((i) => i.id !== rowData.id));
       })
       .catch((error: any) => {
         console.error("Error deleting rates", error);
@@ -108,24 +98,10 @@ const Rates = () => {
   };
 
   const editRateToFireStore = () => {
-    db.collection("goldSilverRates")
-      .doc(selectedItem.id)
-      .set({
-        silverRate: selectedItem.silverRate,
-        goldRate: selectedItem.goldRate,
-        date: selectedItem.date,
-      })
+    edit("goldSilverRates", selectedItem)
       .then(() => {
         toastSuccess("rate successfully updated");
-        const newRates = createNextState(rates, (draft) =>
-          draft.forEach((i) => {
-            if (i.id === selectedItem?.id) {
-              i.silverRate = selectedItem.silverRate;
-              i.goldRate = selectedItem.goldRate;
-              i.date = selectedItem.date;
-            }
-          })
-        );
+        const newRates = updateList(rates, selectedItem);
         setRates(newRates);
       })
       .catch(function () {

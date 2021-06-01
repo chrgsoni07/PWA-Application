@@ -6,4 +6,5 @@ export type CollectionNameType =
   | "goldSilverRates"
   | "bills"
   | "counters"
+  | "customers"
   | ItemCategoryType;

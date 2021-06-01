@@ -22,11 +22,28 @@ export { db };
 
 export const save = async <T>(
   collectionName: CollectionNameType,
-  data: any
+  data: T & { id?: string }
 ): Promise<T> => {
   delete data["id"];
   const { id } = await db.collection(collectionName).add(data);
   return { ...data, id };
+};
+
+export const edit = async <T>(
+  collectionName: CollectionNameType,
+  data: T & { id?: string }
+): Promise<void> => {
+  const id = data.id;
+  const newData = { ...data };
+  delete newData["id"];
+  return db.collection(collectionName).doc(id).set(newData);
+};
+
+export const deleteFromDB = async (
+  collectionName: CollectionNameType,
+  id: string
+): Promise<void> => {
+  return db.collection(collectionName).doc(id).delete();
 };
 
 export const saveBill = async (bill: Bill): Promise<Bill> => {
@@ -36,64 +53,34 @@ export const saveBill = async (bill: Bill): Promise<Bill> => {
   return savedBill;
 };
 
-export const getCustomers = async (): Promise<CustomerType[]> => {
-  const collection = db.collection("customers");
+export const get = async <T>(
+  collectionName: CollectionNameType
+): Promise<T[]> => {
+  const collection = db.collection(collectionName);
 
-  return collection.get().then((querySnapshot) => {
-    const allCustomers: CustomerType[] = [];
-    querySnapshot.forEach((customer) => {
-      const customerData = customer.data();
-
-      allCustomers.push({
-        name: customerData.name,
-        mobile: customerData.mobile,
-        place: customerData.place,
-        address: customerData.address,
-        id: customer.id,
-      });
-    });
-
-    return allCustomers;
+  const querySnapshot = await collection.get();
+  const allItems: T[] = [];
+  querySnapshot.forEach((item) => {
+    const itemData = item.data();
+    allItems.push({ ...itemData, id: item.id } as any);
   });
+  return allItems;
+};
+
+export const getCustomers = async (): Promise<CustomerType[]> => {
+  return get("customers");
 };
 
 export const getBills = async (): Promise<Bill[]> => {
-  const collection = db.collection("bills");
-
-  return collection.get().then((querySnapshot) => {
-    const allBills: Bill[] = [];
-    querySnapshot.forEach((bill) => {
-      const billData = bill.data();
-      allBills.push({
-        id: bill.id,
-        billNo: billData.billNo,
-        invoiceDate: billData.invoiceDate.toDate(),
-        newItems: billData.newItems,
-        customer: billData.customer,
-        oldItems: billData.oldItems,
-        billDetail: billData.billDetail,
-      });
-    });
-    return allBills;
-  });
+  const bills = await get<Bill>("bills");
+  return bills.map((b) => ({
+    ...b,
+    invoiceDate: (b.invoiceDate as any).toDate(),
+  }));
 };
 
 export const getRates = async (): Promise<RateType[]> => {
-  const collection = db.collection("goldSilverRates");
-
-  return collection.get().then((querySnapshot) => {
-    const allRates: RateType[] = [];
-    querySnapshot.forEach((rate) => {
-      const rateData = rate.data();
-      allRates.push({
-        silverRate: rateData.silverRate,
-        goldRate: rateData.goldRate,
-        date: rateData.date,
-        id: rate.id,
-      });
-    });
-    return allRates;
-  });
+  return get<RateType>("goldSilverRates");
 };
 
 const increaseCounterValue = async () => {
@@ -106,4 +93,12 @@ const getCounterValue = async (): Promise<number> => {
   const doc = await counterRef.get();
   const counterData = doc.data();
   return counterData?.count;
+};
+
+export const deleteBill = async (id: string): Promise<void> => {
+  return deleteFromDB("bills", id);
+};
+
+export const editBill = async (bill: Bill): Promise<void> => {
+  return edit("bills", bill);
 };

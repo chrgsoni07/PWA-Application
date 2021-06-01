@@ -5,11 +5,11 @@ import { Toolbar } from "primereact/toolbar";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import { createNextState } from "@reduxjs/toolkit";
 import { ItemType } from "./types";
-import { db, save } from "api";
+import { deleteFromDB, edit, get, save } from "api";
 import { ItemCategoryType } from "api/types";
 import { useToast } from "toasts";
+import { updateList } from "utils/state.utils";
 
 const categoryMap = {
   goldItems: "Gold",
@@ -36,38 +36,30 @@ const ItemsPanel: FC<Props> = ({ category }) => {
   };
 
   const confirmDeleteItem = (rowData: ItemType) => {
-    db.collection(category)
-      .doc(rowData.id)
-      .delete()
+    deleteFromDB(category, rowData.id)
       .then(() => {
         toastSuccess("item successfully deleted");
-        setItems(
-          createNextState(items, (draft) =>
-            draft.filter((i) => i.id !== rowData.id)
-          )
-        );
+        setItems(items.filter((i) => i.id !== rowData.id));
       })
       .catch((error: Error) => {
         toastError("Error deleting item " + error.message);
       });
   };
 
-  const actionBodyTemplate = (rowData: any) => {
-    return (
-      <>
-        <Button
-          icon="pi pi-pencil"
-          className="p-button-rounded p-button-success p-mr-2"
-          onClick={() => editItem(rowData)}
-        />
-        <Button
-          icon="pi pi-trash"
-          className="p-button-rounded p-button-warning"
-          onClick={() => confirmDeleteItem(rowData)}
-        />
-      </>
-    );
-  };
+  const actionBodyTemplate = (rowData: any) => (
+    <>
+      <Button
+        icon="pi pi-pencil"
+        className="p-button-rounded p-button-success p-mr-2"
+        onClick={() => editItem(rowData)}
+      />
+      <Button
+        icon="pi pi-trash"
+        className="p-button-rounded p-button-warning"
+        onClick={() => confirmDeleteItem(rowData)}
+      />
+    </>
+  );
 
   const openNew = () => {
     setSelectedItem({ id: "", name: "" });
@@ -76,30 +68,19 @@ const ItemsPanel: FC<Props> = ({ category }) => {
   };
 
   useEffect(() => {
-    const collection = db.collection(category);
-
-    collection.get().then((querySnapshot) => {
-      const allItems: ItemType[] = [];
-      querySnapshot.forEach((item) => {
-        const itemData = item.data();
-        allItems.push({ name: itemData.name, id: item.id });
-      });
-      setItems(allItems);
-    });
+    get<ItemType>(category).then((allItems) => setItems(allItems));
   }, [category]);
 
-  const leftToolbarTemplate = () => {
-    return (
-      <>
-        <Button
-          label="New"
-          icon="pi pi-plus"
-          className="p-button-success p-mr-2"
-          onClick={openNew}
-        />
-      </>
-    );
-  };
+  const leftToolbarTemplate = () => (
+    <>
+      <Button
+        label="New"
+        icon="pi pi-plus"
+        className="p-button-success p-mr-2"
+        onClick={openNew}
+      />
+    </>
+  );
   const saveNewItem = () => {
     if (selectedItem?.id) {
       editItemToFireStore();
@@ -112,20 +93,10 @@ const ItemsPanel: FC<Props> = ({ category }) => {
   };
 
   const editItemToFireStore = () => {
-    db.collection(category)
-      .doc(selectedItem.id)
-      .set({
-        name: selectedItem.name,
-      })
+    edit(category, selectedItem)
       .then(() => {
         toastSuccess("item successfully updated");
-        const newItems = createNextState(items, (draft) =>
-          draft.forEach((i) => {
-            if (i.id === selectedItem?.id) {
-              i.name = selectedItem.name;
-            }
-          })
-        );
+        const newItems = updateList(items, selectedItem);
         setItems(newItems);
       })
       .catch((error: Error) => {
@@ -135,7 +106,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
 
   const saveItemToFireStore = async () => {
     try {
-      const savedItem: ItemType = await save(category, selectedItem);
+      const savedItem = await save(category, selectedItem);
       setItems([...items, savedItem]);
       toastSuccess("item successfully saved");
     } catch (err) {

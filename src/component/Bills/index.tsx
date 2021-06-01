@@ -8,8 +8,7 @@ import "./DataTableDemo.css";
 import { Bill } from "./types";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import { createNextState } from "@reduxjs/toolkit";
-import { db, getBills } from "api";
+import { deleteBill, getBills } from "api";
 import { Dialog } from "primereact/dialog";
 import { useToast } from "toasts";
 import { Calendar, CalendarChangeParams } from "primereact/calendar";
@@ -62,16 +61,10 @@ const Bills = () => {
     }
 
     function confirmDeleteBill(rowData: any): void {
-      db.collection("bills")
-        .doc(rowData.id)
-        .delete()
+      deleteBill(rowData.id)
         .then(() => {
           toastSuccess("bill successfully deleted");
-          setSavedBills(
-            createNextState(savedBills, (draft) =>
-              draft.filter((i) => i.id !== rowData.id)
-            )
-          );
+          setSavedBills(savedBills.filter((i) => i.id !== rowData.id));
         })
         .catch((error: Error) => {
           toastError("Error deleting bill" + error.message);
@@ -237,6 +230,8 @@ const Bills = () => {
         setBill={setBill}
         displayDialog={displayDialog}
         setDisplayDialog={setDisplayDialog}
+        setSavedBills={setSavedBills}
+        setDraftBills={setDraftBills}
       />
       <Dialog
         visible={displayViewDialog}

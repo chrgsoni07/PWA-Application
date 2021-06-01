@@ -4,11 +4,11 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import { CustomerType } from "./types";
-import { db, getCustomers } from "api";
-import { createNextState } from "@reduxjs/toolkit";
+import { deleteFromDB, edit, getCustomers, save } from "api";
 import { Dialog } from "primereact/dialog";
 import { InputTextarea } from "primereact/inputtextarea";
 import { useToast } from "toasts";
+import { updateList } from "utils/state.utils";
 
 const Customers = () => {
   const [globalFilter, setGlobalFilter] = useState("");
@@ -96,16 +96,9 @@ const Customers = () => {
   };
 
   const saveCustomerToFireStore = async () => {
-    db.collection("customers")
-      .doc()
-      .set({
-        name: selectedItem.name,
-        mobile: selectedItem.mobile,
-        place: selectedItem.place,
-        address: selectedItem.address,
-      })
-      .then(() => {
-        setCustomers([...customers, selectedItem]);
+    save("customers", selectedItem)
+      .then((newCustomer) => {
+        setCustomers([...customers, newCustomer]);
         toastSuccess("customer details successfully saved");
       })
       .catch(function () {
@@ -114,26 +107,11 @@ const Customers = () => {
   };
 
   const editCustomerToFireStore = () => {
-    db.collection("customers")
-      .doc(selectedItem.id)
-      .set({
-        name: selectedItem.name,
-        mobile: selectedItem.mobile,
-        place: selectedItem.place,
-        address: selectedItem.address,
-      })
+    edit("customers", selectedItem)
       .then(() => {
         toastSuccess("customer details successfully updated");
-        const newCustomer = createNextState(customers, (draft) =>
-          draft.forEach((i) => {
-            if (i.id === selectedItem?.id) {
-              i.mobile = selectedItem.mobile;
-              i.name = selectedItem.name;
-              i.place = selectedItem.place;
-              i.address = selectedItem.address;
-            }
-          })
-        );
+        const newCustomer = updateList(customers, selectedItem);
+
         setCustomers(newCustomer);
       })
       .catch(function () {
@@ -164,16 +142,10 @@ const Customers = () => {
   );
 
   const confirmDeleteProduct = (rowData: CustomerType) => {
-    db.collection("customers")
-      .doc(rowData.id)
-      .delete()
+    deleteFromDB("customers", rowData.id)
       .then(() => {
         toastSuccess("customer details deleted successfully");
-        setCustomers(
-          createNextState(customers, (draft) =>
-            draft.filter((i) => i.id !== rowData.id)
-          )
-        );
+        setCustomers(customers.filter((i) => i.id !== rowData.id));
       })
       .catch((error: any) => {
         toastError("Error deleting customer details");
