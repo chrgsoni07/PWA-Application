@@ -26,7 +26,9 @@ export const getRates = async (): Promise<RateType[]> => {
 export const save = async <T>(collection: any, data: any): Promise<T> => {
   return {} as T;
 };
-export const get = jest.fn();
+export const get = async <T>(): Promise<T[]> => {
+  return [];
+};
 export const edit = jest.fn();
 export const deleteFromDB = jest.fn();
 export const saveBill = jest.fn();
