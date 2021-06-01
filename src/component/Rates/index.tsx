@@ -76,7 +76,7 @@ const Rates = () => {
       id: "",
       silverRate: "",
       goldRate: "",
-      date: new Date().toLocaleDateString(),
+      date: new Date().toLocaleDateString("en-IN"),
     });
     setSubmitted(false);
     setShowDialog(true);
@@ -196,6 +196,26 @@ const Rates = () => {
           onHide={hideDialog}
         >
           <div className="p-field">
+            <label htmlFor="goldRate">Gold rate</label>
+            <InputText
+              id="goldRate"
+              onChange={(e) =>
+                setSelectedItem({
+                  ...selectedItem,
+                  goldRate: e.currentTarget.value,
+                })
+              }
+              value={selectedItem?.goldRate}
+              required
+              className={
+                submitted && !selectedItem?.goldRate ? "p-invalid" : ""
+              }
+            />
+            {submitted && !selectedItem?.goldRate && (
+              <small className="p-error">gold rate is required.</small>
+            )}
+          </div>
+          <div className="p-field">
             <label htmlFor="silverRate">Silver rate</label>
             <InputText
               id="silverRate"
@@ -214,26 +234,6 @@ const Rates = () => {
             />
             {submitted && !selectedItem?.silverRate && (
               <small className="p-error">silver rate is required.</small>
-            )}
-          </div>
-          <div className="p-field">
-            <label htmlFor="goldRate">Gold rate</label>
-            <InputText
-              id="goldRate"
-              onChange={(e) =>
-                setSelectedItem({
-                  ...selectedItem,
-                  goldRate: e.currentTarget.value,
-                })
-              }
-              value={selectedItem?.goldRate}
-              required
-              className={
-                submitted && !selectedItem?.goldRate ? "p-invalid" : ""
-              }
-            />
-            {submitted && !selectedItem?.goldRate && (
-              <small className="p-error">gold rate is required.</small>
             )}
           </div>
         </Dialog>
