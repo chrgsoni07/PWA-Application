@@ -5,10 +5,10 @@ import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import { CustomerType } from "./types";
 import { deleteFromDB, edit, getCustomers, save } from "api";
-import { createNextState } from "@reduxjs/toolkit";
 import { Dialog } from "primereact/dialog";
 import { InputTextarea } from "primereact/inputtextarea";
 import { useToast } from "toasts";
+import { updateList } from "utils/state.utils";
 
 const Customers = () => {
   const [globalFilter, setGlobalFilter] = useState("");
@@ -110,10 +110,8 @@ const Customers = () => {
     edit("customers", selectedItem)
       .then(() => {
         toastSuccess("customer details successfully updated");
-        const newCustomer = createNextState(customers, (draft) => {
-          const idx = draft.findIndex((i) => i.id === selectedItem?.id);
-          draft[idx] = selectedItem;
-        });
+        const newCustomer = updateList(customers, selectedItem);
+
         setCustomers(newCustomer);
       })
       .catch(function () {

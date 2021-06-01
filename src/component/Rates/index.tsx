@@ -8,8 +8,8 @@ import { InputText } from "primereact/inputtext";
 import React, { useState, useEffect } from "react";
 import { RateType } from "./types";
 import { deleteFromDB, edit, getRates, save } from "api";
-import { createNextState } from "@reduxjs/toolkit";
 import { useToast } from "toasts";
+import { updateList } from "utils/state.utils";
 
 const Rates = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -64,11 +64,7 @@ const Rates = () => {
     deleteFromDB("goldSilverRates", rowData.id)
       .then(() => {
         toastSuccess("rate deleted successfully");
-        setRates(
-          createNextState(rates, (draft) =>
-            draft.filter((i) => i.id !== rowData.id)
-          )
-        );
+        setRates(rates.filter((i) => i.id !== rowData.id));
       })
       .catch((error: any) => {
         console.error("Error deleting rates", error);
@@ -105,10 +101,7 @@ const Rates = () => {
     edit("goldSilverRates", selectedItem)
       .then(() => {
         toastSuccess("rate successfully updated");
-        const newRates = createNextState(rates, (draft) => {
-          const idx = draft.findIndex((i) => i.id === selectedItem?.id);
-          draft[idx] = selectedItem;
-        });
+        const newRates = updateList(rates, selectedItem);
         setRates(newRates);
       })
       .catch(function () {

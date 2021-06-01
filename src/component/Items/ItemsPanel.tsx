@@ -5,11 +5,11 @@ import { Toolbar } from "primereact/toolbar";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import { createNextState } from "@reduxjs/toolkit";
 import { ItemType } from "./types";
 import { deleteFromDB, edit, get, save } from "api";
 import { ItemCategoryType } from "api/types";
 import { useToast } from "toasts";
+import { updateList } from "utils/state.utils";
 
 const categoryMap = {
   goldItems: "Gold",
@@ -96,10 +96,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
     edit(category, selectedItem)
       .then(() => {
         toastSuccess("item successfully updated");
-        const newItems = createNextState(items, (draft) => {
-          const idx = draft.findIndex((i) => i.id === selectedItem?.id);
-          draft[idx] = selectedItem;
-        });
+        const newItems = updateList(items, selectedItem);
         setItems(newItems);
       })
       .catch((error: Error) => {
