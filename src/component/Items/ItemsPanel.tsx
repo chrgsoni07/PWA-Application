@@ -7,7 +7,7 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { createNextState } from "@reduxjs/toolkit";
 import { ItemType } from "./types";
-import { db, save } from "api";
+import { deleteFromDB, edit, get, save } from "api";
 import { ItemCategoryType } from "api/types";
 import { useToast } from "toasts";
 
@@ -36,16 +36,10 @@ const ItemsPanel: FC<Props> = ({ category }) => {
   };
 
   const confirmDeleteItem = (rowData: ItemType) => {
-    db.collection(category)
-      .doc(rowData.id)
-      .delete()
+    deleteFromDB(category, rowData.id)
       .then(() => {
         toastSuccess("item successfully deleted");
-        setItems(
-          createNextState(items, (draft) =>
-            draft.filter((i) => i.id !== rowData.id)
-          )
-        );
+        setItems(items.filter((i) => i.id !== rowData.id));
       })
       .catch((error: Error) => {
         toastError("Error deleting item " + error.message);
@@ -76,16 +70,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
   };
 
   useEffect(() => {
-    const collection = db.collection(category);
-
-    collection.get().then((querySnapshot) => {
-      const allItems: ItemType[] = [];
-      querySnapshot.forEach((item) => {
-        const itemData = item.data();
-        allItems.push({ name: itemData.name, id: item.id });
-      });
-      setItems(allItems);
-    });
+    get<ItemType>(category).then((allItems) => setItems(allItems));
   }, [category]);
 
   const leftToolbarTemplate = () => {
@@ -112,11 +97,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
   };
 
   const editItemToFireStore = () => {
-    db.collection(category)
-      .doc(selectedItem.id)
-      .set({
-        name: selectedItem.name,
-      })
+    edit(category, selectedItem)
       .then(() => {
         toastSuccess("item successfully updated");
         const newItems = createNextState(items, (draft) =>

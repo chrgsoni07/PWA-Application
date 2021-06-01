@@ -7,7 +7,7 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import React, { useState, useEffect } from "react";
 import { RateType } from "./types";
-import { db, getRates, save } from "api";
+import { deleteFromDB, edit, getRates, save } from "api";
 import { createNextState } from "@reduxjs/toolkit";
 import { useToast } from "toasts";
 
@@ -65,9 +65,7 @@ const Rates = () => {
   };
 
   const confirmDeleteSelected = (rowData: RateType) => {
-    db.collection("goldSilverRates")
-      .doc(rowData.id)
-      .delete()
+    deleteFromDB("goldSilverRates", rowData.id)
       .then(() => {
         toastSuccess("rate deleted successfully");
         setRates(
@@ -108,13 +106,7 @@ const Rates = () => {
   };
 
   const editRateToFireStore = () => {
-    db.collection("goldSilverRates")
-      .doc(selectedItem.id)
-      .set({
-        silverRate: selectedItem.silverRate,
-        goldRate: selectedItem.goldRate,
-        date: selectedItem.date,
-      })
+    edit("goldSilverRates", selectedItem)
       .then(() => {
         toastSuccess("rate successfully updated");
         const newRates = createNextState(rates, (draft) =>

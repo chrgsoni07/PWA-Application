@@ -10,7 +10,7 @@ import { NewItems } from "./NewItems";
 import { OldItems } from "./OldItems";
 import { Bill, BillDetails } from "../types";
 import { useToast } from "toasts";
-import { db } from "api";
+import { editBill } from "api";
 
 import reducer, {
   amountPaidChanged,
@@ -102,9 +102,7 @@ export const AddNewBill: FC<AddNewBillProps> = ({
   };
 
   const editBillToFirestore = async (newBill: Bill) => {
-    db.collection("bills")
-      .doc(newBill.id)
-      .set(newBill)
+    editBill(newBill)
       .then(() => {
         toastSuccess("bill successfully updated");
       })
