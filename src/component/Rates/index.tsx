@@ -50,14 +50,12 @@ const Rates = () => {
   );
 
   const leftToolbarTemplate = () => (
-    <>
-      <Button
-        label="New"
-        icon="pi pi-plus"
-        className="p-button-success p-mr-2"
-        onClick={openNew}
-      />
-    </>
+    <Button
+      label="New"
+      icon="pi pi-plus"
+      className="p-button-success p-mr-2"
+      onClick={openNew}
+    />
   );
 
   const confirmDeleteSelected = (rowData: RateType) => {
@@ -104,7 +102,7 @@ const Rates = () => {
         const newRates = updateList(rates, selectedItem);
         setRates(newRates);
       })
-      .catch(function () {
+      .catch(() => {
         toastError("Error updating rates");
       });
   };
@@ -137,108 +135,104 @@ const Rates = () => {
   );
 
   return (
-    <>
-      <Card>
-        <div style={{ height: 235 }}>
-          <iframe
-            title="current rates"
-            src="https://www.goldpriceindia.com/wmshare-wlifop-001.php"
-            style={{
-              position: "relative",
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: 0,
-              width: "100%",
-              height: "100%",
-              border: "none",
-              margin: 0,
-              padding: 0,
-              overflow: "hidden",
-            }}
-          />
-        </div>
-        <div className="card">
-          <Toolbar left={leftToolbarTemplate}></Toolbar>
-          <DataTable
-            value={rates}
-            selection={selectedProduct}
-            onSelectionChange={(e) => setSelectedProduct(e.value)}
-            paginator
-            rows={10}
-            rowsPerPageOptions={[5, 10, 25]}
-            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-            selectionMode="single"
-            dataKey="id"
-            className="p-datatable-gridlines p-datatable-sm"
-          >
-            <Column
-              field="id"
-              header="Id"
-              sortable
-              body={(_: any, prop: any) => prop.rowIndex + 1}
-            ></Column>
-            <Column field="goldRate" header="Gold (10 gram)"></Column>
-            <Column field="silverRate" header="Silver (1 kg)"></Column>
-            <Column field="date" header="Date"></Column>
-            <Column body={actionBodyTemplate}></Column>
-          </DataTable>
-        </div>
-
-        <Dialog
-          header={"Add new rate"}
-          visible={showDialog}
-          style={{ width: "450px" }}
-          modal
-          className="p-fluid"
-          footer={itemDialogFooter}
-          onHide={hideDialog}
+    <Card>
+      <div style={{ height: 235 }}>
+        <iframe
+          title="current rates"
+          src="https://www.goldpriceindia.com/wmshare-wlifop-001.php"
+          style={{
+            position: "relative",
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            width: "100%",
+            height: "100%",
+            border: "none",
+            margin: 0,
+            padding: 0,
+            overflow: "hidden",
+          }}
+        />
+      </div>
+      <div className="card">
+        <Toolbar left={leftToolbarTemplate}></Toolbar>
+        <DataTable
+          value={rates}
+          selection={selectedProduct}
+          onSelectionChange={(e) => setSelectedProduct(e.value)}
+          paginator
+          rows={10}
+          rowsPerPageOptions={[5, 10, 25]}
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+          selectionMode="single"
+          dataKey="id"
+          className="p-datatable-gridlines p-datatable-sm"
         >
-          <div className="p-field">
-            <label htmlFor="silverRate">Silver rate</label>
-            <InputText
-              id="silverRate"
-              onChange={(e) =>
-                setSelectedItem({
-                  ...selectedItem,
-                  silverRate: e.currentTarget.value,
-                })
-              }
-              value={selectedItem?.silverRate}
-              required
-              autoFocus
-              className={
-                submitted && !selectedItem?.silverRate ? "p-invalid" : ""
-              }
-            />
-            {submitted && !selectedItem?.silverRate && (
-              <small className="p-error">silver rate is required.</small>
-            )}
-          </div>
-          <div className="p-field">
-            <label htmlFor="goldRate">Gold rate</label>
-            <InputText
-              id="goldRate"
-              onChange={(e) =>
-                setSelectedItem({
-                  ...selectedItem,
-                  goldRate: e.currentTarget.value,
-                })
-              }
-              value={selectedItem?.goldRate}
-              required
-              className={
-                submitted && !selectedItem?.goldRate ? "p-invalid" : ""
-              }
-            />
-            {submitted && !selectedItem?.goldRate && (
-              <small className="p-error">gold rate is required.</small>
-            )}
-          </div>
-        </Dialog>
-      </Card>
-    </>
+          <Column
+            field="id"
+            header="Id"
+            sortable
+            body={(_: any, prop: any) => prop.rowIndex + 1}
+          ></Column>
+          <Column field="goldRate" header="Gold (10 gram)"></Column>
+          <Column field="silverRate" header="Silver (1 kg)"></Column>
+          <Column field="date" header="Date"></Column>
+          <Column body={actionBodyTemplate}></Column>
+        </DataTable>
+      </div>
+
+      <Dialog
+        header={"Add new rate"}
+        visible={showDialog}
+        style={{ width: "450px" }}
+        modal
+        className="p-fluid"
+        footer={itemDialogFooter}
+        onHide={hideDialog}
+      >
+        <div className="p-field">
+          <label htmlFor="silverRate">Silver rate</label>
+          <InputText
+            id="silverRate"
+            onChange={(e) =>
+              setSelectedItem({
+                ...selectedItem,
+                silverRate: e.currentTarget.value,
+              })
+            }
+            value={selectedItem?.silverRate}
+            required
+            autoFocus
+            className={
+              submitted && !selectedItem?.silverRate ? "p-invalid" : ""
+            }
+          />
+          {submitted && !selectedItem?.silverRate && (
+            <small className="p-error">silver rate is required.</small>
+          )}
+        </div>
+        <div className="p-field">
+          <label htmlFor="goldRate">Gold rate</label>
+          <InputText
+            id="goldRate"
+            onChange={(e) =>
+              setSelectedItem({
+                ...selectedItem,
+                goldRate: e.currentTarget.value,
+              })
+            }
+            value={selectedItem?.goldRate}
+            required
+            className={submitted && !selectedItem?.goldRate ? "p-invalid" : ""}
+          />
+          {submitted && !selectedItem?.goldRate && (
+            <small className="p-error">gold rate is required.</small>
+          )}
+        </div>
+      </Dialog>
+    </Card>
   );
 };
 export default Rates;
