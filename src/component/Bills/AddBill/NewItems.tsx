@@ -8,6 +8,7 @@ import {
 } from "utils/currency.utils";
 import {
   AddNewRow,
+  AmountEditor,
   DeleteButton,
   FooterAmount,
   ItemsTable,
@@ -76,17 +77,10 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
     />
   );
 
-  const isTypeSilverPerPrice = (props: any) => {
-    let type = props.rowData["type"];
-
-    return type !== "fixed";
-  };
-
   const newItemAmountEditor = (props: any) => (
-    <InputNumber
-      value={props.rowData["amount"]}
+    <AmountEditor
+      props={props}
       onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
-      disabled={isTypeSilverPerPrice(props)}
     />
   );
 
