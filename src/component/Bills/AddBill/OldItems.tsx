@@ -46,19 +46,16 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
     />
   );
 
-  const isTypeSilverPerPrice = (props: any) => {
-    let type = props.rowData["type"];
-
-    return type !== "fixed";
+  const OldAmountEditor = (props: any) => {
+    if (props.rowData["type"] !== "fixed") return null;
+    const value = props.rowData["amount"] || null;
+    return (
+      <InputNumber
+        value={value}
+        onValueChange={(e) => onEditorValueChangeOld(props, e.value)}
+      />
+    );
   };
-
-  const OldAmountEditor = (props: any) => (
-    <InputNumber
-      value={props.rowData["amount"]}
-      onChange={(e) => onEditorValueChangeOld(props, e.value)}
-      disabled={isTypeSilverPerPrice(props)}
-    />
-  );
 
   const oldItemEditor = (props: any) => inputTextEditorOld(props, "item");
 

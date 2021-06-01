@@ -3,6 +3,10 @@ import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
 import { DataTable, DataTableProps } from "primereact/datatable";
 import { Dropdown, DropdownProps } from "primereact/dropdown";
+import {
+  InputNumber,
+  InputNumberValueChangeParams,
+} from "primereact/inputnumber";
 import { Row } from "primereact/row";
 import { Toolbar } from "primereact/toolbar";
 import { FC } from "react";
@@ -82,3 +86,12 @@ export const AddNewRow = ({ onClick }: any) => (
 
 export const itemTypeBodyTemplate = (rowData: any) =>
   itemType.find(({ value }) => rowData.type === value)?.label;
+
+export const AmountEditor: FC<{
+  props: any;
+  onValueChange: (e: InputNumberValueChangeParams) => void;
+}> = ({ props, onValueChange }: any) => {
+  if (props.rowData["type"] !== "fixed") return null;
+  const value = props.rowData["amount"] || null;
+  return <InputNumber value={value} onValueChange={onValueChange} />;
+};
