@@ -43,7 +43,8 @@ const bill = {
       weight: "",
       rate: "",
       makingCharges: "",
-      otherCharges: "200",
+      otherCharges: "",
+      fixedAmount: "200",
       amount: "₹200",
     },
   ],
@@ -166,10 +167,19 @@ const clickEditButton = (row: HTMLElement) => {
 const fillNewItemDetails = (cells: HTMLElement[], item: any) => {
   selectType(cells[0], item.type);
   enterName(cells[1], item.name);
-  enterWeight(cells[2], item.weight);
-  enterRate(cells[3], item.rate);
-  enterMakingCharges(cells[4], item.makingCharges);
-  enterOtherCharges(cells[5], item.otherCharges);
+  if (item.type !== "Fixed") {
+    enterWeight(cells[2], item.weight);
+    enterRate(cells[3], item.rate);
+    enterMakingCharges(cells[4], item.makingCharges);
+    enterOtherCharges(cells[5], item.otherCharges);
+  }
+  if (item.type === "Fixed") {
+    enterAmount(cells[6], item.fixedAmount);
+  }
+};
+
+const enterAmount = (cell: HTMLElement, fixedAmount: string) => {
+  userEvent.type(within(cell).getByRole("spinbutton"), fixedAmount);
 };
 
 const selectType = (cell: HTMLElement, type: string) => {

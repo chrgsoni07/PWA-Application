@@ -85,7 +85,7 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
   const newItemAmountEditor = (props: any) => (
     <InputNumber
       value={props.rowData["amount"]}
-      onChange={(e) => onEditorValueChangeNew(props, e.value)}
+      onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
       disabled={isTypeSilverPerPrice(props)}
     />
   );

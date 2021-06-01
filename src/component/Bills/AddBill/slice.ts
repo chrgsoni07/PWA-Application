@@ -8,7 +8,7 @@ const calculateNewItemAmount = ({
   makingCharges = 0,
   rate = 0,
   otherCharges = 0,
-  amount = 0,
+  amount,
 }: NewItem) => {
   let calculatedAmount = 0;
   if (type === "gold") {
@@ -17,7 +17,7 @@ const calculateNewItemAmount = ({
   } else if (type === "silver") {
     calculatedAmount = weight * (rate / 1000) + otherCharges;
   } else if (type === "fixed") {
-    calculatedAmount = otherCharges;
+    calculatedAmount = amount;
   }
 
   return Math.round(calculatedAmount);
@@ -51,7 +51,7 @@ const slice = createSlice({
   initialState: {} as State,
   reducers: {
     addNewItem: (state) => {
-      state.newItems.push({ type: "gold", item: "" } as NewItem);
+      state.newItems.push({ type: "gold", item: "", amount: 0 } as NewItem);
     },
     deleteNewItem: ({ newItems }, { payload }: PayloadAction<number>) => {
       newItems.splice(payload, 1);
@@ -67,7 +67,7 @@ const slice = createSlice({
       newItem.amount = calculateNewItemAmount(newItem);
     },
     addOldItem: (state) => {
-      state.oldItems.push({ type: "gold", item: "" } as OldItem);
+      state.oldItems.push({ type: "gold", item: "", amount: 0 } as OldItem);
     },
     deleteOldItem: ({ oldItems }, { payload }: PayloadAction<number>) => {
       oldItems.splice(payload, 1);
