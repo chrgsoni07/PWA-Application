@@ -85,7 +85,6 @@ const Customers = () => {
   );
 
   const saveNewCustomer = () => {
-    //    console.log('selected item '+ JSON.stringify(selectedItem));
     if (selectedItem?.id) {
       editCustomerToFireStore();
     } else {

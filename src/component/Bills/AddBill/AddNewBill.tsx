@@ -10,21 +10,18 @@ import { NewItems } from "./NewItems";
 import { OldItems } from "./OldItems";
 import { Bill, BillDetails } from "../types";
 import { useToast } from "toasts";
-import { editBill } from "api";
-
+import { editBill, saveBill } from "api";
 import reducer, {
   amountPaidChanged,
   discountChanged,
   updateState,
   updateTotalAmount,
 } from "./slice";
-import { saveBill } from "api";
 
 type AddNewBillProps = {
   displayDialog: boolean;
   bill: Bill;
   setDisplayDialog: (flag: boolean) => void;
-  setBill: React.Dispatch<React.SetStateAction<Bill>>;
   setSavedBills: React.Dispatch<React.SetStateAction<Bill[]>>;
   setDraftBills: React.Dispatch<React.SetStateAction<Bill[]>>;
 };
@@ -32,7 +29,6 @@ export const AddNewBill: FC<AddNewBillProps> = ({
   displayDialog,
   setDisplayDialog,
   bill,
-  setBill,
   setSavedBills,
   setDraftBills,
 }) => {
@@ -73,7 +69,6 @@ export const AddNewBill: FC<AddNewBillProps> = ({
 
   const onHide = () => {
     setDisplayDialog(false);
-    setBill({} as Bill);
   };
 
   const onSave = () => {
@@ -91,7 +86,7 @@ export const AddNewBill: FC<AddNewBillProps> = ({
     } else {
       saveBillToFirestore(newBill);
     }
-    setBill(newBill);
+
     setDisplayDialog(false);
   };
 
