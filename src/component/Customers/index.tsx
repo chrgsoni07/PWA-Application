@@ -110,16 +110,10 @@ const Customers = () => {
     edit("customers", selectedItem)
       .then(() => {
         toastSuccess("customer details successfully updated");
-        const newCustomer = createNextState(customers, (draft) =>
-          draft.forEach((i) => {
-            if (i.id === selectedItem?.id) {
-              i.mobile = selectedItem.mobile;
-              i.name = selectedItem.name;
-              i.place = selectedItem.place;
-              i.address = selectedItem.address;
-            }
-          })
-        );
+        const newCustomer = createNextState(customers, (draft) => {
+          const idx = draft.findIndex((i) => i.id === selectedItem?.id);
+          draft[idx] = selectedItem;
+        });
         setCustomers(newCustomer);
       })
       .catch(function () {

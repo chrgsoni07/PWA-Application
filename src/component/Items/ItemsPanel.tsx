@@ -100,13 +100,10 @@ const ItemsPanel: FC<Props> = ({ category }) => {
     edit(category, selectedItem)
       .then(() => {
         toastSuccess("item successfully updated");
-        const newItems = createNextState(items, (draft) =>
-          draft.forEach((i) => {
-            if (i.id === selectedItem?.id) {
-              i.name = selectedItem.name;
-            }
-          })
-        );
+        const newItems = createNextState(items, (draft) => {
+          const idx = draft.findIndex((i) => i.id === selectedItem?.id);
+          draft[idx] = selectedItem;
+        });
         setItems(newItems);
       })
       .catch((error: Error) => {
@@ -116,7 +113,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
 
   const saveItemToFireStore = async () => {
     try {
-      const savedItem: ItemType = await save(category, selectedItem);
+      const savedItem = await save(category, selectedItem);
       setItems([...items, savedItem]);
       toastSuccess("item successfully saved");
     } catch (err) {

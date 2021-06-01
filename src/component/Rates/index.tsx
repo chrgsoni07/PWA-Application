@@ -109,15 +109,10 @@ const Rates = () => {
     edit("goldSilverRates", selectedItem)
       .then(() => {
         toastSuccess("rate successfully updated");
-        const newRates = createNextState(rates, (draft) =>
-          draft.forEach((i) => {
-            if (i.id === selectedItem?.id) {
-              i.silverRate = selectedItem.silverRate;
-              i.goldRate = selectedItem.goldRate;
-              i.date = selectedItem.date;
-            }
-          })
-        );
+        const newRates = createNextState(rates, (draft) => {
+          const idx = draft.findIndex((i) => i.id === selectedItem?.id);
+          draft[idx] = selectedItem;
+        });
         setRates(newRates);
       })
       .catch(function () {
