@@ -6,7 +6,7 @@ import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { ItemType } from "./types";
-import { deleteFromDB, edit, get, save } from "api";
+import { deleteFromDB, edit, get, getItems, save } from "api";
 import { ItemCategoryType } from "api/types";
 import { useToast } from "toasts";
 import { updateList } from "utils/state.utils";
@@ -68,7 +68,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
   };
 
   useEffect(() => {
-    get<ItemType>(category).then((allItems) => setItems(allItems));
+    getItems(category).then((allItems) => setItems(allItems));
   }, [category]);
 
   const leftToolbarTemplate = () => (

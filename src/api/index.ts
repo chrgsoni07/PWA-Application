@@ -1,8 +1,9 @@
 import { Bill } from "component/Bills/types";
 import { CustomerType } from "component/Customers/types";
+import { ItemType } from "component/Items/types";
 import { RateType } from "component/Rates/types";
 import firebase from "firebase";
-import { CollectionNameType } from "./types";
+import { CollectionNameType, ItemCategoryType } from "./types";
 
 const firebaseApp = firebase.initializeApp({
   apiKey: "AIzaSyBliuj3l49dWcJ0Bb0jCGFLA8oSbMi9AFs",
@@ -81,6 +82,11 @@ export const getBills = async (): Promise<Bill[]> => {
 
 export const getRates = async (): Promise<RateType[]> => {
   return get<RateType>("goldSilverRates");
+};
+export const getItems = async (
+  category: ItemCategoryType
+): Promise<ItemType[]> => {
+  return get<ItemType>(category);
 };
 
 const increaseCounterValue = async () => {
