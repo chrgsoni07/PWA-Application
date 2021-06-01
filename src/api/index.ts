@@ -36,7 +36,7 @@ export const edit = async <T>(
   const id = data.id;
   const newData = { ...data };
   delete newData["id"];
-  return db.collection(collectionName).doc(id).set(data);
+  return db.collection(collectionName).doc(id).set(newData);
 };
 
 export const deleteFromDB = async (
