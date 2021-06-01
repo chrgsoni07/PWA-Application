@@ -230,6 +230,8 @@ const Bills = () => {
         setBill={setBill}
         displayDialog={displayDialog}
         setDisplayDialog={setDisplayDialog}
+        setSavedBills={setSavedBills}
+        setDraftBills={setDraftBills}
       />
       <Dialog
         visible={displayViewDialog}

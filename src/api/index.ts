@@ -34,11 +34,12 @@ export const edit = async <T>(
   data: T & { id?: string }
 ): Promise<void> => {
   const id = data.id;
-  delete data["id"];
+  const newData = { ...data };
+  delete newData["id"];
   return db.collection(collectionName).doc(id).set(data);
 };
 
-export const deleteFromDB = async <T>(
+export const deleteFromDB = async (
   collectionName: CollectionNameType,
   id: string
 ): Promise<void> => {

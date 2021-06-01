@@ -24,13 +24,17 @@ type AddNewBillProps = {
   displayDialog: boolean;
   bill: Bill;
   setDisplayDialog: (flag: boolean) => void;
-  setBill: (bill: Bill) => void;
+  setBill: React.Dispatch<React.SetStateAction<Bill>>;
+  setSavedBills: React.Dispatch<React.SetStateAction<Bill[]>>;
+  setDraftBills: React.Dispatch<React.SetStateAction<Bill[]>>;
 };
 export const AddNewBill: FC<AddNewBillProps> = ({
   displayDialog,
   setDisplayDialog,
   bill,
   setBill,
+  setSavedBills,
+  setDraftBills,
 }) => {
   const [invoiceDate, setInvoiceDate] = useState<Date>(new Date());
   const [selectedCustomer, setSelectedCustomer] = useState<CustomerType>(
@@ -96,6 +100,7 @@ export const AddNewBill: FC<AddNewBillProps> = ({
       const savedBill: Bill = await saveBill(newBill);
       console.log("saved bill" + savedBill);
       toastSuccess("bill successfully saved");
+      setSavedBills((bills) => [...bills, savedBill]);
     } catch (err) {
       toastError("Error saving bill");
     }
@@ -112,7 +117,7 @@ export const AddNewBill: FC<AddNewBillProps> = ({
   };
 
   const saveToDraft = () => {
-    let priviousBills = JSON.parse(localStorage.getItem("draftBills") || "[]");
+    let previousBills = JSON.parse(localStorage.getItem("draftBills") || "[]");
 
     const draftBill = {
       ...bill,
@@ -123,10 +128,10 @@ export const AddNewBill: FC<AddNewBillProps> = ({
       billDetail: billDetails,
     };
 
-    priviousBills.push(draftBill);
+    previousBills.push(draftBill);
 
-    localStorage.setItem("draftBills", JSON.stringify(priviousBills));
-
+    localStorage.setItem("draftBills", JSON.stringify(previousBills));
+    setDraftBills(previousBills);
     setDisplayDialog(false);
   };
 
