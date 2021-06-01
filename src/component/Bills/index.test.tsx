@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ToastsProvider } from "toasts";
 import Bills from ".";
@@ -29,7 +29,9 @@ describe("Bills", () => {
     const beforeEditBill = asFragment();
 
     userEvent.click(screen.getByRole("button", { name: "editBill" }));
-
+    await waitFor(() => {
+      expect(screen.getByLabelText("Select customer")).not.toBeDisabled();
+    });
     expect(screen.getByText("2020202020")).toBeInTheDocument();
     expect(beforeEditBill).toMatchDiffSnapshot(asFragment());
 
