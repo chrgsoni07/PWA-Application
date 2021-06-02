@@ -74,7 +74,7 @@ const Rates = () => {
       id: "",
       silverRate: "",
       goldRate: "",
-      date: new Date().toLocaleDateString(),
+      date: new Date().toLocaleDateString("en-IN"),
     });
     setSubmitted(false);
     setShowDialog(true);
@@ -193,27 +193,6 @@ const Rates = () => {
         onHide={hideDialog}
       >
         <div className="p-field">
-          <label htmlFor="silverRate">Silver rate</label>
-          <InputText
-            id="silverRate"
-            onChange={(e) =>
-              setSelectedItem({
-                ...selectedItem,
-                silverRate: e.currentTarget.value,
-              })
-            }
-            value={selectedItem?.silverRate}
-            required
-            autoFocus
-            className={
-              submitted && !selectedItem?.silverRate ? "p-invalid" : ""
-            }
-          />
-          {submitted && !selectedItem?.silverRate && (
-            <small className="p-error">silver rate is required.</small>
-          )}
-        </div>
-        <div className="p-field">
           <label htmlFor="goldRate">Gold rate</label>
           <InputText
             id="goldRate"
@@ -229,6 +208,23 @@ const Rates = () => {
           />
           {submitted && !selectedItem?.goldRate && (
             <small className="p-error">gold rate is required.</small>
+          )}
+        </div>
+        <div className="p-field">
+          <label htmlFor="silverRate">Silver rate</label>
+          <InputText
+            id="silverRate"
+            onChange={(e) =>
+              setSelectedItem({
+                ...selectedItem,
+                silverRate: e.currentTarget.value,
+              })
+            }
+            value={selectedItem?.silverRate}
+            required
+          />
+          {submitted && !selectedItem?.silverRate && (
+            <small className="p-error">silver rate is required.</small>
           )}
         </div>
       </Dialog>

@@ -1,7 +1,4 @@
-export type ItemCategoryType =
-  | "goldItems"
-  | "silverPerPriceItems"
-  | "silverPerWeightItems";
+export type ItemCategoryType = "goldItems" | "silverItems" | "fixed";
 export type CollectionNameType =
   | "goldSilverRates"
   | "bills"

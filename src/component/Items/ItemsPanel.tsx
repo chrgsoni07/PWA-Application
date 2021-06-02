@@ -13,8 +13,8 @@ import { updateList } from "utils/state.utils";
 
 const categoryMap = {
   goldItems: "Gold",
-  silverPerPriceItems: "Silver per price",
-  silverPerWeightItems: "Silver per weight",
+  silverItems: "Silver",
+  fixed: "Fixed",
 };
 type Props = {
   category: ItemCategoryType;
@@ -85,7 +85,6 @@ const ItemsPanel: FC<Props> = ({ category }) => {
     if (selectedItem?.id) {
       editItemToFireStore();
     } else {
-      // call API to retrieve new ID
       saveItemToFireStore();
     }
     setSubmitted(true);

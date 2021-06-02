@@ -25,50 +25,60 @@ const ViewBill: FC<ViewBillProps> = ({ bill }) => {
   return (
     <>
       <div className="p-grid">
-        <div className="p-col">
+        <div className="p-col-8">
           <Divider align="left">
             <div className="p-d-inline-flex p-ai-center">
-              <i className="pi pi-book p-mr-2"></i>
-              <b>Bill No. {billNo}</b>
+              <i className="pi pi-user p-mr-2"></i>
+              <b>Customer</b>
             </div>
           </Divider>
-        </div>
-        <div className="p-col">
-          <Divider align="left">
-            <div className="p-d-inline-flex p-ai-center">
-              <i className="pi pi-calendar p-mr-2"></i>
-              <b>Date {invoiceDate}</b>
+
+          <div className="p-grid">
+            <div className="p-col-12 p-md-6 p-lg-3">
+              <label id="name">Name:</label>
+              <span id="name"> {customer?.name}</span>
             </div>
-          </Divider>
-        </div>
-      </div>
 
-      <Divider align="left">
-        <div className="p-d-inline-flex p-ai-center">
-          <i className="pi pi-user p-mr-2"></i>
-          <b>Customer</b>
-        </div>
-      </Divider>
+            <div className="p-col-12 p-md-6 p-lg-3">
+              <label id="place">Place:</label>
+              <span id="place"> {customer?.place}</span>
+            </div>
 
-      <div className="p-grid">
-        <div className="p-col">
-          <label id="name">Name:</label>
-          <span id="name"> {customer?.name}</span>
-        </div>
+            {customer?.mobile && (
+              <div className="p-col-12 p-md-6 p-lg-3">
+                <label id="mobile">Mobile:</label>
+                <span id="mobile"> {customer?.mobile}</span>
+              </div>
+            )}
 
-        <div className="p-col">
-          <label id="place">Place:</label>
-          <span id="place"> {customer?.place}</span>
-        </div>
-
-        <div className="p-col">
-          <label id="mobile">Mobile:</label>
-          <span id="mobile"> {customer?.mobile}</span>
+            {customer?.address && (
+              <div className="p-col-12 p-md-6 p-lg-3">
+                <label id="address">Address:</label>
+                <span id="address"> {customer?.address}</span>
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className="p-col">
-          <label id="address">Address:</label>
-          <span id="address"> {customer?.address}</span>
+        <div className="p-col-4">
+          <div className="p-grid">
+            <div className="p-col">
+              <Divider align="left">
+                <div className="p-d-inline-flex p-ai-center">
+                  <i className="pi pi-book p-mr-2"></i>
+                  <b>Bill No. {billNo}</b>
+                </div>
+              </Divider>
+            </div>
+            <div className="p-col">
+              <Divider align="left">
+                <div className="p-d-inline-flex p-ai-center">
+                  <i className="pi pi-calendar p-mr-2"></i>
+                  <b>Date {invoiceDate}</b>
+                </div>
+              </Divider>
+            </div>
+          </div>
         </div>
       </div>
 

@@ -93,6 +93,39 @@ const Bills = () => {
       </>
     );
   };
+
+  const actionBodyTemplateDraft = (rowData: any, { rowIndex }: any) => {
+    function editBill(): void {
+      setBill({ ...rowData, invoiceDate: rowData.invoiceDate });
+      setDisplayDialog(true);
+    }
+
+    function confirmDeleteBill(): void {
+      let localStoredBills: Bill[] = JSON.parse(
+        localStorage.getItem("draftBills") || "[]"
+      );
+      localStoredBills.splice(rowIndex, 1);
+      localStorage.setItem("draftBills", JSON.stringify(localStoredBills));
+      setDraftBills(localStoredBills);
+    }
+
+    return (
+      <>
+        <Button
+          aria-label="editBill"
+          icon="pi pi-pencil"
+          className="p-button-rounded p-button-success p-mr-2"
+          onClick={editBill}
+        />
+        <Button
+          icon="pi pi-trash"
+          className="p-button-rounded p-button-warning"
+          onClick={confirmDeleteBill}
+        />
+      </>
+    );
+  };
+
   const onDateChange = (e: CalendarChangeParams) => {
     dt.current?.filter(e.value, "invoiceDate", "custom");
     setSelectedDate(e.value as any);
@@ -218,7 +251,7 @@ const Bills = () => {
                 ></Column>
                 <Column field="billDetail.paid" header="Paid"></Column>
                 <Column field="billDetail.due" header="Due"></Column>
-                <Column body={actionBodyTemplate}></Column>
+                <Column body={actionBodyTemplateDraft}></Column>
               </DataTable>
             </div>
           </TabPanel>
