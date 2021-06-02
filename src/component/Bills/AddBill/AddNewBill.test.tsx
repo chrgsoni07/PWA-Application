@@ -7,7 +7,6 @@ import { ToastsProvider } from "toasts";
 
 jest.mock("api");
 
-let mockSetBill = jest.fn();
 let mockSetDisplayDialog = jest.fn();
 const mockDate = new Date(2020, 10, 17);
 const bill = {
@@ -108,7 +107,6 @@ describe("Add new bill component", () => {
     userEvent.type(screen.getByLabelText("Amount paid"), bill.paid);
     expect(screen.getByLabelText("Due")).toHaveValue(bill.due);
     userEvent.click(screen.getByRole("button", { name: /save/i }));
-    expect(mockSetBill).toHaveBeenCalled();
   });
 
   it("should show date auto filled", async () => {
@@ -127,7 +125,6 @@ const setup = async () => {
         displayDialog={true}
         setDisplayDialog={mockSetDisplayDialog}
         bill={{} as Bill}
-        setBill={mockSetBill}
         setSavedBills={jest.fn()}
         setDraftBills={jest.fn()}
       />
