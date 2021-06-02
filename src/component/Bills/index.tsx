@@ -260,7 +260,6 @@ const Bills = () => {
 
       <AddNewBill
         bill={bill}
-        setBill={setBill}
         displayDialog={displayDialog}
         setDisplayDialog={setDisplayDialog}
         setSavedBills={setSavedBills}
