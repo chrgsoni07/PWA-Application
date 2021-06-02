@@ -94,27 +94,19 @@ const Bills = () => {
     );
   };
 
-  const actionBodyTemplateDraft = (rowData: any) => {
-    function editBill(rowData: any): void {
+  const actionBodyTemplateDraft = (rowData: any, { rowIndex }: any) => {
+    function editBill(): void {
       setBill({ ...rowData, invoiceDate: rowData.invoiceDate });
       setDisplayDialog(true);
     }
 
-    function confirmDeleteBill(rowData: any): void {
+    function confirmDeleteBill(): void {
       let localStoredBills: Bill[] = JSON.parse(
         localStorage.getItem("draftBills") || "[]"
       );
-      let searchedIndex = localStoredBills.findIndex(
-        (x) => x.invoiceDate === rowData.invoiceDate
-      );
-      localStoredBills.splice(searchedIndex, 1);
+      localStoredBills.splice(rowIndex, 1);
       localStorage.setItem("draftBills", JSON.stringify(localStoredBills));
-      // TODO filter draftBills by index
-      setDraftBills(
-        draftBills.filter((x) => x.invoiceDate !== rowData.invoiceDate)
-      );
-
-      //   localStorage.setItem("draftBills", JSON.stringify(localStoredBills.filter(x => x.invoiceDate !== rowData.invoiceDate)));
+      setDraftBills(localStoredBills);
     }
 
     return (
@@ -123,12 +115,12 @@ const Bills = () => {
           aria-label="editBill"
           icon="pi pi-pencil"
           className="p-button-rounded p-button-success p-mr-2"
-          onClick={() => editBill(rowData)}
+          onClick={editBill}
         />
         <Button
           icon="pi pi-trash"
           className="p-button-rounded p-button-warning"
-          onClick={() => confirmDeleteBill(rowData)}
+          onClick={confirmDeleteBill}
         />
       </>
     );

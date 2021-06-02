@@ -1,5 +1,7 @@
+import { CollectionNameType, ItemCategoryType } from "api/types";
 import { Bill } from "component/Bills/types";
 import { CustomerType } from "component/Customers/types";
+import { ItemType } from "component/Items/types";
 import { RateType } from "component/Rates/types";
 import { bills } from "./billdata";
 
@@ -20,13 +22,26 @@ export const getCustomers = async (): Promise<CustomerType[]> => {
 };
 
 export const getRates = async (): Promise<RateType[]> => {
-  return [];
+  return [
+    { date: "20/10/2010", goldRate: "45000", id: "test", silverRate: "75000" },
+  ];
 };
-
-export const save = async <T>(collection: any, data: any): Promise<T> => {
+export const getItems = async (
+  category: ItemCategoryType
+): Promise<ItemType[]> => {
+  return [{ id: "", name: "testname" }];
+};
+export const save = async <T>(
+  collectionName: CollectionNameType,
+  data: T
+): Promise<T> => {
   return {} as T;
 };
-export const get = jest.fn();
+export const get = async <T>(
+  collectionName: CollectionNameType
+): Promise<T[]> => {
+  return [];
+};
 export const edit = jest.fn();
 export const deleteFromDB = jest.fn();
 export const saveBill = jest.fn();
