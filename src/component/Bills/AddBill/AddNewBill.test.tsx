@@ -89,23 +89,13 @@ describe("Add new bill component", () => {
   });
   it("should add new items", async () => {
     await setup();
-    const addItemButtom = screen.getByRole("button", { name: /addNewRow/i });
-    bill.newItems.forEach((item, i) => {
-      userEvent.click(addItemButtom);
-      addNewItemsRow(item, i + 1);
-    });
+    bill.newItems.forEach((item, i) => addNewItemsRow(item, i + 1));
     //Add and remove new item
-    userEvent.click(addItemButtom);
     addNewItemsRow(bill.newItems[1], bill.newItems.length + 1);
     deleteRow(bill.newItems.length + 1);
     userEvent.click(screen.getByRole("tab", { name: /old item/i }));
-    const addItemButtom2 = screen.getByRole("button", { name: /addNewRow/i });
-    bill.oldItems.forEach((item, i) => {
-      userEvent.click(addItemButtom2);
-      addOldItemsRow(item, i + 1);
-    });
+    bill.oldItems.forEach((item, i) => addOldItemsRow(item, i + 1));
     //Add and remove old item
-    userEvent.click(addItemButtom2);
     addOldItemsRow(bill.oldItems[1], bill.oldItems.length + 1);
     deleteRow(bill.oldItems.length + 1);
 
@@ -156,6 +146,7 @@ const addNewItemsRow = (item: any, i: number) => {
 };
 
 const addRowAndGetCells = (rowIndex: number) => {
+  userEvent.click(screen.getByRole("button", { name: /addNewRow/i }));
   const row = screen.getAllByRole("row")[rowIndex];
   clickEditButton(row);
   return within(row).getAllByRole("cell");
