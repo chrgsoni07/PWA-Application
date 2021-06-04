@@ -14,7 +14,6 @@ import { classNames } from "primereact/utils";
 import { InputNumber } from "primereact/inputnumber";
 
 const Rates = () => {
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const [rates, setRates] = useState<RateType[]>([]);
 
   const [showDialog, setShowDialog] = useState(false);
@@ -117,7 +116,6 @@ const Rates = () => {
   };
 
   const saveOrUpdateToFirestore = (data: RateType) => {
-    console.log("data", data);
     if (data?.id) {
       editRateToFireStore(data);
     } else {
@@ -185,8 +183,6 @@ const Rates = () => {
         <Toolbar left={leftToolbarTemplate}></Toolbar>
         <DataTable
           value={rates}
-          selection={selectedProduct}
-          onSelectionChange={(e) => setSelectedProduct(e.value)}
           paginator
           rows={10}
           rowsPerPageOptions={[5, 10, 25]}
