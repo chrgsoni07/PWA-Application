@@ -51,7 +51,7 @@ const Rates = () => {
     },
 
     onSubmit: (data) => {
-      saveOrUpdateToFirestore(data);
+      saveOrUpdateRate(data);
       formik.resetForm();
     },
   });
@@ -115,8 +115,8 @@ const Rates = () => {
     setShowDialog(false);
   };
 
-  const saveOrUpdateToFirestore = (data: RateType) => {
-    if (data?.id) {
+  const saveOrUpdateRate = (data: RateType) => {
+    if (data.id) {
       editRateToFireStore(data);
     } else {
       saveRateToFireStore(data);
