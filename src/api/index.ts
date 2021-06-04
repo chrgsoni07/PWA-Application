@@ -81,8 +81,13 @@ export const getBills = async (): Promise<Bill[]> => {
 };
 
 export const getRates = async (): Promise<RateType[]> => {
-  return get<RateType>("goldSilverRates");
+  const rates = await get<RateType>("goldSilverRates");
+  return rates.map((r) => ({
+    ...r,
+    date: (r.date as any).toDate(),
+  }));
 };
+
 export const getItems = async (
   category: ItemCategoryType
 ): Promise<ItemType[]> => {
