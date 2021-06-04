@@ -22,9 +22,7 @@ export const getCustomers = async (): Promise<CustomerType[]> => {
 };
 
 export const getRates = async (): Promise<RateType[]> => {
-  return [
-    { date: "20/10/2010", goldRate: "45000", id: "test", silverRate: "75000" },
-  ];
+  return [{ date: new Date(), goldRate: 45000, id: "test", silverRate: 75000 }];
 };
 export const getItems = async (
   category: ItemCategoryType

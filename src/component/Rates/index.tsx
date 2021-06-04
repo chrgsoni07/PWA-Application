@@ -4,7 +4,6 @@ import { Column } from "primereact/column";
 import { Toolbar } from "primereact/toolbar";
 import { Card } from "primereact/card";
 import { Dialog } from "primereact/dialog";
-import { InputText } from "primereact/inputtext";
 import React, { useState, useEffect } from "react";
 import { RateType } from "./types";
 import { deleteFromDB, edit, getRates, save } from "api";
@@ -17,12 +16,6 @@ import { InputNumber } from "primereact/inputnumber";
 const Rates = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [rates, setRates] = useState<RateType[]>([]);
-  const [selectedItem, setSelectedItem] = useState<RateType>({
-    id: "",
-    silverRate: "",
-    goldRate: "",
-    date: "",
-  });
 
   const [showDialog, setShowDialog] = useState(false);
 
@@ -30,16 +23,15 @@ const Rates = () => {
 
   const editSelectedRate = (rowData: any) => {
     setShowDialog(true);
-    setSelectedItem(rowData);
-  };
-  type formType = {
-    id: string;
-    silverRate: number;
-    goldRate: number;
-    date: Date;
+    formik.setValues(rowData);
   };
 
-  const formik = useFormik<formType>({
+  const dateTemplate = (rowData: any) => {
+    var date = new Date(rowData.date);
+    return date.toLocaleDateString("en-In");
+  };
+
+  const formik = useFormik<RateType>({
     initialValues: {
       id: "",
       silverRate: 0,
@@ -47,7 +39,7 @@ const Rates = () => {
       date: new Date(),
     },
     validate: (data) => {
-      let errors: FormikErrors<formType> = {};
+      let errors: FormikErrors<RateType> = {};
 
       if (!data.goldRate) {
         errors.goldRate = "gold rate is required.";
@@ -60,16 +52,16 @@ const Rates = () => {
     },
 
     onSubmit: (data) => {
-      console.log("formik on submit", data);
+      saveOrUpdateToFirestore(data);
       formik.resetForm();
     },
   });
 
-  const isFormFieldValid = (name: keyof formType) => {
+  const isFormFieldValid = (name: keyof RateType) => {
     return !!(formik.touched[name] && formik.errors[name]);
   };
 
-  const getFormErrorMessage = (name: keyof formType) => {
+  const getFormErrorMessage = (name: keyof RateType) => {
     return (
       isFormFieldValid(name) && (
         <small className="p-error">{formik.errors[name]}</small>
@@ -117,12 +109,6 @@ const Rates = () => {
   };
 
   const openNew = () => {
-    setSelectedItem({
-      id: "",
-      silverRate: "",
-      goldRate: "",
-      date: new Date().toLocaleDateString("en-IN"),
-    });
     setShowDialog(true);
   };
 
@@ -130,20 +116,21 @@ const Rates = () => {
     setShowDialog(false);
   };
 
-  const saveNewRate = () => {
-    if (selectedItem?.id) {
-      editRateToFireStore();
+  const saveOrUpdateToFirestore = (data: RateType) => {
+    console.log("data", data);
+    if (data?.id) {
+      editRateToFireStore(data);
     } else {
-      saveRateToFireStore();
+      saveRateToFireStore(data);
     }
     hideDialog();
   };
 
-  const editRateToFireStore = () => {
-    edit("goldSilverRates", selectedItem)
+  const editRateToFireStore = (data: RateType) => {
+    edit("goldSilverRates", data)
       .then(() => {
         toastSuccess("rate successfully updated");
-        const newRates = updateList(rates, selectedItem);
+        const newRates = updateList(rates, data);
         setRates(newRates);
       })
       .catch(() => {
@@ -151,9 +138,9 @@ const Rates = () => {
       });
   };
 
-  const saveRateToFireStore = async () => {
+  const saveRateToFireStore = async (data: RateType) => {
     try {
-      const savedItem: RateType = await save("goldSilverRates", selectedItem);
+      const savedItem: RateType = await save("goldSilverRates", data);
       toastSuccess("rate successfully saved");
       setRates([...rates, savedItem]);
     } catch (err) {
@@ -169,7 +156,7 @@ const Rates = () => {
         className="p-button-text"
         onClick={hideDialog}
       />
-      <Button type="submit" label="Submit" className="p-mt-2" />
+      <Button type="submit" label="Submit" className="p-mt-2" form="rateForm" />
     </>
   );
 
@@ -217,7 +204,7 @@ const Rates = () => {
           ></Column>
           <Column field="goldRate" header="Gold (10 gram)"></Column>
           <Column field="silverRate" header="Silver (1 kg)"></Column>
-          <Column field="date" header="Date"></Column>
+          <Column field="date" header="Date" body={dateTemplate}></Column>
           <Column body={actionBodyTemplate}></Column>
         </DataTable>
       </div>
@@ -231,7 +218,7 @@ const Rates = () => {
         footer={itemDialogFooter}
         onHide={hideDialog}
       >
-        <form onSubmit={formik.handleSubmit} className="p-fluid">
+        <form onSubmit={formik.handleSubmit} className="p-fluid" id="rateForm">
           <div className="p-field">
             <label htmlFor="goldRate">Gold rate</label>
             <InputNumber
@@ -261,8 +248,6 @@ const Rates = () => {
             />
             {getFormErrorMessage("silverRate")}
           </div>
-
-          <Button type="submit" label="Submit" className="p-mt-2" />
         </form>
       </Dialog>
     </Card>
