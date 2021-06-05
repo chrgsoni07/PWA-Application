@@ -27,7 +27,6 @@ const Bills = () => {
   useEffect(() => {
     getBills().then((bills) => setSavedBills(bills));
     let draftBills = JSON.parse(localStorage.getItem("draftBills") || "[]");
-    console.log("draftbills => ", draftBills);
     setDraftBills(draftBills);
   }, []);
 

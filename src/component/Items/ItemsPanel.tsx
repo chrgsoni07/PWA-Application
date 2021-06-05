@@ -10,6 +10,8 @@ import { deleteFromDB, edit, getItems, save } from "api";
 import { ItemCategoryType } from "api/types";
 import { useToast } from "toasts";
 import { updateList } from "utils/state.utils";
+import { FormikErrors, useFormik } from "formik";
+import { classNames } from "primereact/utils";
 
 const categoryMap = {
   goldItems: "Gold",
@@ -22,17 +24,45 @@ type Props = {
 
 const ItemsPanel: FC<Props> = ({ category }) => {
   const [items, setItems] = useState<ItemType[]>([]);
-  const [selectedItem, setSelectedItem] = useState<ItemType>({
-    id: "",
-    name: "",
-  });
-  const [submitted, setSubmitted] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const { toastSuccess, toastError } = useToast();
 
   const editItem = (rowData: any) => {
     setShowDialog(true);
-    setSelectedItem(rowData);
+    formik.setValues(rowData);
+  };
+
+  const formik = useFormik<ItemType>({
+    initialValues: {
+      id: "",
+      name: "",
+    },
+    validate: (data) => {
+      let errors: FormikErrors<ItemType> = {};
+
+      if (!data.name) {
+        errors.name = "name is required.";
+      }
+
+      return errors;
+    },
+
+    onSubmit: (data) => {
+      saveOrUpdateItemName(data);
+      formik.resetForm();
+    },
+  });
+
+  const isFormFieldValid = (name: keyof ItemType) => {
+    return !!(formik.touched[name] && formik.errors[name]);
+  };
+
+  const getFormErrorMessage = (name: keyof ItemType) => {
+    return (
+      isFormFieldValid(name) && (
+        <small className="p-error">{formik.errors[name]}</small>
+      )
+    );
   };
 
   const confirmDeleteItem = (rowData: ItemType) => {
@@ -62,8 +92,6 @@ const ItemsPanel: FC<Props> = ({ category }) => {
   );
 
   const openNew = () => {
-    setSelectedItem({ id: "", name: "" });
-    setSubmitted(false);
     setShowDialog(true);
   };
 
@@ -81,21 +109,20 @@ const ItemsPanel: FC<Props> = ({ category }) => {
       />
     </>
   );
-  const saveNewItem = () => {
-    if (selectedItem?.id) {
-      editItemToFireStore();
+  const saveOrUpdateItemName = (data: ItemType) => {
+    if (data?.id) {
+      editItemToFireStore(data);
     } else {
-      saveItemToFireStore();
+      saveItemToFireStore(data);
     }
-    setSubmitted(true);
     hideDialog();
   };
 
-  const editItemToFireStore = () => {
-    edit(category, selectedItem)
+  const editItemToFireStore = (data: ItemType) => {
+    edit(category, data)
       .then(() => {
         toastSuccess("item successfully updated");
-        const newItems = updateList(items, selectedItem);
+        const newItems = updateList(items, data);
         setItems(newItems);
       })
       .catch((error: Error) => {
@@ -103,9 +130,9 @@ const ItemsPanel: FC<Props> = ({ category }) => {
       });
   };
 
-  const saveItemToFireStore = async () => {
+  const saveItemToFireStore = async (data: ItemType) => {
     try {
-      const savedItem = await save(category, selectedItem);
+      const savedItem = await save(category, data);
       setItems([...items, savedItem]);
       toastSuccess("item successfully saved");
     } catch (err) {
@@ -114,7 +141,6 @@ const ItemsPanel: FC<Props> = ({ category }) => {
   };
 
   const hideDialog = () => {
-    setSubmitted(false);
     setShowDialog(false);
   };
 
@@ -126,12 +152,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
         className="p-button-text"
         onClick={hideDialog}
       />
-      <Button
-        label="Save"
-        icon="pi pi-check"
-        className="p-button-text"
-        onClick={saveNewItem}
-      />
+      <Button type="submit" label="Submit" className="p-mt-2" form="itemForm" />
     </>
   );
 
@@ -141,8 +162,6 @@ const ItemsPanel: FC<Props> = ({ category }) => {
         <Toolbar left={leftToolbarTemplate}></Toolbar>
         <DataTable
           value={items}
-          selection={selectedItem}
-          onSelectionChange={(e) => setSelectedItem(e.value)}
           paginator
           rows={10}
           rowsPerPageOptions={[5, 10, 25]}
@@ -171,22 +190,21 @@ const ItemsPanel: FC<Props> = ({ category }) => {
         footer={itemDialogFooter}
         onHide={hideDialog}
       >
-        <div className="p-field">
-          <label htmlFor="name">Name</label>
-          <InputText
-            id="name"
-            onChange={(e) =>
-              setSelectedItem({ ...selectedItem, name: e.currentTarget.value })
-            }
-            value={selectedItem?.name}
-            required
-            autoFocus
-            className={submitted && !selectedItem?.name ? "p-invalid" : ""}
-          />
-          {submitted && !selectedItem?.name && (
-            <small className="p-error">Name is required.</small>
-          )}
-        </div>
+        <form onSubmit={formik.handleSubmit} className="p-fluid" id="itemForm">
+          <div className="p-field">
+            <label htmlFor="name">Name</label>
+            <InputText
+              id="name"
+              name="name"
+              onChange={formik.handleChange}
+              value={formik.values.name}
+              className={classNames({
+                "p-invalid": isFormFieldValid("name"),
+              })}
+            />
+            {getFormErrorMessage("name")}
+          </div>
+        </form>
       </Dialog>
     </>
   );

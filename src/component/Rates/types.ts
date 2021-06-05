@@ -1,6 +1,6 @@
 export type RateType = {
   id: string;
-  silverRate: string;
-  goldRate: string;
-  date: string;
+  silverRate: number;
+  goldRate: number;
+  date: Date;
 };

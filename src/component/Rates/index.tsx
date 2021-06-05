@@ -4,30 +4,68 @@ import { Column } from "primereact/column";
 import { Toolbar } from "primereact/toolbar";
 import { Card } from "primereact/card";
 import { Dialog } from "primereact/dialog";
-import { InputText } from "primereact/inputtext";
 import React, { useState, useEffect } from "react";
 import { RateType } from "./types";
 import { deleteFromDB, edit, getRates, save } from "api";
 import { useToast } from "toasts";
 import { updateList } from "utils/state.utils";
+import { FormikErrors, useFormik } from "formik";
+import { classNames } from "primereact/utils";
+import { InputNumber } from "primereact/inputnumber";
 
 const Rates = () => {
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const [rates, setRates] = useState<RateType[]>([]);
-  const [selectedItem, setSelectedItem] = useState<RateType>({
-    id: "",
-    silverRate: "",
-    goldRate: "",
-    date: "",
-  });
-  const [submitted, setSubmitted] = useState(false);
+
   const [showDialog, setShowDialog] = useState(false);
 
   const { toastSuccess, toastError } = useToast();
 
   const editSelectedRate = (rowData: any) => {
     setShowDialog(true);
-    setSelectedItem(rowData);
+    formik.setValues(rowData);
+  };
+
+  const dateTemplate = (rowData: any) => {
+    var date = new Date(rowData.date);
+    return date.toLocaleDateString("en-In");
+  };
+
+  const formik = useFormik<RateType>({
+    initialValues: {
+      id: "",
+      silverRate: 0,
+      goldRate: 0,
+      date: new Date(),
+    },
+    validate: (data) => {
+      let errors: FormikErrors<RateType> = {};
+
+      if (!data.goldRate) {
+        errors.goldRate = "gold rate is required.";
+      }
+
+      if (!data.silverRate) {
+        errors.silverRate = "silver rate is required.";
+      }
+      return errors;
+    },
+
+    onSubmit: (data) => {
+      saveOrUpdateRate(data);
+      formik.resetForm();
+    },
+  });
+
+  const isFormFieldValid = (name: keyof RateType) => {
+    return !!(formik.touched[name] && formik.errors[name]);
+  };
+
+  const getFormErrorMessage = (name: keyof RateType) => {
+    return (
+      isFormFieldValid(name) && (
+        <small className="p-error">{formik.errors[name]}</small>
+      )
+    );
   };
 
   useEffect(() => {
@@ -70,36 +108,27 @@ const Rates = () => {
   };
 
   const openNew = () => {
-    setSelectedItem({
-      id: "",
-      silverRate: "",
-      goldRate: "",
-      date: new Date().toLocaleDateString("en-IN"),
-    });
-    setSubmitted(false);
     setShowDialog(true);
   };
 
   const hideDialog = () => {
-    setSubmitted(false);
     setShowDialog(false);
   };
 
-  const saveNewRate = () => {
-    if (selectedItem?.id) {
-      editRateToFireStore();
+  const saveOrUpdateRate = (data: RateType) => {
+    if (data.id) {
+      editRateToFireStore(data);
     } else {
-      saveRateToFireStore();
+      saveRateToFireStore(data);
     }
-    setSubmitted(true);
     hideDialog();
   };
 
-  const editRateToFireStore = () => {
-    edit("goldSilverRates", selectedItem)
+  const editRateToFireStore = (data: RateType) => {
+    edit("goldSilverRates", data)
       .then(() => {
         toastSuccess("rate successfully updated");
-        const newRates = updateList(rates, selectedItem);
+        const newRates = updateList(rates, data);
         setRates(newRates);
       })
       .catch(() => {
@@ -107,9 +136,9 @@ const Rates = () => {
       });
   };
 
-  const saveRateToFireStore = async () => {
+  const saveRateToFireStore = async (data: RateType) => {
     try {
-      const savedItem: RateType = await save("goldSilverRates", selectedItem);
+      const savedItem: RateType = await save("goldSilverRates", data);
       toastSuccess("rate successfully saved");
       setRates([...rates, savedItem]);
     } catch (err) {
@@ -125,12 +154,7 @@ const Rates = () => {
         className="p-button-text"
         onClick={hideDialog}
       />
-      <Button
-        label="Save"
-        icon="pi pi-check"
-        className="p-button-text"
-        onClick={saveNewRate}
-      />
+      <Button type="submit" label="Submit" className="p-mt-2" form="rateForm" />
     </>
   );
 
@@ -159,8 +183,6 @@ const Rates = () => {
         <Toolbar left={leftToolbarTemplate}></Toolbar>
         <DataTable
           value={rates}
-          selection={selectedProduct}
-          onSelectionChange={(e) => setSelectedProduct(e.value)}
           paginator
           rows={10}
           rowsPerPageOptions={[5, 10, 25]}
@@ -178,7 +200,7 @@ const Rates = () => {
           ></Column>
           <Column field="goldRate" header="Gold (10 gram)"></Column>
           <Column field="silverRate" header="Silver (1 kg)"></Column>
-          <Column field="date" header="Date"></Column>
+          <Column field="date" header="Date" body={dateTemplate}></Column>
           <Column body={actionBodyTemplate}></Column>
         </DataTable>
       </div>
@@ -192,41 +214,37 @@ const Rates = () => {
         footer={itemDialogFooter}
         onHide={hideDialog}
       >
-        <div className="p-field">
-          <label htmlFor="goldRate">Gold rate</label>
-          <InputText
-            id="goldRate"
-            onChange={(e) =>
-              setSelectedItem({
-                ...selectedItem,
-                goldRate: e.currentTarget.value,
-              })
-            }
-            value={selectedItem?.goldRate}
-            required
-            className={submitted && !selectedItem?.goldRate ? "p-invalid" : ""}
-          />
-          {submitted && !selectedItem?.goldRate && (
-            <small className="p-error">gold rate is required.</small>
-          )}
-        </div>
-        <div className="p-field">
-          <label htmlFor="silverRate">Silver rate</label>
-          <InputText
-            id="silverRate"
-            onChange={(e) =>
-              setSelectedItem({
-                ...selectedItem,
-                silverRate: e.currentTarget.value,
-              })
-            }
-            value={selectedItem?.silverRate}
-            required
-          />
-          {submitted && !selectedItem?.silverRate && (
-            <small className="p-error">silver rate is required.</small>
-          )}
-        </div>
+        <form onSubmit={formik.handleSubmit} className="p-fluid" id="rateForm">
+          <div className="p-field">
+            <label htmlFor="goldRate">Gold rate</label>
+            <InputNumber
+              id="goldRate"
+              name="goldRate"
+              value={formik.values.goldRate}
+              onValueChange={formik.handleChange}
+              autoFocus
+              className={classNames({
+                "p-invalid": isFormFieldValid("goldRate"),
+              })}
+            />
+            {getFormErrorMessage("goldRate")}
+          </div>
+
+          <div className="p-field">
+            <label htmlFor="silverRate">Silver rate</label>
+            <InputNumber
+              id="silverRate"
+              name="silverRate"
+              value={formik.values.silverRate}
+              onValueChange={formik.handleChange}
+              autoFocus
+              className={classNames({
+                "p-invalid": isFormFieldValid("silverRate"),
+              })}
+            />
+            {getFormErrorMessage("silverRate")}
+          </div>
+        </form>
       </Dialog>
     </Card>
   );

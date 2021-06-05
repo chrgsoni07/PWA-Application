@@ -9,20 +9,13 @@ import { Dialog } from "primereact/dialog";
 import { InputTextarea } from "primereact/inputtextarea";
 import { useToast } from "toasts";
 import { updateList } from "utils/state.utils";
+import { FormikErrors, useFormik } from "formik";
+import { classNames } from "primereact/utils";
 
 const Customers = () => {
   const [globalFilter, setGlobalFilter] = useState("");
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const [customers, setCustomers] = useState<CustomerType[]>([]);
-  const [submitted, setSubmitted] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<CustomerType>({
-    id: "",
-    mobile: "",
-    place: "",
-    address: "",
-    name: "",
-  });
 
   const { toastSuccess, toastError } = useToast();
 
@@ -32,7 +25,7 @@ const Customers = () => {
 
   const editSelectedCustomer = (rowData: any) => {
     setShowDialog(true);
-    setSelectedItem(rowData);
+    formik.setValues(rowData);
   };
 
   const actionBodyTemplate = (rowData: any) => {
@@ -52,15 +45,46 @@ const Customers = () => {
     );
   };
 
-  const openNew = () => {
-    setSelectedItem({
+  const formik = useFormik<CustomerType>({
+    initialValues: {
       id: "",
-      mobile: "",
       name: "",
-      address: "",
       place: "",
-    });
-    setSubmitted(false);
+      mobile: "",
+      address: "",
+    },
+    validate: (data) => {
+      let errors: FormikErrors<CustomerType> = {};
+
+      if (!data.name) {
+        errors.name = "name is required.";
+      }
+
+      if (!data.place) {
+        errors.place = "place is required.";
+      }
+      return errors;
+    },
+
+    onSubmit: (data) => {
+      saveOrUpdateCustomer(data);
+      formik.resetForm();
+    },
+  });
+
+  const isFormFieldValid = (name: keyof CustomerType) => {
+    return !!(formik.touched[name] && formik.errors[name]);
+  };
+
+  const getFormErrorMessage = (name: keyof CustomerType) => {
+    return (
+      isFormFieldValid(name) && (
+        <small className="p-error">{formik.errors[name]}</small>
+      )
+    );
+  };
+
+  const openNew = () => {
     setShowDialog(true);
   };
 
@@ -84,18 +108,17 @@ const Customers = () => {
     </div>
   );
 
-  const saveNewCustomer = () => {
-    if (selectedItem?.id) {
-      editCustomerToFireStore();
+  const saveOrUpdateCustomer = (data: CustomerType) => {
+    if (data.id) {
+      editCustomerToFireStore(data);
     } else {
-      saveCustomerToFireStore();
+      saveCustomerToFireStore(data);
     }
-    setSubmitted(true);
     hideDialog();
   };
 
-  const saveCustomerToFireStore = async () => {
-    save("customers", selectedItem)
+  const saveCustomerToFireStore = async (data: CustomerType) => {
+    save("customers", data)
       .then((newCustomer) => {
         setCustomers([...customers, newCustomer]);
         toastSuccess("customer details successfully saved");
@@ -105,11 +128,11 @@ const Customers = () => {
       });
   };
 
-  const editCustomerToFireStore = () => {
-    edit("customers", selectedItem)
+  const editCustomerToFireStore = (data: CustomerType) => {
+    edit("customers", data)
       .then(() => {
         toastSuccess("customer details successfully updated");
-        const newCustomer = updateList(customers, selectedItem);
+        const newCustomer = updateList(customers, data);
 
         setCustomers(newCustomer);
       })
@@ -119,7 +142,6 @@ const Customers = () => {
   };
 
   const hideDialog = () => {
-    setSubmitted(false);
     setShowDialog(false);
   };
 
@@ -131,12 +153,7 @@ const Customers = () => {
         className="p-button-text"
         onClick={hideDialog}
       />
-      <Button
-        label="Save"
-        icon="pi pi-check"
-        className="p-button-text"
-        onClick={saveNewCustomer}
-      />
+      <Button type="submit" label="Submit" className="p-mt-2" form="rateForm" />
     </>
   );
 
@@ -156,8 +173,6 @@ const Customers = () => {
       <div className="card">
         <DataTable
           value={customers}
-          selection={selectedProduct}
-          onSelectionChange={(e) => setSelectedProduct(e.value)}
           paginator
           rows={10}
           rowsPerPageOptions={[5, 10, 25]}
@@ -192,92 +207,63 @@ const Customers = () => {
         footer={itemDialogFooter}
         onHide={hideDialog}
       >
-        <div className="p-fluid p-formgrid p-grid">
-          <div className="p-field p-col-6">
-            <label htmlFor="name">Name</label>
-            <InputText
-              id="name"
-              type="text"
-              onChange={(e) =>
-                setSelectedItem({
-                  ...selectedItem,
-                  name: e.currentTarget.value,
-                })
-              }
-              value={selectedItem?.name}
-              required
-              autoFocus
-              className={submitted && !selectedItem?.name ? "p-invalid" : ""}
-            />
-            {submitted && !selectedItem?.name && (
-              <small className="p-error">name is required.</small>
-            )}
+        <form onSubmit={formik.handleSubmit} className="p-fluid" id="rateForm">
+          <div className="p-fluid p-formgrid p-grid">
+            <div className="p-field p-col-6">
+              <label htmlFor="name">Name</label>
+              <InputText
+                id="name"
+                name="name"
+                type="text"
+                onChange={formik.handleChange}
+                value={formik.values.name}
+                autoFocus
+                className={classNames({
+                  "p-invalid": isFormFieldValid("name"),
+                })}
+              />
+              {getFormErrorMessage("name")}
+            </div>
+
+            <div className="p-field p-col-6">
+              <label htmlFor="mobile">Mobile</label>
+              <InputText
+                id="mobile"
+                name="mobile"
+                type="text"
+                onChange={formik.handleChange}
+                value={formik.values.mobile}
+              />
+            </div>
           </div>
 
-          <div className="p-field p-col-6">
-            <label htmlFor="mobile">Mobile</label>
-            <InputText
-              id="mobile"
-              type="text"
-              onChange={(e) =>
-                setSelectedItem({
-                  ...selectedItem,
-                  mobile: e.currentTarget.value,
-                })
-              }
-              value={selectedItem?.mobile}
-              required
-              autoFocus
-              className={submitted && !selectedItem?.mobile ? "p-invalid" : ""}
-            />
-            {submitted && !selectedItem?.mobile && (
-              <small className="p-error">mobilee no is required.</small>
-            )}
-          </div>
-        </div>
+          <div className="p-fluid p-formgrid p-grid">
+            <div className="p-field p-col-6">
+              <label htmlFor="place">Place</label>
+              <InputText
+                id="place"
+                name="place"
+                type="text"
+                onChange={formik.handleChange}
+                value={formik.values.place}
+                autoFocus
+                className={classNames({
+                  "p-invalid": isFormFieldValid("place"),
+                })}
+              />
+              {getFormErrorMessage("place")}
+            </div>
 
-        <div className="p-fluid p-formgrid p-grid">
-          <div className="p-field p-col-6">
-            <label htmlFor="place">Place</label>
-            <InputText
-              id="place"
-              type="text"
-              onChange={(e) =>
-                setSelectedItem({
-                  ...selectedItem,
-                  place: e.currentTarget.value,
-                })
-              }
-              value={selectedItem?.place}
-              required
-              autoFocus
-              className={submitted && !selectedItem?.place ? "p-invalid" : ""}
-            />
-            {submitted && !selectedItem?.place && (
-              <small className="p-error">place no is required.</small>
-            )}
+            <div className="p-field p-col-6">
+              <label htmlFor="address">Address</label>
+              <InputTextarea
+                id="address"
+                onChange={formik.handleChange}
+                value={formik.values.address}
+              />
+            </div>
           </div>
-
-          <div className="p-field p-col-6">
-            <label htmlFor="address">Address</label>
-            <InputTextarea
-              id="address"
-              onChange={(e) =>
-                setSelectedItem({
-                  ...selectedItem,
-                  address: e.currentTarget.value,
-                })
-              }
-              value={selectedItem?.address}
-              required
-              autoFocus
-              className={submitted && !selectedItem?.address ? "p-invalid" : ""}
-            />
-            {submitted && !selectedItem?.address && (
-              <small className="p-error">address no is required.</small>
-            )}
-          </div>
-        </div>
+        </form>
       </Dialog>
     </>
   );
