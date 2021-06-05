@@ -93,7 +93,6 @@ export const AddNewBill: FC<AddNewBillProps> = ({
   const saveBillToFirestore = async (newBill: Bill) => {
     try {
       const savedBill: Bill = await saveBill(newBill);
-      console.log("saved bill" + savedBill);
       toastSuccess("bill successfully saved");
       setSavedBills((bills) => [...bills, savedBill]);
     } catch (err) {
