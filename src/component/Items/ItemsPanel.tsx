@@ -190,26 +190,21 @@ const ItemsPanel: FC<Props> = ({ category }) => {
         footer={itemDialogFooter}
         onHide={hideDialog}
       >
-        <form
-          onSubmit={formik.handleSubmit}
-          className="p-fluid"
-          id="itemForm"
-        ></form>
-        <div className="p-field">
-          <label htmlFor="name">Name</label>
-          <InputText
-            id="name"
-            name="name"
-            onChange={formik.handleChange}
-            value={formik.values.name}
-            required
-            autoFocus
-            className={classNames({
-              "p-invalid": isFormFieldValid("name"),
-            })}
-          />
-          {getFormErrorMessage("name")}
-        </div>
+        <form onSubmit={formik.handleSubmit} className="p-fluid" id="itemForm">
+          <div className="p-field">
+            <label htmlFor="name">Name</label>
+            <InputText
+              id="name"
+              name="name"
+              onChange={formik.handleChange}
+              value={formik.values.name}
+              className={classNames({
+                "p-invalid": isFormFieldValid("name"),
+              })}
+            />
+            {getFormErrorMessage("name")}
+          </div>
+        </form>
       </Dialog>
     </>
   );
