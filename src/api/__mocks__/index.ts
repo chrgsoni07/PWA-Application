@@ -33,13 +33,19 @@ export const save = async <T>(
   collectionName: CollectionNameType,
   data: T
 ): Promise<T> => {
-  return {} as T;
+  return { ...data, id: "newSavedId" };
 };
 export const get = async <T>(
   collectionName: CollectionNameType
 ): Promise<T[]> => {
   return [];
 };
-export const edit = jest.fn();
-export const deleteFromDB = jest.fn();
+export const edit = async <T>(
+  collectionName: CollectionNameType,
+  data: T & { id?: string }
+): Promise<void> => {};
+export const deleteFromDB = async (
+  collectionName: CollectionNameType,
+  id: string
+): Promise<void> => {};
 export const saveBill = jest.fn();

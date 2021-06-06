@@ -48,7 +48,7 @@ const RateForm: FC<RateFormProps> = ({
 
   useEffect(() => {
     formData && formik.setValues(formData);
-  }, [formData, formik]);
+  }, [formData]);
 
   const isFormFieldValid = (name: keyof RateType) =>
     !!(formik.touched[name] && formik.errors[name]);
@@ -92,7 +92,7 @@ const RateForm: FC<RateFormProps> = ({
       <div className="p-field">
         <label htmlFor="goldRate">Gold rate</label>
         <InputNumber
-          id="goldRate"
+          inputId="goldRate"
           name="goldRate"
           value={defaultNum(formik.values.goldRate)}
           onValueChange={formik.handleChange}
@@ -107,7 +107,7 @@ const RateForm: FC<RateFormProps> = ({
       <div className="p-field">
         <label htmlFor="silverRate">Silver rate</label>
         <InputNumber
-          id="silverRate"
+          inputId="silverRate"
           name="silverRate"
           value={defaultNum(formik.values.silverRate)}
           onValueChange={formik.handleChange}

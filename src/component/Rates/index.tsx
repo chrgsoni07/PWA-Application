@@ -17,8 +17,8 @@ const Rates = () => {
   const [formData, setFormData] = useState<RateType | undefined>(undefined);
 
   const editSelectedRate = (rowData: RateType) => {
-    setShowDialog(true);
     setFormData(rowData);
+    setShowDialog(true);
   };
 
   const dateTemplate = (rowData: RateType) => {
@@ -33,11 +33,13 @@ const Rates = () => {
   const actionBodyTemplate = (rowData: RateType) => (
     <>
       <Button
+        aria-label="editRate"
         icon="pi pi-pencil"
         className="p-button-rounded p-button-success p-mr-2"
         onClick={() => editSelectedRate(rowData)}
       />
       <Button
+        aria-label="deleteRate"
         icon="pi pi-trash"
         className="p-button-rounded p-button-warning"
         onClick={() => confirmDeleteSelected(rowData)}
