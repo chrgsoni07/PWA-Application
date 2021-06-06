@@ -30,6 +30,30 @@ it("edit button should edit the rate", async () => {
   });
 });
 
+it("add button should rates", async () => {
+  await setup();
+  userEvent.click(screen.getByRole("button", { name: /new/i }));
+
+  userEvent.type(screen.getByLabelText(/Gold rate/i), "55555");
+  userEvent.type(screen.getByLabelText(/Silver rate/i), "44444");
+  userEvent.click(screen.getByText(/submit/i));
+  await waitForElementToBeRemoved(() => screen.queryByText(/Add new rate/i));
+  await waitFor(() => {
+    expect(screen.getByText("55555")).toBeInTheDocument();
+    expect(screen.getByText("44444")).toBeInTheDocument();
+  });
+});
+
+it("submitting the form with empty value should show validation", async () => {
+  await setup();
+  userEvent.click(screen.getByRole("button", { name: /new/i }));
+  userEvent.click(screen.getByText(/submit/i));
+  await waitFor(() => {
+    expect(screen.getByText("gold rate is required")).toBeInTheDocument();
+    expect(screen.getByText("silver rate is required")).toBeInTheDocument();
+  });
+});
+
 const setup = async () => {
   const utils = render(
     <ToastsProvider>

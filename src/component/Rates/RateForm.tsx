@@ -31,11 +31,11 @@ const RateForm: FC<RateFormProps> = ({
       let errors: FormikErrors<RateType> = {};
 
       if (!data.goldRate) {
-        errors.goldRate = "gold rate is required.";
+        errors.goldRate = "gold rate is required";
       }
 
       if (!data.silverRate) {
-        errors.silverRate = "silver rate is required.";
+        errors.silverRate = "silver rate is required";
       }
       return errors;
     },
