@@ -88,32 +88,30 @@ const Rates = () => {
   );
 
   return (
-    <Card>
-      <div className="card">
-        <Toolbar left={leftToolbarTemplate}></Toolbar>
-        <DataTable
-          value={rates}
-          paginator
-          rows={10}
-          rowsPerPageOptions={[5, 10, 25]}
-          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-          selectionMode="single"
-          dataKey="id"
-          className="p-datatable-gridlines p-datatable-sm"
-        >
-          <Column
-            field="id"
-            header="Id"
-            sortable
-            body={(_: any, prop: any) => prop.rowIndex + 1}
-          ></Column>
-          <Column field="goldRate" header="Gold (10 gram)"></Column>
-          <Column field="silverRate" header="Silver (1 kg)"></Column>
-          <Column field="date" header="Date" body={dateTemplate}></Column>
-          <Column body={actionBodyTemplate}></Column>
-        </DataTable>
-      </div>
+    <>
+      <Toolbar left={leftToolbarTemplate}></Toolbar>
+      <DataTable
+        value={rates}
+        paginator
+        rows={10}
+        rowsPerPageOptions={[5, 10, 25]}
+        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+        selectionMode="single"
+        dataKey="id"
+        className="p-datatable-gridlines p-datatable-sm"
+      >
+        <Column
+          field="id"
+          header="Id"
+          sortable
+          body={(_: any, prop: any) => prop.rowIndex + 1}
+        ></Column>
+        <Column field="goldRate" header="Gold (10 gram)"></Column>
+        <Column field="silverRate" header="Silver (1 kg)"></Column>
+        <Column field="date" header="Date" body={dateTemplate}></Column>
+        <Column body={actionBodyTemplate}></Column>
+      </DataTable>
 
       <Dialog
         header={"Add new rate"}
@@ -138,7 +136,7 @@ const Rates = () => {
           hideDialog={hideDialog}
         />
       </Dialog>
-    </Card>
+    </>
   );
 };
 export default Rates;
