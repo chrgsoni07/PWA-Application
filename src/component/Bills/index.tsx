@@ -267,7 +267,7 @@ const Bills = () => {
       <Dialog
         visible={displayViewDialog}
         onHide={() => setDisplayViewDialog(false)}
-        header="R K JEWELLERS JAWAD"
+        header="View bill"
         modal
         breakpoints={{
           "960px": "75vw",

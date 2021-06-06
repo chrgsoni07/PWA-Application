@@ -22,7 +22,7 @@ const ViewAmountDetails = ({ billDetail }: { billDetail?: BillDetails }) => {
       <Divider align="right">
         <div className="p-d-inline-flex p-ai-center">
           <i className="pi pi-wallet p-mr-2"></i>
-          <b>Amount Details</b>
+          <b>राशि विवरण</b>
         </div>
       </Divider>
       <div className="p-grid">
@@ -32,33 +32,33 @@ const ViewAmountDetails = ({ billDetail }: { billDetail?: BillDetails }) => {
           <table id="details">
             <tbody>
               <tr>
-                <td>New item total</td>
+                <td>नए सामान की कुल राशि</td>
                 <td>{formatCurrencyNoFraction(newTotal)}</td>
               </tr>
               <tr>
-                <td>Old item total</td>
+                <td>पुराने सामान का कुल राशि</td>
                 <td>{formatCurrencyNoFraction(oldTotal)}</td>
               </tr>
               <tr className="highlight">
-                <td>Difference</td>
+                <td>अंतर</td>
                 <td>{formatCurrencyNoFraction(oldNewDifference)}</td>
               </tr>
               <tr>
-                <td>Discount</td>
+                <td>छूट</td>
                 <td>{formatCurrencyNoFraction(discount)}</td>
               </tr>
               <tr className="highlight">
-                <td>Amount Payable</td>
+                <td>कुल देय राशि</td>
                 <td>{formatCurrencyNoFraction(amountPayable)}</td>
               </tr>
               <tr>
-                <td>Paid</td>
+                <td>प्राप्त राशि</td>
                 <td>
                   <b> {formatCurrencyNoFraction(paid)}</b>
                 </td>
               </tr>
               <tr>
-                <td>Due</td>
+                <td>कुल बकाया राशि</td>
                 <td>
                   <b>{formatCurrencyNoFraction(due)}</b>
                 </td>
