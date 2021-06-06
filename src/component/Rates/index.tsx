@@ -2,7 +2,6 @@ import { Button } from "primereact/button";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toolbar } from "primereact/toolbar";
-import { Card } from "primereact/card";
 import { Dialog } from "primereact/dialog";
 import React, { useState, useEffect } from "react";
 import { RateType } from "./types";
@@ -17,12 +16,12 @@ const Rates = () => {
   const { toastSuccess } = useToast();
   const [formData, setFormData] = useState<RateType | undefined>(undefined);
 
-  const editSelectedRate = (rowData: any) => {
+  const editSelectedRate = (rowData: RateType) => {
     setShowDialog(true);
     setFormData(rowData);
   };
 
-  const dateTemplate = (rowData: any) => {
+  const dateTemplate = (rowData: RateType) => {
     var date = new Date(rowData.date);
     return date.toLocaleDateString("en-In");
   };
@@ -31,7 +30,7 @@ const Rates = () => {
     getRates().then((response) => setRates(response));
   }, []);
 
-  const actionBodyTemplate = (rowData: any) => (
+  const actionBodyTemplate = (rowData: RateType) => (
     <>
       <Button
         icon="pi pi-pencil"
