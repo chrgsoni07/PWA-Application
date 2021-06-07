@@ -20,20 +20,18 @@ describe("Bills", () => {
   });
 
   it("should render edit bill", async () => {
-    const { asFragment } = render(
+    render(
       <ToastsProvider>
         <Bills />
       </ToastsProvider>
     );
     await screen.findByRole("button", { name: "editBill" });
-    const beforeEditBill = asFragment();
 
     userEvent.click(screen.getByRole("button", { name: "editBill" }));
     await waitFor(() => {
       expect(screen.getByLabelText("Select customer")).not.toBeDisabled();
     });
     expect(screen.getByText("2020202020")).toBeInTheDocument();
-    expect(beforeEditBill).toMatchDiffSnapshot(asFragment());
 
     const newItemTab = screen.getByRole("tabpanel", { name: "New Item" });
     expect(within(newItemTab).getAllByRole("row")).toHaveLength(5);
@@ -41,17 +39,15 @@ describe("Bills", () => {
   });
 
   it("shoud render view bill", async () => {
-    const { asFragment } = render(
+    render(
       <ToastsProvider>
         <Bills />
       </ToastsProvider>
     );
     await screen.findByRole("button", { name: /viewBill/i });
-    const beforeViewBill = asFragment();
     userEvent.click(screen.getByRole("button", { name: /viewBill/i }));
     await screen.findByRole("dialog", { name: /r k jewellers jawad/i });
 
-    expect(beforeViewBill).toMatchDiffSnapshot(asFragment());
     userEvent.click(screen.getByRole("button", { name: /close/i }));
   });
 });
