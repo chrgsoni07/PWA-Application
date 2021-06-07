@@ -100,14 +100,12 @@ const ItemsPanel: FC<Props> = ({ category }) => {
   }, [category]);
 
   const leftToolbarTemplate = () => (
-    <>
-      <Button
-        label="New"
-        icon="pi pi-plus"
-        className="p-button-success p-mr-2"
-        onClick={openNew}
-      />
-    </>
+    <Button
+      label="New"
+      icon="pi pi-plus"
+      className="p-button-success p-mr-2"
+      onClick={openNew}
+    />
   );
   const saveOrUpdateItemName = (data: ItemType) => {
     if (data?.id) {
@@ -158,29 +156,28 @@ const ItemsPanel: FC<Props> = ({ category }) => {
 
   return (
     <>
-      <div className="card">
-        <Toolbar left={leftToolbarTemplate}></Toolbar>
-        <DataTable
-          value={items}
-          paginator
-          rows={10}
-          rowsPerPageOptions={[5, 10, 25]}
-          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} items"
-          selectionMode="single"
-          dataKey="id"
-          className="p-datatable-gridlines p-datatable-sm"
-        >
-          <Column
-            field="id"
-            header="Id"
-            sortable
-            body={(_: any, prop: any) => prop.rowIndex + 1}
-          ></Column>
-          <Column field="name" header="Name" sortable></Column>
-          <Column body={actionBodyTemplate}></Column>
-        </DataTable>
-      </div>
+      <Toolbar left={leftToolbarTemplate}></Toolbar>
+      <DataTable
+        value={items}
+        paginator
+        rows={10}
+        rowsPerPageOptions={[5, 10, 25]}
+        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} items"
+        selectionMode="single"
+        dataKey="id"
+        className="p-datatable-gridlines p-datatable-sm"
+      >
+        <Column
+          field="id"
+          header="Id"
+          sortable
+          body={(_: any, prop: any) => prop.rowIndex + 1}
+        ></Column>
+        <Column field="name" header="Name" sortable></Column>
+        <Column body={actionBodyTemplate}></Column>
+      </DataTable>
+
       <Dialog
         header={`Add new ${categoryMap[category]} item`}
         visible={showDialog}

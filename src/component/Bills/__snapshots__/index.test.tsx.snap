@@ -1,24 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Bills shoud render view bill 1`] = `
-"Snapshot Diff:
-- First value
-+ Second value
-
-@@ -262,10 +262,11 @@
-                        <tbody
-                          class=\\"p-datatable-tbody\\"
-                        >
-                          <tr
-                            class=\\"p-selectable-row\\"
-+                           draggable=\\"false\\"
-                            role=\\"row\\"
-                            tabindex=\\"0\\"
-                          >
-                            <td
-                              class=\\"\\""
-`;
-
 exports[`Bills should render bills table 1`] = `
 "Snapshot Diff:
 - First value
@@ -141,23 +122,4 @@ exports[`Bills should render bills table 1`] = `
                         class=\\"p-dropdown p-component p-inputwrapper p-inputwrapper-filled\\"
                       >
                         <div"
-`;
-
-exports[`Bills should render edit bill 1`] = `
-"Snapshot Diff:
-- First value
-+ Second value
-
-@@ -262,10 +262,11 @@
-                        <tbody
-                          class=\\"p-datatable-tbody\\"
-                        >
-                          <tr
-                            class=\\"p-selectable-row\\"
-+                           draggable=\\"false\\"
-                            role=\\"row\\"
-                            tabindex=\\"0\\"
-                          >
-                            <td
-                              class=\\"\\""
 `;
