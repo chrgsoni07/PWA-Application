@@ -17,18 +17,20 @@ import reducer, {
   updateState,
   updateTotalAmount,
 } from "./slice";
+import { updateList } from "utils/state.utils";
 
 type AddNewBillProps = {
   displayDialog: boolean;
   bill: Bill;
-  setDisplayDialog: (flag: boolean) => void;
+  hideDialog: () => void;
   setSavedBills: React.Dispatch<React.SetStateAction<Bill[]>>;
   setDraftBills: React.Dispatch<React.SetStateAction<Bill[]>>;
 };
+
 export const AddNewBill: FC<AddNewBillProps> = ({
   displayDialog,
-  setDisplayDialog,
   bill,
+  hideDialog,
   setSavedBills,
   setDraftBills,
 }) => {
@@ -52,7 +54,7 @@ export const AddNewBill: FC<AddNewBillProps> = ({
 
   useEffect(() => {
     if (bill) {
-      setInvoiceDate(bill.invoiceDate || new Date());
+      setInvoiceDate(new Date(bill.invoiceDate) || new Date());
       setSelectedCustomer(bill.customer);
       dispatch(
         updateState({
@@ -66,10 +68,6 @@ export const AddNewBill: FC<AddNewBillProps> = ({
   useEffect(() => {
     dispatch(updateTotalAmount());
   }, [newItems, oldItems]);
-
-  const onHide = () => {
-    setDisplayDialog(false);
-  };
 
   const onSave = () => {
     const newBill = {
@@ -87,7 +85,7 @@ export const AddNewBill: FC<AddNewBillProps> = ({
       saveBillToFirestore(newBill);
     }
 
-    setDisplayDialog(false);
+    hideDialog();
   };
 
   const saveBillToFirestore = async (newBill: Bill) => {
@@ -122,11 +120,16 @@ export const AddNewBill: FC<AddNewBillProps> = ({
       billDetail: billDetails,
     };
 
-    previousBills.push(draftBill);
+    if (!draftBill.id) {
+      draftBill.id = Date.now().toString();
+      previousBills.push(draftBill);
+    } else {
+      previousBills = updateList(previousBills, draftBill);
+    }
 
     localStorage.setItem("draftBills", JSON.stringify(previousBills));
     setDraftBills(previousBills);
-    setDisplayDialog(false);
+    hideDialog();
   };
 
   const footer = (
@@ -155,7 +158,7 @@ export const AddNewBill: FC<AddNewBillProps> = ({
   return (
     <Dialog
       visible={displayDialog}
-      onHide={onHide}
+      onHide={hideDialog}
       header="New Bill"
       footer={footer}
       modal
