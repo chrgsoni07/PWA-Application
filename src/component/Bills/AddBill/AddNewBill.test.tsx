@@ -7,7 +7,7 @@ import { ToastsProvider } from "toasts";
 
 jest.mock("api");
 
-let mockSetDisplayDialog = jest.fn();
+let mockHideDialog = jest.fn();
 const mockDate = new Date(2020, 10, 17);
 const bill = {
   totalNew: "109,566",
@@ -123,7 +123,7 @@ const setup = async () => {
     <ToastsProvider>
       <AddNewBill
         displayDialog={true}
-        setDisplayDialog={mockSetDisplayDialog}
+        hideDialog={mockHideDialog}
         bill={{} as Bill}
         setSavedBills={jest.fn()}
         setDraftBills={jest.fn()}
