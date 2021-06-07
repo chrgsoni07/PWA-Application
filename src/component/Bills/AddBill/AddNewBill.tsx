@@ -53,8 +53,10 @@ export const AddNewBill: FC<AddNewBillProps> = ({
     dispatch(amountPaidChanged(paid));
 
   useEffect(() => {
-    if (bill) {
-      setInvoiceDate(new Date(bill.invoiceDate) || new Date());
+    if (bill.id) {
+      setInvoiceDate(
+        bill.invoiceDate ? new Date(bill.invoiceDate) : new Date()
+      );
       setSelectedCustomer(bill.customer);
       dispatch(
         updateState({
