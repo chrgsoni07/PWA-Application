@@ -50,21 +50,16 @@ const ViewBill: FC<ViewBillProps> = ({
                   <b>ग्राहक</b>
                 </div>
               </Divider>
-
-              <div className="p-grid">
-                <div className="p-col">
-                  नाम: {customer?.name} <br />
-                  निवासी: {customer?.place}
+              नाम: {customer?.name} <br />
+              निवासी: {customer?.place}
+              <br />
+              {customer?.mobile && (
+                <>
+                  मोबाइल: {customer?.mobile}
                   <br />
-                  {customer?.mobile && (
-                    <>
-                      मोबाइल: {customer?.mobile}
-                      <br />
-                    </>
-                  )}
-                  {customer?.address && <>पता: {customer?.address}</>}
-                </div>
-              </div>
+                </>
+              )}
+              {customer?.address && <>पता: {customer?.address}</>}
             </div>
 
             <div className="p-col-3">
