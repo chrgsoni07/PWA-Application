@@ -25,48 +25,42 @@ const ViewAmountDetails = ({ billDetail }: { billDetail?: BillDetails }) => {
           <b>राशि विवरण</b>
         </div>
       </Divider>
-      <div className="p-grid">
-        <div className="p-col"></div>
-        <div className="p-col"></div>
-        <div className="p-col">
-          <table id="details">
-            <tbody>
-              <tr>
-                <td>नए सामान की कुल राशि</td>
-                <td>{formatCurrencyNoFraction(newTotal)}</td>
-              </tr>
-              <tr>
-                <td>पुराने सामान का कुल राशि</td>
-                <td>{formatCurrencyNoFraction(oldTotal)}</td>
-              </tr>
-              <tr className="highlight">
-                <td>अंतर</td>
-                <td>{formatCurrencyNoFraction(oldNewDifference)}</td>
-              </tr>
-              <tr>
-                <td>छूट</td>
-                <td>{formatCurrencyNoFraction(discount)}</td>
-              </tr>
-              <tr className="highlight">
-                <td>कुल देय राशि</td>
-                <td>{formatCurrencyNoFraction(amountPayable)}</td>
-              </tr>
-              <tr>
-                <td>प्राप्त राशि</td>
-                <td>
-                  <b> {formatCurrencyNoFraction(paid)}</b>
-                </td>
-              </tr>
-              <tr>
-                <td>कुल बकाया राशि</td>
-                <td>
-                  <b>{formatCurrencyNoFraction(due)}</b>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <table id="details">
+        <tbody>
+          <tr>
+            <td>नए सामान की कुल राशि</td>
+            <td>{formatCurrencyNoFraction(newTotal)}</td>
+          </tr>
+          <tr>
+            <td>पुराने सामान की कुल राशि</td>
+            <td>{formatCurrencyNoFraction(oldTotal)}</td>
+          </tr>
+          <tr className="highlight">
+            <td>अंतर</td>
+            <td>{formatCurrencyNoFraction(oldNewDifference)}</td>
+          </tr>
+          <tr>
+            <td>छूट</td>
+            <td>{formatCurrencyNoFraction(discount)}</td>
+          </tr>
+          <tr className="highlight">
+            <td>कुल देय राशि</td>
+            <td>{formatCurrencyNoFraction(amountPayable)}</td>
+          </tr>
+          <tr>
+            <td>प्राप्त राशि</td>
+            <td>
+              <b> {formatCurrencyNoFraction(paid)}</b>
+            </td>
+          </tr>
+          <tr>
+            <td>कुल बकाया राशि</td>
+            <td>
+              <b>{formatCurrencyNoFraction(due)}</b>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </>
   );
 };
