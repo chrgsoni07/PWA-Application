@@ -15,6 +15,7 @@ import {
 import { itemTypeBodyTemplate } from "../AddBill/common";
 import ReactToPrint from "react-to-print";
 import { Container, Name } from "./styles";
+import logo from "./logo.png";
 
 type ViewBillProps = {
   bill: Bill;
@@ -34,6 +35,9 @@ const ViewBill: FC<ViewBillProps> = ({
       <div ref={billRef} style={{ width: "210mm" }}>
         <Container>
           <div className="p-grid">
+            <div className="p-col-2">
+              <img src={logo} width={130} height={100} />
+            </div>
             <div className="p-col-3">
               <Name>आर. के. ज्वेलर्स</Name>
               <br />
@@ -43,7 +47,7 @@ const ViewBill: FC<ViewBillProps> = ({
               <i className="pi pi-mobile">9425975329</i>
             </div>
 
-            <div className="p-col-6">
+            <div className="p-col-4">
               <Divider align="left">
                 <div className="p-d-inline-flex p-ai-center">
                   <i className="pi pi-user p-mr-2"></i>

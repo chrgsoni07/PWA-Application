@@ -8,6 +8,8 @@ export const Container = styled.div`
   .p-component,
   .pi {
     font-size: 0.85rem;
+    margin: 0.1rem;
+    padding: 0.1rem;
   }
 `;
 
