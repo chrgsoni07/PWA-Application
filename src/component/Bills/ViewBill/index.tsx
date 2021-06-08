@@ -36,7 +36,7 @@ const ViewBill: FC<ViewBillProps> = ({
         <Container>
           <div className="p-grid">
             <div className="p-col-2">
-              <img src={logo} width={130} height={100} />
+              <img src={logo} width={130} height={100} alt="logo" />
             </div>
             <div className="p-col-3">
               <Name>आर. के. ज्वेलर्स</Name>
@@ -54,15 +54,22 @@ const ViewBill: FC<ViewBillProps> = ({
                   <b>ग्राहक</b>
                 </div>
               </Divider>
-              नाम: {customer?.name} <br />
-              निवासी: {customer?.place}
-              <br />
-              {customer?.mobile && (
-                <>
-                  मोबाइल: {customer?.mobile}
-                  <br />
-                </>
-              )}
+              <table>
+                <tr style={{ verticalAlign: "baseline" }}>
+                  <td>नाम: </td>
+                  <td>{customer?.name}</td>
+                </tr>
+                <tr style={{ verticalAlign: "baseline" }}>
+                  <td>निवासी: </td>
+                  <td>{customer?.place}</td>
+                </tr>
+                {customer?.mobile && (
+                  <tr style={{ verticalAlign: "baseline" }}>
+                    <td>मोबाइल: </td>
+                    <td>{customer?.mobile}</td>
+                  </tr>
+                )}
+              </table>
             </div>
 
             <div className="p-col-3">
