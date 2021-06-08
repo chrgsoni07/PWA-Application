@@ -10,7 +10,7 @@ jest.mock("api");
 let mockHideDialog = jest.fn();
 const mockDate = new Date(2020, 10, 17);
 const bill = {
-  totalNew: "109,566",
+  totalNew: "1,09,566",
   totalOld: "74,490",
   diff: "35,076",
   discount: "76",

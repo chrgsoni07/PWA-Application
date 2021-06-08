@@ -63,7 +63,6 @@ const ViewBill: FC<ViewBillProps> = ({
                   <br />
                 </>
               )}
-              {customer?.address && <>पता: {customer?.address}</>}
             </div>
 
             <div className="p-col-3">

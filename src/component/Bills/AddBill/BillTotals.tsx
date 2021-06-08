@@ -13,6 +13,7 @@ export function BillTotals({
         <InputNumber
           inputId="totalNew"
           value={defaultNum(billDetails.newTotal)}
+          locale="en-In"
         />
       </div>
 

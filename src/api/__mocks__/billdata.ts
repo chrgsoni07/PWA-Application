@@ -6,7 +6,6 @@ export const bills: Bill[] = [
     id: "testid",
     invoiceDate: new Date(1995, 11, 17),
     customer: {
-      address: "andheri gali",
       id: "adharId",
       mobile: "2020202020",
       name: "Chaupat Raja",
