@@ -36,11 +36,12 @@ const ViewBill: FC<ViewBillProps> = ({
           <div className="p-grid">
             <div className="p-col-3">
               <div className="p-grid">
-                <div className="p-col-12">
+                <div className="p-col">
                   <b>आर. के. ज्वेलर्स</b>
-                </div>
-                <div className="p-col-12">
-                  सराफा बाजार, जावद (म. प्र.) प्रो. नरेश राधेश्याम जी सोनी{" "}
+                  <br />
+                  सराफा बाजार, जावद (म. प्र.) <br />
+                  प्रो. नरेश राधेश्याम जी सोनी
+                  <br />
                   <i className="pi pi-mobile">9425975329</i>
                 </div>
               </div>
@@ -55,29 +56,18 @@ const ViewBill: FC<ViewBillProps> = ({
               </Divider>
 
               <div className="p-grid">
-                <div className="p-col-12">
-                  <label id="name">नाम: </label>
-                  <span id="name"> {customer?.name}</span>
+                <div className="p-col">
+                  नाम: {customer?.name} <br />
+                  निवासी: {customer?.place}
+                  <br />
+                  {customer?.mobile && (
+                    <>
+                      मोबाइल: {customer?.mobile}
+                      <br />
+                    </>
+                  )}
+                  {customer?.address && <>पता: {customer?.address}</>}
                 </div>
-
-                <div className="p-col-12">
-                  <label id="place">निवासी: </label>
-                  <span id="place"> {customer?.place}</span>
-                </div>
-
-                {customer?.mobile && (
-                  <div className="p-col-12">
-                    <label id="mobile">मोबाइल: </label>
-                    <span id="mobile"> {customer?.mobile}</span>
-                  </div>
-                )}
-
-                {customer?.address && (
-                  <div className="p-col-12">
-                    <label id="address">पता: </label>
-                    <span id="address"> {customer?.address}</span>
-                  </div>
-                )}
               </div>
             </div>
 
@@ -107,9 +97,14 @@ const ViewBill: FC<ViewBillProps> = ({
             <div className="p-col-8">
               {!!newItems.length && (
                 <div className="card">
+                  <Divider align="left">
+                    <div className="p-d-inline-flex p-ai-center">
+                      <i className="pi pi-list p-mr-2"></i>
+                      <b>नया सामान</b>
+                    </div>
+                  </Divider>
                   <DataTable
                     value={newItems}
-                    header="नया सामान"
                     className="p-datatable-sm p-datatable-gridlines"
                   >
                     <Column
@@ -137,9 +132,14 @@ const ViewBill: FC<ViewBillProps> = ({
 
               {!!oldItems.length && (
                 <div className="card">
+                  <Divider align="left">
+                    <div className="p-d-inline-flex p-ai-center">
+                      <i className="pi pi-list p-mr-2"></i>
+                      <b>पुराना सामान</b>
+                    </div>
+                  </Divider>
                   <DataTable
                     value={oldItems}
-                    header="पुराना सामान"
                     className="p-datatable-sm p-datatable-gridlines"
                   >
                     <Column
