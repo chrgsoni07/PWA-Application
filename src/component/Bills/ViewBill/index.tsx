@@ -14,15 +14,15 @@ import {
 } from "utils/currency.utils";
 import { itemTypeBodyTemplate } from "../AddBill/common";
 import ReactToPrint from "react-to-print";
+import { Container } from "./styles";
 
 type ViewBillProps = {
   bill: Bill;
 };
 
-const ViewBill: FC<ViewBillProps> = ({ bill }) => {
-  const { customer, oldItems, newItems, billDetail, invoiceDate, billNo } =
-    bill;
-
+const ViewBill: FC<ViewBillProps> = ({
+  bill: { customer, oldItems, newItems, billDetail, invoiceDate, billNo },
+}) => {
   const billRef = useRef(null);
 
   return (
@@ -32,7 +32,7 @@ const ViewBill: FC<ViewBillProps> = ({ bill }) => {
         content={() => billRef.current}
       />
       <div ref={billRef} style={{ width: "210mm" }}>
-        <div className="print-div">
+        <Container>
           <div className="p-grid">
             <div className="p-col-3">
               <div className="p-grid">
@@ -116,25 +116,21 @@ const ViewBill: FC<ViewBillProps> = ({ bill }) => {
                       field="type"
                       body={itemTypeBodyTemplate}
                       header="प्रकार"
-                    ></Column>
-                    <Column field="item" header="सामान"></Column>
-                    <Column
-                      field="weight"
-                      header="वज़न"
-                      body={weightTemplate}
-                    ></Column>
-                    <Column field="rate" header="भाव"></Column>
+                    />
+                    <Column field="item" header="सामान" />
+                    <Column field="weight" header="वज़न" body={weightTemplate} />
+                    <Column field="rate" header="भाव" />
                     <Column
                       field="makingCharges"
                       header="मजदूरी"
                       body={makingChargeTemplate}
-                    ></Column>
-                    <Column field="otherCharges" header="अन्य"></Column>
+                    />
+                    <Column field="otherCharges" header="अन्य" />
                     <Column
                       field="amount"
                       header="राशि"
                       body={amountBodyTemplate}
-                    ></Column>
+                    />
                   </DataTable>
                 </div>
               )}
@@ -150,29 +146,29 @@ const ViewBill: FC<ViewBillProps> = ({ bill }) => {
                       field="type"
                       body={itemTypeBodyTemplate}
                       header="प्रकार"
-                    ></Column>
-                    <Column field="item" header="सामान"></Column>
+                    />
+                    <Column field="item" header="सामान" />
                     <Column
                       field="grossWeight"
                       header="वजन"
                       body={grossWeightTemplate}
-                    ></Column>
+                    />
                     <Column
                       field="purity"
                       header="शुद्धता"
                       body={purityTemplate}
-                    ></Column>
+                    />
                     <Column
                       field="netWeight"
                       header="शुद्ध वजन"
                       body={viewNetWeightTemplate}
-                    ></Column>
-                    <Column field="rate" header="भाव"></Column>
+                    />
+                    <Column field="rate" header="भाव" />
                     <Column
                       field="amount"
                       header="राशि"
                       body={amountBodyTemplate}
-                    ></Column>
+                    />
                   </DataTable>
                 </div>
               )}
@@ -182,7 +178,7 @@ const ViewBill: FC<ViewBillProps> = ({ bill }) => {
               <ViewAmountDetails billDetail={billDetail} />
             </div>
           </div>
-        </div>
+        </Container>
       </div>
     </>
   );
