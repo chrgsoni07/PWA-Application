@@ -1,11 +1,10 @@
-import { FormikErrors, useFormik } from "formik";
-import { InputNumber } from "primereact/inputnumber";
-import { classNames } from "primereact/utils";
-import { FC, useEffect } from "react";
+import { Form, Formik } from "formik";
+import { FC } from "react";
 import { useToast } from "toasts";
 import { RateType } from "./types";
 import { edit, save } from "api";
-import { defaultNum } from "utils/number.utils";
+import { FormikInputNumber } from "component/common/FormikFields";
+import * as Yup from "yup";
 
 type RateFormProps = {
   formData?: RateType;
@@ -20,44 +19,6 @@ const RateForm: FC<RateFormProps> = ({
   onEdit,
   hideDialog,
 }) => {
-  const formik = useFormik<RateType>({
-    initialValues: {
-      id: "",
-      silverRate: 0,
-      goldRate: 0,
-      date: new Date(),
-    },
-    validate: (data) => {
-      let errors: FormikErrors<RateType> = {};
-
-      if (!data.goldRate) {
-        errors.goldRate = "gold rate is required";
-      }
-
-      if (!data.silverRate) {
-        errors.silverRate = "silver rate is required";
-      }
-      return errors;
-    },
-
-    onSubmit: (data) => {
-      saveOrUpdateRate(data);
-      formik.resetForm();
-    },
-  });
-
-  useEffect(() => {
-    formData && formik.setValues(formData);
-  }, [formData]);
-
-  const isFormFieldValid = (name: keyof RateType) =>
-    !!(formik.touched[name] && formik.errors[name]);
-
-  const getFormErrorMessage = (name: keyof RateType) =>
-    isFormFieldValid(name) && (
-      <small className="p-error">{formik.errors[name]}</small>
-    );
-
   const saveOrUpdateRate = (data: RateType) => {
     if (data.id) {
       editRateToFireStore(data);
@@ -88,36 +49,40 @@ const RateForm: FC<RateFormProps> = ({
   };
 
   return (
-    <form onSubmit={formik.handleSubmit} className="p-fluid" id="rateForm">
-      <div className="p-field">
-        <label htmlFor="goldRate">Gold rate</label>
-        <InputNumber
-          inputId="goldRate"
-          name="goldRate"
-          value={defaultNum(formik.values.goldRate)}
-          onValueChange={formik.handleChange}
-          autoFocus
-          className={classNames({
-            "p-invalid": isFormFieldValid("goldRate"),
-          })}
-        />
-        {getFormErrorMessage("goldRate")}
-      </div>
+    <Formik
+      initialValues={
+        formData ||
+        ({
+          id: "",
+          date: new Date(),
+        } as RateType)
+      }
+      validateOnChange={false}
+      validateOnBlur={false}
+      onSubmit={(data) => {
+        saveOrUpdateRate(data);
+      }}
+      validationSchema={Yup.object({
+        goldRate: Yup.number()
+          .transform((value) => (isNaN(value) || 0 ? undefined : value))
+          .required("Gold rate is required"),
+        silverRate: Yup.number()
+          .transform((value) => (isNaN(value) || 0 ? undefined : value))
+          .required("Silver rate is required"),
+      })}
+    >
+      <Form className="p-fluid" id="rateForm">
+        <div className="p-field">
+          <label htmlFor="goldRate">Gold rate</label>
+          <FormikInputNumber inputId="goldRate" name="goldRate" autoFocus />
+        </div>
 
-      <div className="p-field">
-        <label htmlFor="silverRate">Silver rate</label>
-        <InputNumber
-          inputId="silverRate"
-          name="silverRate"
-          value={defaultNum(formik.values.silverRate)}
-          onValueChange={formik.handleChange}
-          className={classNames({
-            "p-invalid": isFormFieldValid("silverRate"),
-          })}
-        />
-        {getFormErrorMessage("silverRate")}
-      </div>
-    </form>
+        <div className="p-field">
+          <label htmlFor="silverRate">Silver rate</label>
+          <FormikInputNumber inputId="silverRate" name="silverRate" />
+        </div>
+      </Form>
+    </Formik>
   );
 };
 
