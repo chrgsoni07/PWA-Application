@@ -49,8 +49,8 @@ it("submitting the form with empty value should show validation", async () => {
   userEvent.click(screen.getByRole("button", { name: /new/i }));
   userEvent.click(screen.getByText(/submit/i));
   await waitFor(() => {
-    expect(screen.getByText("gold rate is required")).toBeInTheDocument();
-    expect(screen.getByText("silver rate is required")).toBeInTheDocument();
+    expect(screen.getByText(/gold rate is required/i)).toBeInTheDocument();
+    expect(screen.getByText(/silver rate is required/i)).toBeInTheDocument();
   });
 });
 
