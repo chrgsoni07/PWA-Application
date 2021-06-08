@@ -30,7 +30,7 @@ it("edit button should edit the rate", async () => {
   });
 });
 
-it("add button should rates", async () => {
+it("add button should add new rates", async () => {
   await setup();
   userEvent.click(screen.getByRole("button", { name: /new/i }));
 

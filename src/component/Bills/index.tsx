@@ -14,7 +14,6 @@ import { useToast } from "toasts";
 import { Calendar, CalendarChangeParams } from "primereact/calendar";
 
 const Bills = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
   const [displayDialog, setDisplayDialog] = useState(false);
   const [displayViewDialog, setDisplayViewDialog] = useState(false);
   const [savedBills, setSavedBills] = useState<Bill[]>([]);
@@ -36,6 +35,11 @@ const Bills = () => {
 
   const displayModel = () => {
     setDisplayDialog(true);
+  };
+
+  const hideDialog = () => {
+    setDisplayDialog(false);
+    setBill({} as Bill);
   };
 
   const dateBodyTemplate = (rowData: any) => {
@@ -166,10 +170,7 @@ const Bills = () => {
           className="p-button-success p-mr-2"
           onClick={() => displayModel()}
         />
-        <TabView
-          activeIndex={activeIndex}
-          onTabChange={(e) => setActiveIndex(e.index)}
-        >
+        <TabView>
           <TabPanel header="Previous Bills">
             <div className="card">
               <DataTable
@@ -260,7 +261,7 @@ const Bills = () => {
       <AddNewBill
         bill={bill}
         displayDialog={displayDialog}
-        setDisplayDialog={setDisplayDialog}
+        hideDialog={hideDialog}
         setSavedBills={setSavedBills}
         setDraftBills={setDraftBills}
       />
