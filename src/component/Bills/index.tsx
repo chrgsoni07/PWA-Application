@@ -37,6 +37,11 @@ const Bills = () => {
     setDisplayDialog(true);
   };
 
+  const hideDialog = () => {
+    setDisplayDialog(false);
+    setBill({} as Bill);
+  };
+
   const dateBodyTemplate = (rowData: any) => {
     var invoiceDate = rowData.invoiceDate;
     return invoiceDate.toLocaleDateString("en-In");
@@ -256,7 +261,7 @@ const Bills = () => {
       <AddNewBill
         bill={bill}
         displayDialog={displayDialog}
-        setDisplayDialog={setDisplayDialog}
+        hideDialog={hideDialog}
         setSavedBills={setSavedBills}
         setDraftBills={setDraftBills}
       />
