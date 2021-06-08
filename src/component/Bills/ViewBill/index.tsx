@@ -14,7 +14,7 @@ import {
 } from "utils/currency.utils";
 import { itemTypeBodyTemplate } from "../AddBill/common";
 import ReactToPrint from "react-to-print";
-import { Container } from "./styles";
+import { Container, Name } from "./styles";
 
 type ViewBillProps = {
   bill: Bill;
@@ -35,16 +35,12 @@ const ViewBill: FC<ViewBillProps> = ({
         <Container>
           <div className="p-grid">
             <div className="p-col-3">
-              <div className="p-grid">
-                <div className="p-col">
-                  <b>आर. के. ज्वेलर्स</b>
-                  <br />
-                  सराफा बाजार, जावद (म. प्र.) <br />
-                  प्रो. नरेश राधेश्याम जी सोनी
-                  <br />
-                  <i className="pi pi-mobile">9425975329</i>
-                </div>
-              </div>
+              <Name>आर. के. ज्वेलर्स</Name>
+              <br />
+              सराफा बाजार, जावद (म. प्र.) <br />
+              प्रो. नरेश राधेश्याम जी सोनी
+              <br />
+              <i className="pi pi-mobile">9425975329</i>
             </div>
 
             <div className="p-col-6">
@@ -72,24 +68,19 @@ const ViewBill: FC<ViewBillProps> = ({
             </div>
 
             <div className="p-col-3">
-              <div className="p-grid">
-                <div className="p-col">
-                  <Divider align="left">
-                    <div className="p-d-inline-flex p-ai-center">
-                      <i className="pi pi-book p-mr-2"></i>
-                      <b>बिल क्र. : {billNo}</b>
-                    </div>
-                  </Divider>
+              <Divider align="left">
+                <div className="p-d-inline-flex p-ai-center">
+                  <i className="pi pi-book p-mr-2"></i>
+                  <b>बिल क्र. : {billNo}</b>
                 </div>
-                <div className="p-col">
-                  <Divider align="left">
-                    <div className="p-d-inline-flex p-ai-center">
-                      <i className="pi pi-calendar p-mr-2"></i>
-                      <b>दिनांक : {invoiceDate}</b>
-                    </div>
-                  </Divider>
+              </Divider>
+
+              <Divider align="left">
+                <div className="p-d-inline-flex p-ai-center">
+                  <i className="pi pi-calendar p-mr-2"></i>
+                  <b>दिनांक : {invoiceDate}</b>
                 </div>
-              </div>
+              </Divider>
             </div>
           </div>
 

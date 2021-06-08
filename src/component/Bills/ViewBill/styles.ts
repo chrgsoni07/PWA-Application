@@ -9,8 +9,8 @@ export const Container = styled.div`
   .pi {
     font-size: 0.85rem;
   }
-  .p-divider.p-divider-horizontal {
-    margin: 0rem 0;
-    padding: 0 0.05rem;
-  }
+`;
+
+export const Name = styled.b`
+  font-size: 1.5rem;
 `;
