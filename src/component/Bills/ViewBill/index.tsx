@@ -14,15 +14,16 @@ import {
 } from "utils/currency.utils";
 import { itemTypeBodyTemplate } from "../AddBill/common";
 import ReactToPrint from "react-to-print";
+import { Container, Name } from "./styles";
+import logo from "./logo.png";
 
 type ViewBillProps = {
   bill: Bill;
 };
 
-const ViewBill: FC<ViewBillProps> = ({ bill }) => {
-  const { customer, oldItems, newItems, billDetail, invoiceDate, billNo } =
-    bill;
-
+const ViewBill: FC<ViewBillProps> = ({
+  bill: { customer, oldItems, newItems, billDetail, invoiceDate, billNo },
+}) => {
   const billRef = useRef(null);
 
   return (
@@ -32,74 +33,53 @@ const ViewBill: FC<ViewBillProps> = ({ bill }) => {
         content={() => billRef.current}
       />
       <div ref={billRef} style={{ width: "210mm" }}>
-        <div className="print-div">
+        <Container>
           <div className="p-grid">
+            <div className="p-col-2">
+              <img src={logo} width={130} height={100} />
+            </div>
             <div className="p-col-3">
-              <div className="p-grid">
-                <div className="p-col-12">
-                  <b>आर. के. ज्वेलर्स</b>
-                </div>
-                <div className="p-col-12">
-                  सराफा बाजार, जावद (म. प्र.) प्रो. नरेश राधेश्याम जी सोनी{" "}
-                  <i className="pi pi-mobile">9425975329</i>
-                </div>
-              </div>
+              <Name>आर. के. ज्वेलर्स</Name>
+              <br />
+              सराफा बाजार, जावद (म. प्र.) <br />
+              प्रो. नरेश राधेश्याम जी सोनी
+              <br />
+              <i className="pi pi-mobile">9425975329</i>
             </div>
 
-            <div className="p-col-6">
+            <div className="p-col-4">
               <Divider align="left">
                 <div className="p-d-inline-flex p-ai-center">
                   <i className="pi pi-user p-mr-2"></i>
                   <b>ग्राहक</b>
                 </div>
               </Divider>
-
-              <div className="p-grid">
-                <div className="p-col-12">
-                  <label id="name">नाम: </label>
-                  <span id="name"> {customer?.name}</span>
-                </div>
-
-                <div className="p-col-12">
-                  <label id="place">निवासी: </label>
-                  <span id="place"> {customer?.place}</span>
-                </div>
-
-                {customer?.mobile && (
-                  <div className="p-col-12">
-                    <label id="mobile">मोबाइल: </label>
-                    <span id="mobile"> {customer?.mobile}</span>
-                  </div>
-                )}
-
-                {customer?.address && (
-                  <div className="p-col-12">
-                    <label id="address">पता: </label>
-                    <span id="address"> {customer?.address}</span>
-                  </div>
-                )}
-              </div>
+              नाम: {customer?.name} <br />
+              निवासी: {customer?.place}
+              <br />
+              {customer?.mobile && (
+                <>
+                  मोबाइल: {customer?.mobile}
+                  <br />
+                </>
+              )}
+              {customer?.address && <>पता: {customer?.address}</>}
             </div>
 
             <div className="p-col-3">
-              <div className="p-grid">
-                <div className="p-col">
-                  <Divider align="left">
-                    <div className="p-d-inline-flex p-ai-center">
-                      <i className="pi pi-book p-mr-2"></i>
-                      <b>बिल क्र. : {billNo}</b>
-                    </div>
-                  </Divider>
+              <Divider align="left">
+                <div className="p-d-inline-flex p-ai-center">
+                  <i className="pi pi-book p-mr-2"></i>
+                  <b>बिल क्र. : {billNo}</b>
                 </div>
-                <div className="p-col">
-                  <Divider align="left">
-                    <div className="p-d-inline-flex p-ai-center">
-                      <i className="pi pi-calendar p-mr-2"></i>
-                      <b>दिनांक : {invoiceDate}</b>
-                    </div>
-                  </Divider>
+              </Divider>
+
+              <Divider align="left">
+                <div className="p-d-inline-flex p-ai-center">
+                  <i className="pi pi-calendar p-mr-2"></i>
+                  <b>दिनांक : {invoiceDate}</b>
                 </div>
-              </div>
+              </Divider>
             </div>
           </div>
 
@@ -107,72 +87,78 @@ const ViewBill: FC<ViewBillProps> = ({ bill }) => {
             <div className="p-col-8">
               {!!newItems.length && (
                 <div className="card">
+                  <Divider align="left">
+                    <div className="p-d-inline-flex p-ai-center">
+                      <i className="pi pi-list p-mr-2"></i>
+                      <b>नया सामान</b>
+                    </div>
+                  </Divider>
                   <DataTable
                     value={newItems}
-                    header="नया सामान"
                     className="p-datatable-sm p-datatable-gridlines"
                   >
                     <Column
                       field="type"
                       body={itemTypeBodyTemplate}
                       header="प्रकार"
-                    ></Column>
-                    <Column field="item" header="सामान"></Column>
-                    <Column
-                      field="weight"
-                      header="वज़न"
-                      body={weightTemplate}
-                    ></Column>
-                    <Column field="rate" header="भाव"></Column>
+                    />
+                    <Column field="item" header="सामान" />
+                    <Column field="weight" header="वज़न" body={weightTemplate} />
+                    <Column field="rate" header="भाव" />
                     <Column
                       field="makingCharges"
                       header="मजदूरी"
                       body={makingChargeTemplate}
-                    ></Column>
-                    <Column field="otherCharges" header="अन्य"></Column>
+                    />
+                    <Column field="otherCharges" header="अन्य" />
                     <Column
                       field="amount"
                       header="राशि"
                       body={amountBodyTemplate}
-                    ></Column>
+                    />
                   </DataTable>
                 </div>
               )}
 
               {!!oldItems.length && (
                 <div className="card">
+                  <Divider align="left">
+                    <div className="p-d-inline-flex p-ai-center">
+                      <i className="pi pi-list p-mr-2"></i>
+                      <b>पुराना सामान</b>
+                    </div>
+                  </Divider>
                   <DataTable
                     value={oldItems}
-                    header="पुराना सामान"
                     className="p-datatable-sm p-datatable-gridlines"
                   >
                     <Column
                       field="type"
                       body={itemTypeBodyTemplate}
                       header="प्रकार"
-                    ></Column>
-                    <Column field="item" header="सामान"></Column>
+                    />
+                    <Column field="item" header="सामान" />
                     <Column
                       field="grossWeight"
                       header="वजन"
                       body={grossWeightTemplate}
-                    ></Column>
+                    />
                     <Column
                       field="purity"
                       header="शुद्धता"
                       body={purityTemplate}
-                    ></Column>
+                    />
                     <Column
                       field="netWeight"
                       header="शुद्ध वजन"
                       body={viewNetWeightTemplate}
-                    ></Column>
-                    <Column field="rate" header="भाव"></Column>
+                    />
+                    <Column field="rate" header="भाव" />
                     <Column
                       field="amount"
                       header="राशि"
                       body={amountBodyTemplate}
-                    ></Column>
+                    />
                   </DataTable>
                 </div>
               )}
@@ -182,7 +168,7 @@ const ViewBill: FC<ViewBillProps> = ({ bill }) => {
               <ViewAmountDetails billDetail={billDetail} />
             </div>
           </div>
-        </div>
+        </Container>
       </div>
     </>
   );
