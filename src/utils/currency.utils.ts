@@ -33,19 +33,19 @@ export const netWeightTemplate = ({ netWeight }: any) => {
 };
 
 export const weightTemplate = ({ weight }: any) => {
-  return isInvalid(weight) ? "-" : `${weight} gram`;
+  return isInvalid(weight) ? "-" : `${weight} ग्राम `;
 };
 
 export const grossWeightTemplate = ({ grossWeight }: any) => {
-  return isInvalid(grossWeight) ? "-" : `${grossWeight} gram`;
+  return isInvalid(grossWeight) ? "-" : `${grossWeight} ग्राम `;
 };
 
 export const viewNetWeightTemplate = ({ netWeight }: any) => {
-  return isInvalid(netWeight) ? "-" : `${netWeight} gram`;
+  return isInvalid(netWeight) ? "-" : `${netWeight} ग्राम `;
 };
 
 export const makingChargeTemplate = ({ makingCharges }: any) => {
-  return isInvalid(makingCharges) ? "-" : `${makingCharges}/gram`;
+  return isInvalid(makingCharges) ? "-" : `${makingCharges}/ग्राम `;
 };
 
 export const purityTemplate = ({ purity }: any) => {

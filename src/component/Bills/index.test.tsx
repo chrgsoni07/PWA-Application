@@ -46,7 +46,7 @@ describe("Bills", () => {
     );
     await screen.findByRole("button", { name: /viewBill/i });
     userEvent.click(screen.getByRole("button", { name: /viewBill/i }));
-    await screen.findByRole("dialog", { name: /r k jewellers jawad/i });
+    await screen.findByRole("dialog", { name: /View bill/i });
 
     userEvent.click(screen.getByRole("button", { name: /close/i }));
   });
