@@ -170,13 +170,13 @@ const clickEditButton = (row: HTMLElement) => {
 const fillNewItemDetails = (cells: HTMLElement[], item: any) => {
   selectType(cells[0], item.type);
   enterName(cells[1], item.name);
-  if (item.type !== "Fixed") {
+  if (item.type !== "----") {
     enterWeight(cells[2], item.weight);
     enterRate(cells[3], item.rate);
     enterMakingCharges(cells[4], item.makingCharges);
     enterOtherCharges(cells[5], item.otherCharges);
   }
-  if (item.type === "Fixed") {
+  if (item.type === "----") {
     enterAmount(cells[6], item.fixedAmount);
   }
 };
@@ -217,7 +217,7 @@ const fillOldItemsDetails = (cells: HTMLElement[], item: any) => {
   enterPurity(cells[3], item.purity);
   checkNetWeight(cells[4], item.netWeight);
   enterRate(cells[5], item.rate);
-  if (item.type === "Fixed") {
+  if (item.type === "----") {
     enterAmount(cells[6], item.fixedAmount);
   }
 };
