@@ -49,7 +49,7 @@ describe("Bills", () => {
     await screen.findByRole("button", { name: /viewBill/i });
     const beforeViewBill = asFragment();
     userEvent.click(screen.getByRole("button", { name: /viewBill/i }));
-    await screen.findByRole("dialog", { name: /r k jewellers jawad/i });
+    await screen.findByRole("dialog", { name: /View bill/i });
 
     expect(beforeViewBill).toMatchDiffSnapshot(asFragment());
     userEvent.click(screen.getByRole("button", { name: /close/i }));
