@@ -19,7 +19,7 @@ const bill = {
   due: "5,000",
   newItems: [
     {
-      type: "Gold",
+      type: "सोना",
       name: "Haar",
       weight: "18.270",
       rate: "49500",
@@ -28,7 +28,7 @@ const bill = {
       amount: "₹94,091",
     },
     {
-      type: "Silver",
+      type: "चांदी",
       name: "Gola Payal",
       weight: "235",
       rate: "65000",
@@ -37,7 +37,7 @@ const bill = {
       amount: "₹15,275",
     },
     {
-      type: "Fixed",
+      type: "----",
       name: "Bicchi",
       weight: "",
       rate: "",
@@ -49,7 +49,7 @@ const bill = {
   ],
   oldItems: [
     {
-      type: "Gold",
+      type: "सोना",
       name: "Purana Haar",
       weight: "15.780",
       purity: "90",
@@ -58,7 +58,7 @@ const bill = {
       amount: "₹70,290",
     },
     {
-      type: "Silver",
+      type: "चांदी",
       name: "Purani Payjab",
       weight: "80",
       purity: "100",
@@ -67,7 +67,7 @@ const bill = {
       amount: "₹4,000",
     },
     {
-      type: "Fixed",
+      type: "----",
       name: "Bicchi",
       weight: "",
       purity: "",
