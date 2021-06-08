@@ -9,10 +9,10 @@ export const FormikInputNumber: FC<InputNumberProps> = (props: any) => {
   return (
     <>
       <InputNumber
-        {...field}
         {...props}
-        value={defaultNum(field.value)}
         onValueChange={field.onChange}
+        name={field.name}
+        value={defaultNum(field.value)}
         className={classNames({
           "p-invalid": meta.error,
         })}
