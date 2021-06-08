@@ -71,13 +71,6 @@ const ViewBill: FC<ViewBillProps> = ({ bill }) => {
                     <span id="mobile"> {customer?.mobile}</span>
                   </div>
                 )}
-
-                {customer?.address && (
-                  <div className="p-col-12">
-                    <label id="address">पता: </label>
-                    <span id="address"> {customer?.address}</span>
-                  </div>
-                )}
               </div>
             </div>
 

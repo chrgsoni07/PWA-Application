@@ -39,18 +39,13 @@ function Customer({ selectedCustomer, setSelectedCustomer }: any) {
         </div>
 
         <div className="p-field p-col">
-          <label htmlFor="mobile">Mobile: </label>
-          <span id="mobile">{selectedCustomer?.mobile}</span>
-        </div>
-
-        <div className="p-field p-col">
           <label htmlFor="place">Place: </label>
           <span id="place">{selectedCustomer?.place}</span>
         </div>
 
         <div className="p-field p-col">
-          <label htmlFor="address">Address: </label>
-          <span id="address">{selectedCustomer?.address}</span>
+          <label htmlFor="mobile">Mobile: </label>
+          <span id="mobile">{selectedCustomer?.mobile}</span>
         </div>
       </div>
     </div>

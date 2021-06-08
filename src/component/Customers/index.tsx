@@ -6,7 +6,6 @@ import { InputText } from "primereact/inputtext";
 import { CustomerType } from "./types";
 import { deleteFromDB, edit, getCustomers, save } from "api";
 import { Dialog } from "primereact/dialog";
-import { InputTextarea } from "primereact/inputtextarea";
 import { useToast } from "toasts";
 import { updateList } from "utils/state.utils";
 import { FormikErrors, useFormik } from "formik";
@@ -51,7 +50,6 @@ const Customers = () => {
       name: "",
       place: "",
       mobile: "",
-      address: "",
     },
     validate: (data) => {
       let errors: FormikErrors<CustomerType> = {};
@@ -191,9 +189,8 @@ const Customers = () => {
             body={(_: any, prop: any) => prop.rowIndex + 1}
           ></Column>
           <Column field="name" header="Name"></Column>
-          <Column field="mobile" header="Mobile no"></Column>
           <Column field="place" header="Place"></Column>
-          <Column field="address" header="Address"></Column>
+          <Column field="mobile" header="Mobile no"></Column>
           <Column body={actionBodyTemplate}></Column>
         </DataTable>
       </div>
@@ -209,7 +206,7 @@ const Customers = () => {
       >
         <form onSubmit={formik.handleSubmit} className="p-fluid" id="rateForm">
           <div className="p-fluid p-formgrid p-grid">
-            <div className="p-field p-col-6">
+            <div className="p-field p-col-12">
               <label htmlFor="name">Name</label>
               <InputText
                 id="name"
@@ -225,19 +222,6 @@ const Customers = () => {
               {getFormErrorMessage("name")}
             </div>
 
-            <div className="p-field p-col-6">
-              <label htmlFor="mobile">Mobile</label>
-              <InputText
-                id="mobile"
-                name="mobile"
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.mobile}
-              />
-            </div>
-          </div>
-
-          <div className="p-fluid p-formgrid p-grid">
             <div className="p-field p-col-6">
               <label htmlFor="place">Place</label>
               <InputText
@@ -255,11 +239,13 @@ const Customers = () => {
             </div>
 
             <div className="p-field p-col-6">
-              <label htmlFor="address">Address</label>
-              <InputTextarea
-                id="address"
+              <label htmlFor="mobile">Mobile</label>
+              <InputText
+                id="mobile"
+                name="mobile"
+                type="text"
                 onChange={formik.handleChange}
-                value={formik.values.address}
+                value={formik.values.mobile}
               />
             </div>
           </div>
