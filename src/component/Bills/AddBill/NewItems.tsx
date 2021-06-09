@@ -50,13 +50,20 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
       minFractionDigits={0}
     />
   );
-  const newRateEditor = (props: any) => (
-    <InputNumber
-      value={props.rowData["rate"]}
-      onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
-      locale="en-IN"
-    />
-  );
+  const newRateEditor = (props: any) => {
+    const id = `${props.rowIndex}_${props.field}`;
+    return (
+      <>
+        <HiddenLabel htmlFor={id}>{`Enter ${props.field}`}</HiddenLabel>
+        <InputNumber
+          inputId={id}
+          value={props.rowData["rate"]}
+          onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
+          locale="en-IN"
+        />
+      </>
+    );
+  };
 
   const newWeightEditor = (props: any) => {
     const id = `${props.rowIndex}_${props.field}`;

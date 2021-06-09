@@ -62,13 +62,20 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
 
   const oldItemEditor = (props: any) => inputTextEditorOld(props, "item");
 
-  const oldRateEditor = (props: any) => (
-    <InputNumber
-      value={props.rowData["rate"]}
-      onValueChange={(e) => onEditorValueChangeOld(props, e.value)}
-      locale="en-IN"
-    />
-  );
+  const oldRateEditor = (props: any) => {
+    const id = `${props.rowIndex}_${props.field}`;
+    return (
+      <>
+        <HiddenLabel htmlFor={id}>{`Enter ${props.field}`}</HiddenLabel>
+        <InputNumber
+          inputId={id}
+          value={props.rowData["rate"]}
+          onValueChange={(e) => onEditorValueChangeOld(props, e.value)}
+          locale="en-IN"
+        />
+      </>
+    );
+  };
   const oldGrossWeightEditor = (props: any) => {
     const id = `${props.rowIndex}_${props.field}`;
     return (

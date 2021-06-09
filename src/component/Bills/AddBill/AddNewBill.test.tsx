@@ -200,7 +200,7 @@ const enterGrossWeight = (cell: HTMLElement, weight: string) => {
   userEvent.type(within(cell).getByLabelText(/enter grossweight/i), weight);
 };
 const enterRate = (cell: HTMLElement, rate: string) => {
-  userEvent.type(within(cell).getByRole("spinbutton"), rate);
+  userEvent.type(within(cell).getByLabelText(/enter rate/i), rate);
 };
 const enterMakingCharges = (cell: HTMLElement, makingCharges: string) => {
   userEvent.type(within(cell).getByRole("spinbutton"), makingCharges);
