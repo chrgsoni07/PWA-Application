@@ -57,16 +57,25 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
       locale="en-IN"
     />
   );
-  const newWeightEditor = (props: any) => (
-    <InputNumber
-      value={props.rowData["weight"]}
-      onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
-      locale="en-IN"
-      mode="decimal"
-      minFractionDigits={1}
-      maxFractionDigits={3}
-    />
-  );
+
+  const newWeightEditor = (props: any) => {
+    const id = `${props.rowIndex}_${props.field}`;
+    return (
+      <>
+        <HiddenLabel htmlFor={id}>{`Enter ${props.field}`}</HiddenLabel>
+        <InputNumber
+          inputId={id}
+          value={props.rowData["weight"]}
+          onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
+          locale="en-IN"
+          mode="decimal"
+          minFractionDigits={1}
+          maxFractionDigits={3}
+        />
+      </>
+    );
+  };
+
   const makingChargesTemplate = ({ makingCharges }: any) =>
     formatCurrencyNoFraction(makingCharges);
   const newOtherChargesEditor = (props: any) => (

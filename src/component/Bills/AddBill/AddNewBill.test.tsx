@@ -194,7 +194,10 @@ const enterName = (cell: HTMLElement, name: string) => {
   userEvent.type(within(cell).getByLabelText(/enter item/i), name);
 };
 const enterWeight = (cell: HTMLElement, weight: string) => {
-  userEvent.type(within(cell).getByRole("spinbutton"), weight);
+  userEvent.type(within(cell).getByLabelText(/enter weight/i), weight);
+};
+const enterGrossWeight = (cell: HTMLElement, weight: string) => {
+  userEvent.type(within(cell).getByLabelText(/enter grossweight/i), weight);
 };
 const enterRate = (cell: HTMLElement, rate: string) => {
   userEvent.type(within(cell).getByRole("spinbutton"), rate);
@@ -213,7 +216,7 @@ const saveRow = (cell: HTMLElement) => {
 const fillOldItemsDetails = (cells: HTMLElement[], item: any) => {
   selectType(cells[0], item.type);
   enterName(cells[1], item.name);
-  enterWeight(cells[2], item.weight);
+  enterGrossWeight(cells[2], item.weight);
   enterPurity(cells[3], item.purity);
   checkNetWeight(cells[4], item.netWeight);
   enterRate(cells[5], item.rate);

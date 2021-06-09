@@ -12,6 +12,7 @@ import {
   AddNewRow,
   DeleteButton,
   FooterAmount,
+  HiddenLabel,
   ItemsTable,
   itemTypeBodyTemplate,
   ItemTypeEditor,
@@ -68,16 +69,23 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
       locale="en-IN"
     />
   );
-  const oldGrossWeightEditor = (props: any) => (
-    <InputNumber
-      value={props.rowData["grossWeight"]}
-      onValueChange={(e) => onEditorValueChangeOld(props, e.value)}
-      locale="en-IN"
-      mode="decimal"
-      minFractionDigits={1}
-      maxFractionDigits={3}
-    />
-  );
+  const oldGrossWeightEditor = (props: any) => {
+    const id = `${props.rowIndex}_${props.field}`;
+    return (
+      <>
+        <HiddenLabel htmlFor={id}>{`Enter ${props.field}`}</HiddenLabel>
+        <InputNumber
+          inputId={id}
+          value={props.rowData["grossWeight"]}
+          onValueChange={(e) => onEditorValueChangeOld(props, e.value)}
+          locale="en-IN"
+          mode="decimal"
+          minFractionDigits={1}
+          maxFractionDigits={3}
+        />
+      </>
+    );
+  };
 
   return (
     <div className="card">
