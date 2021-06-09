@@ -14,7 +14,7 @@ import {
 } from "utils/currency.utils";
 import { itemTypeBodyTemplate } from "../AddBill/common";
 import ReactToPrint from "react-to-print";
-import { Container, Name } from "./styles";
+import { Container, Name, Table, Row, Cell } from "./styles";
 import logo from "./logo.png";
 
 type ViewBillProps = {
@@ -48,44 +48,27 @@ const ViewBill: FC<ViewBillProps> = ({
             </div>
 
             <div className="p-col-4">
-              <Divider align="left">
-                <div className="p-d-inline-flex p-ai-center">
-                  <i className="pi pi-user p-mr-2"></i>
-                  <b>ग्राहक</b>
-                </div>
-              </Divider>
-              <table>
-                <tr style={{ verticalAlign: "baseline" }}>
-                  <td>नाम: </td>
-                  <td>{customer?.name}</td>
-                </tr>
-                <tr style={{ verticalAlign: "baseline" }}>
-                  <td>निवासी: </td>
-                  <td>{customer?.place}</td>
-                </tr>
+              <Header icon="pi-user" text="ग्राहक" />
+              <Table>
+                <Row>
+                  <Cell>नाम:</Cell>
+                  <Cell>{customer?.name}</Cell>
+                </Row>
+                <Row>
+                  <Cell>निवासी:</Cell>
+                  <Cell>{customer?.place}</Cell>
+                </Row>
                 {customer?.mobile && (
-                  <tr style={{ verticalAlign: "baseline" }}>
-                    <td>मोबाइल: </td>
-                    <td>{customer?.mobile}</td>
-                  </tr>
+                  <Row>
+                    <Cell>मोबाइल:</Cell>
+                    <Cell>{customer?.mobile}</Cell>
+                  </Row>
                 )}
-              </table>
+              </Table>
             </div>
-
             <div className="p-col-3">
-              <Divider align="left">
-                <div className="p-d-inline-flex p-ai-center">
-                  <i className="pi pi-book p-mr-2"></i>
-                  <b>बिल क्र. : {billNo}</b>
-                </div>
-              </Divider>
-
-              <Divider align="left">
-                <div className="p-d-inline-flex p-ai-center">
-                  <i className="pi pi-calendar p-mr-2"></i>
-                  <b>दिनांक : {invoiceDate}</b>
-                </div>
-              </Divider>
+              <Header icon="pi-book" text={`बिल क्र. : ${billNo}`} />
+              <Header icon="pi-calendar" text={`दिनांक : ${invoiceDate}`} />
             </div>
           </div>
 
@@ -93,12 +76,7 @@ const ViewBill: FC<ViewBillProps> = ({
             <div className="p-col-8">
               {!!newItems.length && (
                 <div className="card">
-                  <Divider align="left">
-                    <div className="p-d-inline-flex p-ai-center">
-                      <i className="pi pi-list p-mr-2"></i>
-                      <b>नया सामान</b>
-                    </div>
-                  </Divider>
+                  <Header icon="pi-list" text="नया सामान" />
                   <DataTable
                     value={newItems}
                     className="p-datatable-sm p-datatable-gridlines"
@@ -128,12 +106,7 @@ const ViewBill: FC<ViewBillProps> = ({
 
               {!!oldItems.length && (
                 <div className="card">
-                  <Divider align="left">
-                    <div className="p-d-inline-flex p-ai-center">
-                      <i className="pi pi-list p-mr-2"></i>
-                      <b>पुराना सामान</b>
-                    </div>
-                  </Divider>
+                  <Header icon="pi-list" text="पुराना सामान" />
                   <DataTable
                     value={oldItems}
                     className="p-datatable-sm p-datatable-gridlines"
@@ -179,5 +152,16 @@ const ViewBill: FC<ViewBillProps> = ({
     </>
   );
 };
+
+function Header({ icon, text }: any) {
+  return (
+    <Divider align="left">
+      <div className="p-d-inline-flex p-ai-center">
+        <i className={`pi ${icon} p-mr-2`}></i>
+        <b>{text}</b>
+      </div>
+    </Divider>
+  );
+}
 
 export default ViewBill;

@@ -16,3 +16,13 @@ export const Container = styled.div`
 export const Name = styled.b`
   font-size: 1.5rem;
 `;
+
+export const Table = styled.div`
+  display: table;
+`;
+export const Row = styled.div`
+  display: table-row;
+`;
+export const Cell = styled.div`
+  display: table-cell;
+`;
