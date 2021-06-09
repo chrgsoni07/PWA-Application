@@ -34,13 +34,20 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
       onChange={(e) => onEditorValueChangeOld(props, e.currentTarget.value)}
     />
   );
-  const oldPurityEditor = (props: any) => (
-    <InputNumber
-      value={props.rowData["purity"]}
-      onChange={(e) => onEditorValueChangeOld(props, e.value)}
-      suffix="%"
-    />
-  );
+  const oldPurityEditor = (props: any) => {
+    const id = `${props.rowIndex}_${props.field}`;
+    return (
+      <>
+        <HiddenLabel htmlFor={id}>{`Enter ${props.field}`}</HiddenLabel>
+        <InputNumber
+          inputId={id}
+          value={props.rowData["purity"]}
+          onChange={(e) => onEditorValueChangeOld(props, e.value)}
+          suffix="%"
+        />
+      </>
+    );
+  };
 
   const oldItemTypeEditor = (props: any) => (
     <ItemTypeEditor

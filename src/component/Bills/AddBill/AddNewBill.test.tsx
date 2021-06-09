@@ -232,8 +232,7 @@ const fillOldItemsDetails = (cells: HTMLElement[], item: any) => {
 };
 
 const enterPurity = (cell: HTMLElement, purity: string) => {
-  userEvent.clear(within(cell).getByRole("spinbutton"));
-  userEvent.type(within(cell).getByRole("spinbutton"), purity);
+  userEvent.type(within(cell).getByLabelText(/enter purity/i), purity);
 };
 
 const checkNetWeight = (cell: HTMLElement, netWeight: string) => {
