@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import { Button, ButtonProps } from "primereact/button";
 import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
@@ -33,13 +34,12 @@ export const FooterAmount = (amount: number) => (
   </ColumnGroup>
 );
 
-export const ItemTypeEditor: FC<DropdownProps> = ({ onChange, value }) => (
+export const ItemTypeEditor: FC<DropdownProps> = (props) => (
   <Dropdown
-    value={value}
+    {...props}
     options={itemType}
     optionLabel="label"
     optionValue="value"
-    onChange={onChange}
     style={{ width: "100%" }}
     placeholder="Select a item type"
     itemTemplate={(option) => {
@@ -48,25 +48,18 @@ export const ItemTypeEditor: FC<DropdownProps> = ({ onChange, value }) => (
   />
 );
 
-export const ItemsTable: FC<DataTableProps> = ({
-  id,
-  value,
-  footerColumnGroup,
-  children,
-}) => (
+export const ItemsTable: FC<DataTableProps> = (props) => (
   <DataTable
-    id={id}
-    value={value}
+    {...props}
     editMode="row"
     dataKey="id"
     scrollable
     scrollHeight="150px"
-    footerColumnGroup={footerColumnGroup}
     className="p-datatable-sm"
     resizableColumns
     columnResizeMode="expand"
   >
-    {children}
+    {props.children}
   </DataTable>
 );
 
@@ -81,7 +74,7 @@ export const AddNewRow = ({ onClick }: any) => (
       />
     }
     style={{ padding: 5 }}
-  ></Toolbar>
+  />
 );
 
 export const itemTypeBodyTemplate = (rowData: any) =>
@@ -95,3 +88,16 @@ export const AmountEditor: FC<{
   const value = props.rowData["amount"] || null;
   return <InputNumber value={value} onValueChange={onValueChange} />;
 };
+
+export const HiddenLabel = styled.label`
+  .visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+`;
