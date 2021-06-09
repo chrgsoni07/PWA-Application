@@ -6,13 +6,24 @@ export const Container = styled.div`
   border: 1px solid black;
   font-size: 0.9rem;
   .p-component,
+  .p-divider-content,
   .pi {
     font-size: 0.85rem;
-    margin: 0.1rem;
-    padding: 0.1rem;
+    margin: 0.05rem;
+    padding: 0.05rem;
   }
 `;
 
 export const Name = styled.b`
   font-size: 1.5rem;
+`;
+
+export const Table = styled.div`
+  display: table;
+`;
+export const Row = styled.div`
+  display: table-row;
+`;
+export const Cell = styled.div`
+  display: table-cell;
 `;
