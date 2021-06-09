@@ -203,7 +203,10 @@ const enterRate = (cell: HTMLElement, rate: string) => {
   userEvent.type(within(cell).getByLabelText(/enter rate/i), rate);
 };
 const enterMakingCharges = (cell: HTMLElement, makingCharges: string) => {
-  userEvent.type(within(cell).getByRole("spinbutton"), makingCharges);
+  userEvent.type(
+    within(cell).getByLabelText(/enter makingcharges/i),
+    makingCharges
+  );
 };
 const enterOtherCharges = (cell: HTMLElement, otherCharges: string) => {
   userEvent.type(within(cell).getByRole("spinbutton"), otherCharges);

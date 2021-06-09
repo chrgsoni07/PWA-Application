@@ -40,16 +40,23 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
     />
   );
   const newItemNameEditor = (props: any) => inputTextEditorNew(props, "item");
-  const newMakingChargesEditor = (props: any) => (
-    <InputNumber
-      value={props.rowData["makingCharges"]}
-      onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
-      mode="currency"
-      currency="INR"
-      locale="en-IN"
-      minFractionDigits={0}
-    />
-  );
+  const newMakingChargesEditor = (props: any) => {
+    const id = `${props.rowIndex}_${props.field}`;
+    return (
+      <>
+        <HiddenLabel htmlFor={id}>{`Enter ${props.field}`}</HiddenLabel>
+        <InputNumber
+          inputId={id}
+          value={props.rowData["makingCharges"]}
+          onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
+          mode="currency"
+          currency="INR"
+          locale="en-IN"
+          minFractionDigits={0}
+        />
+      </>
+    );
+  };
   const newRateEditor = (props: any) => {
     const id = `${props.rowIndex}_${props.field}`;
     return (
