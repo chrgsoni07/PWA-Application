@@ -41,6 +41,7 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
 
   const oldItemTypeEditor = (props: any) => (
     <ItemTypeEditor
+      ariaLabel="Select an item type"
       value={props.rowData["type"]}
       onChange={(e) => onEditorValueChangeOld(props, e.value)}
     />

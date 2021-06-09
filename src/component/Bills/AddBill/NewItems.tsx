@@ -32,6 +32,7 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
     formatCurrencyNoFraction(otherCharges);
   const newItemTypeEditor = (props: any) => (
     <ItemTypeEditor
+      ariaLabel="Select an item type"
       value={props.rowData["type"]}
       onChange={(e) => onEditorValueChangeNew(props, e.value)}
     />

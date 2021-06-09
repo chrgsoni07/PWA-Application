@@ -186,8 +186,8 @@ const enterAmount = (cell: HTMLElement, fixedAmount: string) => {
 };
 
 const selectType = (cell: HTMLElement, type: string) => {
-  userEvent.click(within(cell).getByRole("button"));
-  userEvent.click(screen.getByLabelText(type));
+  const dropdown = within(cell).getByLabelText("Select an item type");
+  userEvent.type(dropdown, type);
 };
 
 const enterName = (cell: HTMLElement, name: string) => {
