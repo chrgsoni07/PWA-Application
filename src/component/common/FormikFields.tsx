@@ -6,12 +6,13 @@ import { classNames } from "primereact/utils";
 
 export const FormikInputNumber: FC<InputNumberProps> = (props: any) => {
   const [field, meta] = useField(props);
+  const { onChange, ...rest } = field;
   return (
     <>
       <InputNumber
         {...props}
-        onValueChange={field.onChange}
-        name={field.name}
+        {...rest}
+        onValueChange={onChange}
         value={defaultNum(field.value)}
         className={classNames({
           "p-invalid": meta.error,
