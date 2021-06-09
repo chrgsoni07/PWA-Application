@@ -209,7 +209,10 @@ const enterMakingCharges = (cell: HTMLElement, makingCharges: string) => {
   );
 };
 const enterOtherCharges = (cell: HTMLElement, otherCharges: string) => {
-  userEvent.type(within(cell).getByRole("spinbutton"), otherCharges);
+  userEvent.type(
+    within(cell).getByLabelText(/enter otherCharges/i),
+    otherCharges
+  );
 };
 
 const saveRow = (cell: HTMLElement) => {

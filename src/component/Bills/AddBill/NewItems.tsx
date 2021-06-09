@@ -92,16 +92,23 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
 
   const makingChargesTemplate = ({ makingCharges }: any) =>
     formatCurrencyNoFraction(makingCharges);
-  const newOtherChargesEditor = (props: any) => (
-    <InputNumber
-      value={props.rowData["otherCharges"]}
-      onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
-      mode="currency"
-      currency="INR"
-      locale="en-IN"
-      minFractionDigits={0}
-    />
-  );
+  const newOtherChargesEditor = (props: any) => {
+    const id = `${props.rowIndex}_${props.field}`;
+    return (
+      <>
+        <HiddenLabel htmlFor={id}>{`Enter ${props.field}`}</HiddenLabel>
+        <InputNumber
+          inputId={id}
+          value={props.rowData["otherCharges"]}
+          onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
+          mode="currency"
+          currency="INR"
+          locale="en-IN"
+          minFractionDigits={0}
+        />
+      </>
+    );
+  };
 
   const newItemAmountEditor = (props: any) => (
     <AmountEditor
