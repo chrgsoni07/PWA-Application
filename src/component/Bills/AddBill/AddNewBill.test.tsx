@@ -191,7 +191,7 @@ const selectType = (cell: HTMLElement, type: string) => {
 };
 
 const enterName = (cell: HTMLElement, name: string) => {
-  userEvent.type(within(cell).getByRole("textbox"), name);
+  userEvent.type(within(cell).getByLabelText(/enter item/i), name);
 };
 const enterWeight = (cell: HTMLElement, weight: string) => {
   userEvent.type(within(cell).getByRole("spinbutton"), weight);

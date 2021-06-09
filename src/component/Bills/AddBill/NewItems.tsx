@@ -11,6 +11,7 @@ import {
   AmountEditor,
   DeleteButton,
   FooterAmount,
+  HiddenLabel,
   ItemsTable,
   itemTypeBodyTemplate,
   ItemTypeEditor,
@@ -23,6 +24,7 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
   const inputTextEditorNew = (props: any, field: string) => (
     <InputText
       type="text"
+      aria-label={`Enter ${field}`}
       value={props.rowData[field]}
       onChange={(e) => onEditorValueChangeNew(props, e.currentTarget.value)}
     />

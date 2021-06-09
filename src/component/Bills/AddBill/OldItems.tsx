@@ -26,6 +26,7 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
 
   const inputTextEditorOld = (props: any, field: keyof OldItem) => (
     <InputText
+      aria-label={`Enter ${field}`}
       type="text"
       value={props.rowData[field]}
       onChange={(e) => onEditorValueChangeOld(props, e.currentTarget.value)}
