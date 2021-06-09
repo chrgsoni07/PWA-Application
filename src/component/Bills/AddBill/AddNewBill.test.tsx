@@ -146,7 +146,7 @@ const addNewItemsRow = (item: any, i: number) => {
 };
 
 const addRowAndGetCells = (rowIndex: number) => {
-  userEvent.click(screen.getByRole("button", { name: /addNewRow/i }));
+  userEvent.click(screen.getByLabelText(/addnewrow/i));
   const row = screen.getAllByRole("row")[rowIndex];
   clickEditButton(row);
   return within(row).getAllByRole("cell");
