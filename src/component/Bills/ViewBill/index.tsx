@@ -16,6 +16,7 @@ import { itemTypeBodyTemplate } from "../AddBill/common";
 import ReactToPrint from "react-to-print";
 import { Container, Name, Table, Row, Cell } from "./styles";
 import logo from "./logo.png";
+import { CustomerType } from "component/Customers/types";
 
 type ViewBillProps = {
   bill: Bill;
@@ -48,23 +49,7 @@ const ViewBill: FC<ViewBillProps> = ({
             </div>
 
             <div className="p-col-4">
-              <Header icon="pi-user" text="ग्राहक" />
-              <Table>
-                <Row>
-                  <Cell>नाम:</Cell>
-                  <Cell>{customer?.name}</Cell>
-                </Row>
-                <Row>
-                  <Cell>निवासी:</Cell>
-                  <Cell>{customer?.place}</Cell>
-                </Row>
-                {customer?.mobile && (
-                  <Row>
-                    <Cell>मोबाइल:</Cell>
-                    <Cell>{customer?.mobile}</Cell>
-                  </Row>
-                )}
-              </Table>
+              <CustomerDetails customer={customer} />
             </div>
             <div className="p-col-3">
               <Header icon="pi-book" text={`बिल क्र. : ${billNo}`} />
@@ -153,6 +138,8 @@ const ViewBill: FC<ViewBillProps> = ({
   );
 };
 
+export default ViewBill;
+
 function Header({ icon, text }: any) {
   return (
     <Divider align="left">
@@ -164,4 +151,26 @@ function Header({ icon, text }: any) {
   );
 }
 
-export default ViewBill;
+function CustomerDetails({ customer }: { customer: CustomerType }) {
+  return (
+    <>
+      <Header icon="pi-user" text="ग्राहक" />
+      <Table>
+        <Row>
+          <Cell>नाम:</Cell>
+          <Cell>{customer?.name}</Cell>
+        </Row>
+        <Row>
+          <Cell>निवासी:</Cell>
+          <Cell>{customer?.place}</Cell>
+        </Row>
+        {customer?.mobile && (
+          <Row>
+            <Cell>मोबाइल:</Cell>
+            <Cell>{customer?.mobile}</Cell>
+          </Row>
+        )}
+      </Table>
+    </>
+  );
+}

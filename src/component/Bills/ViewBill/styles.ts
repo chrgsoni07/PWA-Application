@@ -6,10 +6,11 @@ export const Container = styled.div`
   border: 1px solid black;
   font-size: 0.9rem;
   .p-component,
+  .p-divider-content,
   .pi {
     font-size: 0.85rem;
-    margin: 0.1rem;
-    padding: 0.1rem;
+    margin: 0.05rem;
+    padding: 0.05rem;
   }
 `;
 
