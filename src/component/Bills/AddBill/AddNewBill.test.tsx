@@ -245,6 +245,6 @@ const checkAmount = (cell: HTMLElement, amount: string) => {
 
 const deleteRow = (rowIndex: number) => {
   const row = screen.getAllByRole("row")[rowIndex];
-  const deleteCell = within(row).getAllByRole("cell")[8];
-  userEvent.click(within(deleteCell).getByRole("button"));
+  const deleteCell = within(row).getByLabelText(/deleterow/i);
+  userEvent.click(deleteCell);
 };

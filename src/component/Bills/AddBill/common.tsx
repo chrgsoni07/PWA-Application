@@ -15,6 +15,7 @@ import { itemType } from "../commonData";
 
 export const DeleteButton: FC<ButtonProps> = ({ onClick }) => (
   <Button
+    aria-label="deleteRow"
     icon="pi pi-trash"
     className="p-button-rounded p-button-warning p-button-sm"
     onClick={onClick}
