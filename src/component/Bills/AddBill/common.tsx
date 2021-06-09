@@ -86,7 +86,13 @@ export const AmountEditor: FC<{
 }> = ({ props, onValueChange }: any) => {
   if (props.rowData["type"] !== "fixed") return null;
   const value = props.rowData["amount"] || null;
-  return <InputNumber value={value} onValueChange={onValueChange} />;
+  const id = `${props.rowIndex}_${props.field}`;
+  return (
+    <>
+      <HiddenLabel htmlFor={id}>{`Enter ${props.field}`}</HiddenLabel>
+      <InputNumber inputId={id} value={value} onValueChange={onValueChange} />
+    </>
+  );
 };
 
 export const HiddenLabel = styled.label`

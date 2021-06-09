@@ -182,7 +182,7 @@ const fillNewItemDetails = (cells: HTMLElement[], item: any) => {
 };
 
 const enterAmount = (cell: HTMLElement, fixedAmount: string) => {
-  userEvent.type(within(cell).getByRole("spinbutton"), fixedAmount);
+  userEvent.type(within(cell).getByLabelText(/enter amount/i), fixedAmount);
 };
 
 const selectType = (cell: HTMLElement, type: string) => {
