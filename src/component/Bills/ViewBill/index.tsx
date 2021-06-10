@@ -1,6 +1,5 @@
 import { FC, useRef } from "react";
 import { Bill } from "../types";
-import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Divider } from "primereact/divider";
 import ViewAmountDetails from "./ViewAmountDetails";
@@ -14,7 +13,7 @@ import {
 } from "utils/currency.utils";
 import { itemTypeBodyTemplate } from "../AddBill/common";
 import ReactToPrint from "react-to-print";
-import { Container, Name, Table, Row, Cell } from "./styles";
+import { Container, Name, Table, Row, Cell, DataTable } from "./styles";
 import logo from "./logo.png";
 import { CustomerType } from "component/Customers/types";
 
