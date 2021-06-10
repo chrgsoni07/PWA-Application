@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { DataTable as DT } from "primereact/datatable";
-const fontSizeForDetails = "0.7rem";
+const fontSizeForDetails = "0.75rem";
 export const Container = styled.div`
   padding: 10px;
   margin: 10px;

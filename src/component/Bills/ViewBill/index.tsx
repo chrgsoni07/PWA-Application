@@ -57,7 +57,7 @@ const ViewBill: FC<ViewBillProps> = ({
           </div>
 
           <div className="p-grid">
-            <div className="p-col-8">
+            <div className="p-col-9">
               {!!newItems.length && (
                 <div className="card">
                   <Header icon="pi-list" text="नया सामान" />
@@ -66,7 +66,6 @@ const ViewBill: FC<ViewBillProps> = ({
                       field="type"
                       body={itemTypeBodyTemplate}
                       header="प्रकार"
-                      style={{ width: "7%" }}
                     />
                     <Column field="item" header="सामान" />
                     <Column field="weight" header="वज़न" body={weightTemplate} />
@@ -79,7 +78,7 @@ const ViewBill: FC<ViewBillProps> = ({
                     <Column field="otherCharges" header="अन्य" />
                     <Column
                       field="amount"
-                      header="राशि"
+                      header="कुल राषि"
                       body={amountBodyTemplate}
                     />
                   </DataTable>
@@ -94,12 +93,11 @@ const ViewBill: FC<ViewBillProps> = ({
                       field="type"
                       body={itemTypeBodyTemplate}
                       header="प्रकार"
-                      style={{ width: "7%" }}
                     />
                     <Column field="item" header="सामान" />
                     <Column
                       field="grossWeight"
-                      header="वजन"
+                      header="वज़न"
                       body={grossWeightTemplate}
                     />
                     <Column
@@ -109,13 +107,13 @@ const ViewBill: FC<ViewBillProps> = ({
                     />
                     <Column
                       field="netWeight"
-                      header="शुद्ध वजन"
+                      header="शुद्ध वज़न"
                       body={viewNetWeightTemplate}
                     />
                     <Column field="rate" header="भाव" />
                     <Column
                       field="amount"
-                      header="राशि"
+                      header="कुल राषि"
                       body={amountBodyTemplate}
                     />
                   </DataTable>
@@ -123,7 +121,7 @@ const ViewBill: FC<ViewBillProps> = ({
               )}
             </div>
 
-            <div className="p-col-4">
+            <div className="p-col-3">
               <ViewAmountDetails billDetail={billDetail} />
             </div>
           </div>
