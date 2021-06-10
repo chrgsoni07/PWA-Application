@@ -1,7 +1,7 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ToastsProvider } from "toasts";
-import Bills from ".";
+import Bills from "..";
 
 jest.mock("api");
 
