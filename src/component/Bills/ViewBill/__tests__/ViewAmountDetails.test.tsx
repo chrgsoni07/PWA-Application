@@ -2,10 +2,10 @@ import { render } from "@testing-library/react";
 import { BillDetails } from "component/Bills/types";
 import ViewAmountDetails from "../ViewAmountDetails";
 
-const { asFragment } = render(
+const { asFragment: f } = render(
   <ViewAmountDetails billDetail={{} as BillDetails} />
 );
-const base = asFragment();
+const base = f();
 it.each`
   billDetail
   ${null}
