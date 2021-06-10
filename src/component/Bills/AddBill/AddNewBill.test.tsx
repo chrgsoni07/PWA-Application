@@ -146,7 +146,7 @@ const addNewItemsRow = (item: any, i: number) => {
 };
 
 const addRowAndGetCells = (rowIndex: number) => {
-  userEvent.click(screen.getByRole("button", { name: /addNewRow/i }));
+  userEvent.click(screen.getByLabelText(/addnewrow/i));
   const row = screen.getAllByRole("row")[rowIndex];
   clickEditButton(row);
   return within(row).getAllByRole("cell");
@@ -182,28 +182,37 @@ const fillNewItemDetails = (cells: HTMLElement[], item: any) => {
 };
 
 const enterAmount = (cell: HTMLElement, fixedAmount: string) => {
-  userEvent.type(within(cell).getByRole("spinbutton"), fixedAmount);
+  userEvent.type(within(cell).getByLabelText(/enter amount/i), fixedAmount);
 };
 
 const selectType = (cell: HTMLElement, type: string) => {
-  userEvent.click(within(cell).getByRole("button"));
-  userEvent.click(screen.getByLabelText(type));
+  const dropdown = within(cell).getByLabelText("Select an item type");
+  userEvent.type(dropdown, type);
 };
 
 const enterName = (cell: HTMLElement, name: string) => {
-  userEvent.type(within(cell).getByRole("textbox"), name);
+  userEvent.type(within(cell).getByLabelText(/enter item/i), name);
 };
 const enterWeight = (cell: HTMLElement, weight: string) => {
-  userEvent.type(within(cell).getByRole("spinbutton"), weight);
+  userEvent.type(within(cell).getByLabelText(/enter weight/i), weight);
+};
+const enterGrossWeight = (cell: HTMLElement, weight: string) => {
+  userEvent.type(within(cell).getByLabelText(/enter grossweight/i), weight);
 };
 const enterRate = (cell: HTMLElement, rate: string) => {
-  userEvent.type(within(cell).getByRole("spinbutton"), rate);
+  userEvent.type(within(cell).getByLabelText(/enter rate/i), rate);
 };
 const enterMakingCharges = (cell: HTMLElement, makingCharges: string) => {
-  userEvent.type(within(cell).getByRole("spinbutton"), makingCharges);
+  userEvent.type(
+    within(cell).getByLabelText(/enter makingcharges/i),
+    makingCharges
+  );
 };
 const enterOtherCharges = (cell: HTMLElement, otherCharges: string) => {
-  userEvent.type(within(cell).getByRole("spinbutton"), otherCharges);
+  userEvent.type(
+    within(cell).getByLabelText(/enter otherCharges/i),
+    otherCharges
+  );
 };
 
 const saveRow = (cell: HTMLElement) => {
@@ -213,7 +222,7 @@ const saveRow = (cell: HTMLElement) => {
 const fillOldItemsDetails = (cells: HTMLElement[], item: any) => {
   selectType(cells[0], item.type);
   enterName(cells[1], item.name);
-  enterWeight(cells[2], item.weight);
+  enterGrossWeight(cells[2], item.weight);
   enterPurity(cells[3], item.purity);
   checkNetWeight(cells[4], item.netWeight);
   enterRate(cells[5], item.rate);
@@ -223,8 +232,7 @@ const fillOldItemsDetails = (cells: HTMLElement[], item: any) => {
 };
 
 const enterPurity = (cell: HTMLElement, purity: string) => {
-  userEvent.clear(within(cell).getByRole("spinbutton"));
-  userEvent.type(within(cell).getByRole("spinbutton"), purity);
+  userEvent.type(within(cell).getByLabelText(/enter purity/i), purity);
 };
 
 const checkNetWeight = (cell: HTMLElement, netWeight: string) => {
@@ -237,6 +245,6 @@ const checkAmount = (cell: HTMLElement, amount: string) => {
 
 const deleteRow = (rowIndex: number) => {
   const row = screen.getAllByRole("row")[rowIndex];
-  const deleteCell = within(row).getAllByRole("cell")[8];
-  userEvent.click(within(deleteCell).getByRole("button"));
+  const deleteCell = within(row).getByLabelText(/deleterow/i);
+  userEvent.click(deleteCell);
 };

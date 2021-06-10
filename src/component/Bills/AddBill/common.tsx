@@ -15,6 +15,7 @@ import { itemType } from "../commonData";
 
 export const DeleteButton: FC<ButtonProps> = ({ onClick }) => (
   <Button
+    aria-label="deleteRow"
     icon="pi pi-trash"
     className="p-button-rounded p-button-warning p-button-sm"
     onClick={onClick}
@@ -86,18 +87,22 @@ export const AmountEditor: FC<{
 }> = ({ props, onValueChange }: any) => {
   if (props.rowData["type"] !== "fixed") return null;
   const value = props.rowData["amount"] || null;
-  return <InputNumber value={value} onValueChange={onValueChange} />;
+  const id = `${props.rowIndex}_${props.field}`;
+  return (
+    <>
+      <HiddenLabel htmlFor={id}>{`Enter ${props.field}`}</HiddenLabel>
+      <InputNumber inputId={id} value={value} onValueChange={onValueChange} />
+    </>
+  );
 };
 
 export const HiddenLabel = styled.label`
-  .visuallyhidden {
-    border: 0;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
-  }
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
 `;
