@@ -61,10 +61,7 @@ const ViewBill: FC<ViewBillProps> = ({
               {!!newItems.length && (
                 <div className="card">
                   <Header icon="pi-list" text="नया सामान" />
-                  <DataTable
-                    value={newItems}
-                    className="p-datatable-sm p-datatable-gridlines"
-                  >
+                  <DataTable value={newItems} className="p-datatable-sm">
                     <Column
                       field="type"
                       body={itemTypeBodyTemplate}
@@ -91,10 +88,7 @@ const ViewBill: FC<ViewBillProps> = ({
               {!!oldItems.length && (
                 <div className="card">
                   <Header icon="pi-list" text="पुराना सामान" />
-                  <DataTable
-                    value={oldItems}
-                    className="p-datatable-sm p-datatable-gridlines"
-                  >
+                  <DataTable value={oldItems} className="p-datatable-sm">
                     <Column
                       field="type"
                       body={itemTypeBodyTemplate}

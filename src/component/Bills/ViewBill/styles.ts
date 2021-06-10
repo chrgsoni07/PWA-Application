@@ -34,14 +34,19 @@ export const Cell = styled.div`
 `;
 
 export const DataTable = styled(DT)`
-  td,
-  th {
-    font-size: ${fontSizeForDetails};
+  .p-datatable-tbody,
+  .p-datatable-thead {
+    > tr {
+      td,
+      th {
+        border: 1px solid #000;
+        color: #000;
+        font-size: ${fontSizeForDetails};
+      }
+    }
   }
-  .p-datatable-tbody > tr > td,
-  .p-datatable-thead > tr > th {
-    border: 1px solid #000;
-    color: #000;
+  &.p-datatable-sm .p-datatable-tbody > tr > td {
+    padding: 3px;
   }
 `;
 
