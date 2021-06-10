@@ -32,7 +32,7 @@ const ViewBill: FC<ViewBillProps> = ({
         trigger={() => <button>Print this out!</button>}
         content={() => billRef.current}
       />
-      <div ref={billRef} style={{ width: "210mm" }}>
+      <div ref={billRef} style={{ width: "220mm" }}>
         <Container>
           <div className="p-grid">
             <div className="p-col-2">
@@ -61,11 +61,12 @@ const ViewBill: FC<ViewBillProps> = ({
               {!!newItems.length && (
                 <div className="card">
                   <Header icon="pi-list" text="नया सामान" />
-                  <DataTable value={newItems} className="p-datatable-sm">
+                  <DataTable value={newItems}>
                     <Column
                       field="type"
                       body={itemTypeBodyTemplate}
                       header="प्रकार"
+                      style={{ width: "7%" }}
                     />
                     <Column field="item" header="सामान" />
                     <Column field="weight" header="वज़न" body={weightTemplate} />
@@ -88,11 +89,12 @@ const ViewBill: FC<ViewBillProps> = ({
               {!!oldItems.length && (
                 <div className="card">
                   <Header icon="pi-list" text="पुराना सामान" />
-                  <DataTable value={oldItems} className="p-datatable-sm">
+                  <DataTable value={oldItems}>
                     <Column
                       field="type"
                       body={itemTypeBodyTemplate}
                       header="प्रकार"
+                      style={{ width: "7%" }}
                     />
                     <Column field="item" header="सामान" />
                     <Column

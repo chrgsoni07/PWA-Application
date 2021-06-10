@@ -42,11 +42,9 @@ export const DataTable = styled(DT)`
         border: 1px solid #000;
         color: #000;
         font-size: ${fontSizeForDetails};
+        padding: 3px;
       }
     }
-  }
-  &.p-datatable-sm .p-datatable-tbody > tr > td {
-    padding: 3px;
   }
 `;
 
