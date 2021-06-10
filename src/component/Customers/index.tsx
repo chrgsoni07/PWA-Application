@@ -32,11 +32,13 @@ const Customers = () => {
     return (
       <>
         <Button
+          aria-label="Edit customer"
           icon="pi pi-pencil"
           className="p-button-rounded p-button-success p-mr-2"
           onClick={() => editSelectedCustomer(rowData)}
         />
         <Button
+          aria-label="Delete customer"
           icon="pi pi-trash"
           className="p-button-rounded p-button-warning"
           onClick={() => confirmDeleteProduct(rowData)}
@@ -81,7 +83,10 @@ const Customers = () => {
   const FormikComponent = () => {
     return (
       <Formik
-        initialValues={selectedCustomer || ({} as CustomerType)}
+        initialValues={
+          selectedCustomer ||
+          ({ name: "", place: "", mobile: "" } as CustomerType)
+        }
         validateOnChange={false}
         validateOnBlur={false}
         onSubmit={(data) => {
@@ -199,7 +204,7 @@ const Customers = () => {
       </div>
 
       <Dialog
-        header={"Add new customer"}
+        header="Add new customer"
         visible={showDialog}
         style={{ width: "600px" }}
         modal
