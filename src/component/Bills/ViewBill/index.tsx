@@ -61,8 +61,7 @@ const ViewBill: FC<ViewBillProps> = ({
               {!!newItems.length && (
                 <div className="card">
                   <Header icon="pi-list" text="नया सामान" />
-                  <DataTable value={newItems}>
-                    autoLayout={true}
+                  <DataTable value={newItems} autoLayout={true}>
                     <Column
                       field="type"
                       body={itemTypeBodyTemplate}
@@ -79,7 +78,7 @@ const ViewBill: FC<ViewBillProps> = ({
                     <Column field="otherCharges" header="अन्य" />
                     <Column
                       field="amount"
-                      header="कुल राषि"
+                      header="कुल राशि"
                       body={amountBodyTemplate}
                     />
                   </DataTable>
@@ -89,8 +88,7 @@ const ViewBill: FC<ViewBillProps> = ({
               {!!oldItems.length && (
                 <div className="card">
                   <Header icon="pi-list" text="पुराना सामान" />
-                  <DataTable value={oldItems}>
-                    autoLayout={true}
+                  <DataTable value={oldItems} autoLayout={true}>
                     <Column
                       field="type"
                       body={itemTypeBodyTemplate}
@@ -115,7 +113,7 @@ const ViewBill: FC<ViewBillProps> = ({
                     <Column field="rate" header="भाव" />
                     <Column
                       field="amount"
-                      header="कुल राषि"
+                      header="कुल राशि"
                       body={amountBodyTemplate}
                     />
                   </DataTable>
