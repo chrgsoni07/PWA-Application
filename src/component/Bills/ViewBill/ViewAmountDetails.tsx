@@ -23,20 +23,20 @@ const ViewAmountDetails = ({ billDetail }: { billDetail?: BillDetails }) => {
       <Divider align="right">
         <div className="p-d-inline-flex p-ai-center">
           <i className="pi pi-wallet p-mr-2"></i>
-          <b>राषि विवरण</b>
+          <b>राशि विवरण</b>
         </div>
       </Divider>
       <BorderTable>
         {newTotal ? (
           <Row>
-            <Cell>नए सामान की कुल राषि</Cell>
+            <Cell>नए सामान की कुल राशि</Cell>
             <Cell>{formatCurrencyNoFraction(newTotal)}</Cell>
           </Row>
         ) : null}
 
         {oldTotal ? (
           <Row>
-            <Cell>पुराने सामान की कुल राषि</Cell>
+            <Cell>पुराने सामान की कुल राशि</Cell>
             <Cell>{formatCurrencyNoFraction(oldTotal)}</Cell>
           </Row>
         ) : null}
@@ -57,20 +57,20 @@ const ViewAmountDetails = ({ billDetail }: { billDetail?: BillDetails }) => {
 
         {amountPayable ? (
           <Row className="highlight">
-            <Cell>कुल देय राषि</Cell>
+            <Cell>कुल देय राशि</Cell>
             <Cell>{formatCurrencyNoFraction(amountPayable)}</Cell>
           </Row>
         ) : null}
 
         <Row>
-          <Cell>प्राप्त राषि</Cell>
+          <Cell>प्राप्त राशि</Cell>
           <Cell>
             <b>{formatCurrencyNoFraction(paid) || 0}</b>
           </Cell>
         </Row>
 
         <Row>
-          <Cell>कुल बकाया राषि</Cell>
+          <Cell>कुल बकाया राशि</Cell>
           <Cell>
             <b>{formatCurrencyNoFraction(due) || 0}</b>
           </Cell>
