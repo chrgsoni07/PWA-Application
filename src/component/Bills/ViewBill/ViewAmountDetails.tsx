@@ -1,6 +1,7 @@
 import { Divider } from "primereact/divider";
 import { formatCurrencyNoFraction } from "utils/currency.utils";
 import { BillDetails } from "../types";
+import { BorderTable, Cell, Row } from "./styles";
 import "./ViewBill.css";
 const ViewAmountDetails = ({ billDetail }: { billDetail?: BillDetails }) => {
   if (!billDetail) {
@@ -22,61 +23,59 @@ const ViewAmountDetails = ({ billDetail }: { billDetail?: BillDetails }) => {
       <Divider align="right">
         <div className="p-d-inline-flex p-ai-center">
           <i className="pi pi-wallet p-mr-2"></i>
-          <b>राशि विवरण</b>
+          <b>राषि विवरण</b>
         </div>
       </Divider>
-      <table id="details">
-        <tbody>
-          {newTotal ? (
-            <tr>
-              <td>नए सामान की कुल राशि</td>
-              <td>{formatCurrencyNoFraction(newTotal)}</td>
-            </tr>
-          ) : null}
+      <BorderTable>
+        {newTotal ? (
+          <Row>
+            <Cell>नए सामान की कुल राषि</Cell>
+            <Cell>{formatCurrencyNoFraction(newTotal)}</Cell>
+          </Row>
+        ) : null}
 
-          {oldTotal ? (
-            <tr>
-              <td>पुराने सामान की कुल राशि</td>
-              <td>{formatCurrencyNoFraction(oldTotal)}</td>
-            </tr>
-          ) : null}
+        {oldTotal ? (
+          <Row>
+            <Cell>पुराने सामान की कुल राषि</Cell>
+            <Cell>{formatCurrencyNoFraction(oldTotal)}</Cell>
+          </Row>
+        ) : null}
 
-          {newTotal && oldTotal ? (
-            <tr className="highlight">
-              <td>अंतर</td>
-              <td>{formatCurrencyNoFraction(oldNewDifference)}</td>
-            </tr>
-          ) : null}
+        {newTotal && oldTotal ? (
+          <Row className="highlight">
+            <Cell>अंतर</Cell>
+            <Cell>{formatCurrencyNoFraction(oldNewDifference)}</Cell>
+          </Row>
+        ) : null}
 
-          {discount ? (
-            <tr>
-              <td>छूट</td>
-              <td>{formatCurrencyNoFraction(discount)}</td>
-            </tr>
-          ) : null}
+        {discount ? (
+          <Row>
+            <Cell>छूट</Cell>
+            <Cell>{formatCurrencyNoFraction(discount)}</Cell>
+          </Row>
+        ) : null}
 
-          {amountPayable ? (
-            <tr className="highlight">
-              <td>कुल देय राशि</td>
-              <td>{formatCurrencyNoFraction(amountPayable)}</td>
-            </tr>
-          ) : null}
+        {amountPayable ? (
+          <Row className="highlight">
+            <Cell>कुल देय राषि</Cell>
+            <Cell>{formatCurrencyNoFraction(amountPayable)}</Cell>
+          </Row>
+        ) : null}
 
-          <tr>
-            <td>प्राप्त राशि</td>
-            <td>
-              <b>{formatCurrencyNoFraction(paid) || 0}</b>
-            </td>
-          </tr>
+        <Row>
+          <Cell>प्राप्त राषि</Cell>
+          <Cell>
+            <b>{formatCurrencyNoFraction(paid) || 0}</b>
+          </Cell>
+        </Row>
 
-          <tr>
-            <td>कुल बकाया राशि</td>
-            <td>
-              <b>{formatCurrencyNoFraction(due) || 0}</b>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        <Row>
+          <Cell>कुल बकाया राषि</Cell>
+          <Cell>
+            <b>{formatCurrencyNoFraction(due) || 0}</b>
+          </Cell>
+        </Row>
+      </BorderTable>
     </>
   );
 };

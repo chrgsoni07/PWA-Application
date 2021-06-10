@@ -1,6 +1,5 @@
 import { FC, useRef } from "react";
 import { Bill } from "../types";
-import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Divider } from "primereact/divider";
 import ViewAmountDetails from "./ViewAmountDetails";
@@ -14,7 +13,7 @@ import {
 } from "utils/currency.utils";
 import { itemTypeBodyTemplate } from "../AddBill/common";
 import ReactToPrint from "react-to-print";
-import { Container, Name, Table, Row, Cell } from "./styles";
+import { Container, Name, Table, Row, Cell, DataTable } from "./styles";
 import logo from "./logo.png";
 import { CustomerType } from "component/Customers/types";
 
@@ -33,7 +32,7 @@ const ViewBill: FC<ViewBillProps> = ({
         trigger={() => <button>Print this out!</button>}
         content={() => billRef.current}
       />
-      <div ref={billRef} style={{ width: "210mm" }}>
+      <div ref={billRef} style={{ width: "220mm" }}>
         <Container>
           <div className="p-grid">
             <div className="p-col-2">
@@ -58,14 +57,11 @@ const ViewBill: FC<ViewBillProps> = ({
           </div>
 
           <div className="p-grid">
-            <div className="p-col-8">
+            <div className="p-col-9">
               {!!newItems.length && (
                 <div className="card">
                   <Header icon="pi-list" text="नया सामान" />
-                  <DataTable
-                    value={newItems}
-                    className="p-datatable-sm p-datatable-gridlines"
-                  >
+                  <DataTable value={newItems}>
                     <Column
                       field="type"
                       body={itemTypeBodyTemplate}
@@ -82,7 +78,7 @@ const ViewBill: FC<ViewBillProps> = ({
                     <Column field="otherCharges" header="अन्य" />
                     <Column
                       field="amount"
-                      header="राशि"
+                      header="कुल राषि"
                       body={amountBodyTemplate}
                     />
                   </DataTable>
@@ -92,10 +88,7 @@ const ViewBill: FC<ViewBillProps> = ({
               {!!oldItems.length && (
                 <div className="card">
                   <Header icon="pi-list" text="पुराना सामान" />
-                  <DataTable
-                    value={oldItems}
-                    className="p-datatable-sm p-datatable-gridlines"
-                  >
+                  <DataTable value={oldItems}>
                     <Column
                       field="type"
                       body={itemTypeBodyTemplate}
@@ -104,7 +97,7 @@ const ViewBill: FC<ViewBillProps> = ({
                     <Column field="item" header="सामान" />
                     <Column
                       field="grossWeight"
-                      header="वजन"
+                      header="वज़न"
                       body={grossWeightTemplate}
                     />
                     <Column
@@ -114,13 +107,13 @@ const ViewBill: FC<ViewBillProps> = ({
                     />
                     <Column
                       field="netWeight"
-                      header="शुद्ध वजन"
+                      header="शुद्ध वज़न"
                       body={viewNetWeightTemplate}
                     />
                     <Column field="rate" header="भाव" />
                     <Column
                       field="amount"
-                      header="राशि"
+                      header="कुल राषि"
                       body={amountBodyTemplate}
                     />
                   </DataTable>
@@ -128,7 +121,7 @@ const ViewBill: FC<ViewBillProps> = ({
               )}
             </div>
 
-            <div className="p-col-4">
+            <div className="p-col-3">
               <ViewAmountDetails billDetail={billDetail} />
             </div>
           </div>

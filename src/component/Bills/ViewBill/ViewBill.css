@@ -1,20 +1,3 @@
-#details {
-  width: 100%;
-}
-
-#details th,
-#details td {
-  border: 1px solid gray;
-  border-collapse: collapse;
-  padding: 3px;
-  text-align: left;
-}
-
 .highlight {
   background-color: #eee;
 }
-
-/* .p-divider.p-divider-horizontal {
-  margin: 0rem 0;
-  padding: 0 0rem;
-} */
