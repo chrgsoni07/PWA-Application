@@ -64,7 +64,8 @@ const ViewBill: FC<ViewBillProps> = ({
                   <Header icon="pi-list" text="नया सामान" />
                   <DataTable
                     value={newItems}
-                    className="p-datatable-sm p-datatable-gridlines"
+                    className="p-datatable-sm"
+                    autoLayout={true}
                   >
                     <Column
                       field="type"
@@ -94,7 +95,8 @@ const ViewBill: FC<ViewBillProps> = ({
                   <Header icon="pi-list" text="पुराना सामान" />
                   <DataTable
                     value={oldItems}
-                    className="p-datatable-sm p-datatable-gridlines"
+                    className="p-datatable-sm"
+                    autoLayout={true}
                   >
                     <Column
                       field="type"

@@ -8,14 +8,15 @@ import { deleteFromDB, edit, getCustomers, save } from "api";
 import { Dialog } from "primereact/dialog";
 import { useToast } from "toasts";
 import { updateList } from "utils/state.utils";
-import { FormikErrors, useFormik } from "formik";
-import { classNames } from "primereact/utils";
+import { Form, Formik } from "formik";
+import * as Yup from "yup";
+import { FormikInputText } from "component/common/FormikFields";
 
 const Customers = () => {
   const [globalFilter, setGlobalFilter] = useState("");
   const [customers, setCustomers] = useState<CustomerType[]>([]);
   const [showDialog, setShowDialog] = useState(false);
-
+  const [selectedCustomer, setSelectedCustomer] = useState<CustomerType>();
   const { toastSuccess, toastError } = useToast();
 
   useEffect(() => {
@@ -24,7 +25,7 @@ const Customers = () => {
 
   const editSelectedCustomer = (rowData: any) => {
     setShowDialog(true);
-    formik.setValues(rowData);
+    setSelectedCustomer(rowData);
   };
 
   const actionBodyTemplate = (rowData: any) => {
@@ -41,44 +42,6 @@ const Customers = () => {
           onClick={() => confirmDeleteProduct(rowData)}
         />
       </>
-    );
-  };
-
-  const formik = useFormik<CustomerType>({
-    initialValues: {
-      id: "",
-      name: "",
-      place: "",
-      mobile: "",
-    },
-    validate: (data) => {
-      let errors: FormikErrors<CustomerType> = {};
-
-      if (!data.name) {
-        errors.name = "name is required.";
-      }
-
-      if (!data.place) {
-        errors.place = "place is required.";
-      }
-      return errors;
-    },
-
-    onSubmit: (data) => {
-      saveOrUpdateCustomer(data);
-      formik.resetForm();
-    },
-  });
-
-  const isFormFieldValid = (name: keyof CustomerType) => {
-    return !!(formik.touched[name] && formik.errors[name]);
-  };
-
-  const getFormErrorMessage = (name: keyof CustomerType) => {
-    return (
-      isFormFieldValid(name) && (
-        <small className="p-error">{formik.errors[name]}</small>
-      )
     );
   };
 
@@ -115,6 +78,40 @@ const Customers = () => {
     hideDialog();
   };
 
+  const FormikComponent = () => {
+    return (
+      <Formik
+        initialValues={selectedCustomer || ({} as CustomerType)}
+        validateOnChange={false}
+        validateOnBlur={false}
+        onSubmit={(data) => {
+          saveOrUpdateCustomer(data);
+        }}
+        validationSchema={Yup.object({
+          name: Yup.string().required("name is required"),
+          place: Yup.string().required("place  is required"),
+        })}
+      >
+        <Form className="p-fluid" id="customerForm">
+          <div className="p-field">
+            <label htmlFor="name">Name</label>
+            <FormikInputText id="name" name="name" autoFocus />
+          </div>
+
+          <div className="p-field">
+            <label htmlFor="place">Place</label>
+            <FormikInputText id="place" name="place" />
+          </div>
+
+          <div className="p-field">
+            <label htmlFor="mobile">Mobile</label>
+            <FormikInputText id="mobile" name="mobile" />
+          </div>
+        </Form>
+      </Formik>
+    );
+  };
+
   const saveCustomerToFireStore = async (data: CustomerType) => {
     save("customers", data)
       .then((newCustomer) => {
@@ -141,6 +138,7 @@ const Customers = () => {
 
   const hideDialog = () => {
     setShowDialog(false);
+    setSelectedCustomer(undefined);
   };
 
   const itemDialogFooter = (
@@ -151,7 +149,12 @@ const Customers = () => {
         className="p-button-text"
         onClick={hideDialog}
       />
-      <Button type="submit" label="Submit" className="p-mt-2" form="rateForm" />
+      <Button
+        type="submit"
+        label="Submit"
+        className="p-mt-2"
+        form="customerForm"
+      />
     </>
   );
 
@@ -204,52 +207,7 @@ const Customers = () => {
         footer={itemDialogFooter}
         onHide={hideDialog}
       >
-        <form onSubmit={formik.handleSubmit} className="p-fluid" id="rateForm">
-          <div className="p-fluid p-formgrid p-grid">
-            <div className="p-field p-col-12">
-              <label htmlFor="name">Name</label>
-              <InputText
-                id="name"
-                name="name"
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.name}
-                autoFocus
-                className={classNames({
-                  "p-invalid": isFormFieldValid("name"),
-                })}
-              />
-              {getFormErrorMessage("name")}
-            </div>
-
-            <div className="p-field p-col-6">
-              <label htmlFor="place">Place</label>
-              <InputText
-                id="place"
-                name="place"
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.place}
-                autoFocus
-                className={classNames({
-                  "p-invalid": isFormFieldValid("place"),
-                })}
-              />
-              {getFormErrorMessage("place")}
-            </div>
-
-            <div className="p-field p-col-6">
-              <label htmlFor="mobile">Mobile</label>
-              <InputText
-                id="mobile"
-                name="mobile"
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.mobile}
-              />
-            </div>
-          </div>
-        </form>
+        <FormikComponent></FormikComponent>
       </Dialog>
     </>
   );
