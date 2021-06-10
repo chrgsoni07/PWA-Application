@@ -82,7 +82,8 @@
       "src/index.tsx",
       "src/service-worker.ts",
       "src/reportWebVitals.ts",
-      "src/api/index.ts"
+      "src/api/index.ts",
+      "src/components/Items"
     ]
   }
 }
