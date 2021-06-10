@@ -12,7 +12,7 @@ export const Container = styled.div`
   .pi {
     font-size: 0.85rem;
     margin: 0.05rem;
-    padding: 0.05rem;
+    padding: 0rem;
   }
   .p-divider.p-divider-horizontal:before {
     border-top: 1px solid #000;
