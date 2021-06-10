@@ -22,5 +22,5 @@ it.each`
   ${{ newTotal: 10, oldTotal: 10, oldNewDifference: 0, paid: 5, due: 5 }}
 `("should match snapshot for $billDetail", ({ billDetail }) => {
   const { asFragment } = render(<ViewAmountDetails billDetail={billDetail} />);
-  expect(asFragment()).toMatchDiffSnapshot(base);
+  expect(base).toMatchDiffSnapshot(asFragment());
 });
