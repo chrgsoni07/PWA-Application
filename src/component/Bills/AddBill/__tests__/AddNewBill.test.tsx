@@ -1,8 +1,8 @@
 import React from "react";
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { AddNewBill } from "./AddNewBill";
-import { Bill } from "../types";
+import { AddNewBill } from "../AddNewBill";
+import { Bill } from "../../types";
 import { ToastsProvider } from "toasts";
 
 jest.mock("api");

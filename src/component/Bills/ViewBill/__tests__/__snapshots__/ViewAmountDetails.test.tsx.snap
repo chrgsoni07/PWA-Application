@@ -1,0 +1,248 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should match snapshot for {"due": 5, "newTotal": 10, "oldNewDifference": 0, "oldTotal": 10, "paid": 5} 1`] = `
+"Snapshot Diff:
+- First value
++ Second value
+
+@@ -25,17 +25,57 @@
+        class=\\"css-13immaf\\"
+      >
+        <div
+          class=\\"css-em0fxq\\"
+        >
++         नए सामान की कुल राशि
++       </div>
++       <div
++         class=\\"css-em0fxq\\"
++       >
++         ₹10
++       </div>
++     </div>
++     <div
++       class=\\"css-13immaf\\"
++     >
++       <div
++         class=\\"css-em0fxq\\"
++       >
++         पुराने सामान की कुल राशि
++       </div>
++       <div
++         class=\\"css-em0fxq\\"
++       >
++         ₹10
++       </div>
++     </div>
++     <div
++       class=\\"highlight css-13immaf\\"
++     >
++       <div
++         class=\\"css-em0fxq\\"
++       >
++         अंतर
++       </div>
++       <div
++         class=\\"css-em0fxq\\"
++       />
++     </div>
++     <div
++       class=\\"css-13immaf\\"
++     >
++       <div
++         class=\\"css-em0fxq\\"
++       >
+          प्राप्त राशि
+        </div>
+        <div
+          class=\\"css-em0fxq\\"
+        >
+          <b>
+-           0
++           ₹5
+          </b>
+        </div>
+      </div>
+      <div
+        class=\\"css-13immaf\\"
+@@ -47,11 +87,11 @@
+        </div>
+        <div
+          class=\\"css-em0fxq\\"
+        >
+          <b>
+-           0
++           ₹5
+          </b>
+        </div>
+      </div>
+    </div>
+  </DocumentFragment>"
+`;
+
+exports[`should match snapshot for {"due": 5, "newTotal": 10, "paid": 5} 1`] = `
+"Snapshot Diff:
+- First value
++ Second value
+
+@@ -25,17 +25,31 @@
+        class=\\"css-13immaf\\"
+      >
+        <div
+          class=\\"css-em0fxq\\"
+        >
++         नए सामान की कुल राशि
++       </div>
++       <div
++         class=\\"css-em0fxq\\"
++       >
++         ₹10
++       </div>
++     </div>
++     <div
++       class=\\"css-13immaf\\"
++     >
++       <div
++         class=\\"css-em0fxq\\"
++       >
+          प्राप्त राशि
+        </div>
+        <div
+          class=\\"css-em0fxq\\"
+        >
+          <b>
+-           0
++           ₹5
+          </b>
+        </div>
+      </div>
+      <div
+        class=\\"css-13immaf\\"
+@@ -47,11 +61,11 @@
+        </div>
+        <div
+          class=\\"css-em0fxq\\"
+        >
+          <b>
+-           0
++           ₹5
+          </b>
+        </div>
+      </div>
+    </div>
+  </DocumentFragment>"
+`;
+
+exports[`should match snapshot for {"due": 5, "oldTotal": 10, "paid": 5} 1`] = `
+"Snapshot Diff:
+- First value
++ Second value
+
+@@ -25,17 +25,31 @@
+        class=\\"css-13immaf\\"
+      >
+        <div
+          class=\\"css-em0fxq\\"
+        >
++         पुराने सामान की कुल राशि
++       </div>
++       <div
++         class=\\"css-em0fxq\\"
++       >
++         ₹10
++       </div>
++     </div>
++     <div
++       class=\\"css-13immaf\\"
++     >
++       <div
++         class=\\"css-em0fxq\\"
++       >
+          प्राप्त राशि
+        </div>
+        <div
+          class=\\"css-em0fxq\\"
+        >
+          <b>
+-           0
++           ₹5
+          </b>
+        </div>
+      </div>
+      <div
+        class=\\"css-13immaf\\"
+@@ -47,11 +61,11 @@
+        </div>
+        <div
+          class=\\"css-em0fxq\\"
+        >
+          <b>
+-           0
++           ₹5
+          </b>
+        </div>
+      </div>
+    </div>
+  </DocumentFragment>"
+`;
+
+exports[`should match snapshot for empty {} 1`] = `
+<DocumentFragment>
+  <div
+    class="p-divider p-component p-divider-horizontal p-divider-solid p-divider-right"
+    role="separator"
+  >
+    <div
+      class="p-divider-content"
+    >
+      <div
+        class="p-d-inline-flex p-ai-center"
+      >
+        <i
+          class="pi pi-wallet p-mr-2"
+        />
+        <b>
+          राशि विवरण
+        </b>
+      </div>
+    </div>
+  </div>
+  <div
+    class="css-1pvgwmv"
+  >
+    <div
+      class="css-13immaf"
+    >
+      <div
+        class="css-em0fxq"
+      >
+        प्राप्त राशि
+      </div>
+      <div
+        class="css-em0fxq"
+      >
+        <b>
+          0
+        </b>
+      </div>
+    </div>
+    <div
+      class="css-13immaf"
+    >
+      <div
+        class="css-em0fxq"
+      >
+        कुल बकाया राशि
+      </div>
+      <div
+        class="css-em0fxq"
+      >
+        <b>
+          0
+        </b>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`should match snapshot for empty null 1`] = `<DocumentFragment />`;
