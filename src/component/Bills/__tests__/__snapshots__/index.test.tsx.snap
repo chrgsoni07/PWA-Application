@@ -5,22 +5,23 @@ exports[`Bills should render bills table 1`] = `
 - First value
 + Second value
 
-@@ -259,11 +259,103 @@
-                            />
-                          </tr>
+@@ -261,18 +261,98 @@
                         </thead>
                         <tbody
                           class=\\"p-datatable-tbody\\"
-+                       >
-+                         <tr
+                        >
+                          <tr
+-                           class=\\"p-datatable-emptymessage\\"
 +                           class=\\"p-selectable-row\\"
-+                           role=\\"row\\"
+                            role=\\"row\\"
 +                           tabindex=\\"0\\"
-+                         >
-+                           <td
+                          >
+                            <td
+-                             colspan=\\"8\\"
 +                             class=\\"\\"
-+                             role=\\"cell\\"
-+                           >
+                              role=\\"cell\\"
+                            >
+-                             No records found
 +                             1
 +                           </td>
 +                           <td
@@ -94,22 +95,19 @@ exports[`Bills should render bills table 1`] = `
 +                             >
 +                               <span
 +                                 class=\\"p-button-icon p-c pi pi-trash\\"
-                                />
++                               />
 +                               <span
 +                                 class=\\"p-button-label p-c\\"
 +                               >
 +                                  
 +                               </span>
 +                             </button>
-+                           </td>
-+                         </tr>
-+                       </tbody>
+                            </td>
+                          </tr>
+                        </tbody>
                       </table>
                     </div>
-                    <div
-                      class=\\"p-paginator p-component p-paginator-bottom\\"
-                    >
-@@ -314,11 +406,11 @@
+@@ -326,11 +406,11 @@
                         />
                       </button>
                       <span
