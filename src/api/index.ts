@@ -59,7 +59,7 @@ export const addBillToCustomer = async (
   customerId: string,
   billId: string
 ): Promise<CustomerType> => {
-  let customer = <CustomerType>{};
+  let customer = {} as CustomerType;
 
   await db
     .collection("customers")
