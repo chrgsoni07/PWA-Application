@@ -3,4 +3,5 @@ export type CustomerType = {
   name: string;
   mobile: string;
   place: string;
+  billsId: string[];
 };

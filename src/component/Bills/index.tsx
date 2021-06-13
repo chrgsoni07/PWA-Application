@@ -8,10 +8,13 @@ import "./DataTableDemo.css";
 import { Bill } from "./types";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import { deleteBill, getBills } from "api";
+import { deleteBill, getBills, getBillsByCustomerId } from "api";
 import { Dialog } from "primereact/dialog";
 import { useToast } from "toasts";
 import { Calendar, CalendarChangeParams } from "primereact/calendar";
+import { CustomerType } from "component/Customers/types";
+import { getCustomers } from "api";
+import { Dropdown } from "primereact/dropdown";
 
 const Bills = () => {
   const [displayDialog, setDisplayDialog] = useState(false);
@@ -22,6 +25,8 @@ const Bills = () => {
   const { toastSuccess, toastError } = useToast();
   const [selectedDate, setSelectedDate] = useState<Date>();
   const dt = useRef<DataTable>(null);
+  const [customers, setCustomers] = useState<CustomerType[]>([]);
+  const [billsByCustomerId, setBillsByCustomerId] = useState<Bill[]>([]);
 
   useEffect(() => {
     getBills().then((bills) => setSavedBills(bills));
@@ -29,11 +34,16 @@ const Bills = () => {
     setDraftBills(draftBills);
   }, []);
 
+  useEffect(() => {
+    getCustomers().then((allCustomers) => setCustomers(allCustomers));
+  }, []);
+
   const header = () => {
     <Button label="New" icon="pi pi-plus" className="p-button-sm" />;
   };
 
-  const displayModel = () => {
+  const openNewBillDialog = () => {
+    setBill({} as Bill);
     setDisplayDialog(true);
   };
 
@@ -161,6 +171,12 @@ const Bills = () => {
     );
   };
 
+  const onCustomerSelect = (selectedCustomer: CustomerType) => {
+    getBillsByCustomerId(selectedCustomer.id).then((allBills) =>
+      setBillsByCustomerId(allBills)
+    );
+  };
+
   return (
     <>
       <Card header={header}>
@@ -168,7 +184,7 @@ const Bills = () => {
           label="New"
           icon="pi pi-plus"
           className="p-button-success p-mr-2"
-          onClick={() => displayModel()}
+          onClick={() => openNewBillDialog()}
         />
         <TabView>
           <TabPanel header="Previous Bills">
@@ -252,6 +268,74 @@ const Bills = () => {
                 <Column field="billDetail.paid" header="Paid"></Column>
                 <Column field="billDetail.due" header="Due"></Column>
                 <Column body={actionBodyTemplateDraft}></Column>
+              </DataTable>
+            </div>
+          </TabPanel>
+          <TabPanel header="Search">
+            <div className="p-formgrid p-grid">
+              <div className="p-field p-col-12">
+                <label htmlFor="customerSelect">Select customer</label>
+                <Dropdown
+                  disabled={!customers.length}
+                  ariaLabel="Select customer"
+                  inputId="customerSelect"
+                  options={customers}
+                  onChange={(e) => onCustomerSelect(e.value || {})}
+                  optionLabel="name"
+                  filter
+                  showClear
+                  filterBy="name"
+                  placeholder="Select a customer"
+                  style={{
+                    width: "100%",
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="card">
+              <DataTable
+                ref={dt}
+                value={billsByCustomerId}
+                paginator
+                rows={10}
+                rowsPerPageOptions={[5, 10, 25]}
+                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} items"
+                selectionMode="single"
+                dataKey="id"
+                className="p-datatable-gridlines p-datatable-sm"
+              >
+                <Column
+                  field="id"
+                  header="Id"
+                  sortable
+                  body={(_: any, prop: any) => prop.rowIndex + 1}
+                ></Column>
+                <Column
+                  field="billNo"
+                  header="Bill No"
+                  data-testid="test"
+                  key="test3"
+                  filter
+                  sortable
+                  filterPlaceholder="Search by bill no"
+                ></Column>
+
+                <Column
+                  field="customer.name"
+                  header="Customer"
+                  filter
+                  sortable
+                  filterPlaceholder="Search by customer no"
+                ></Column>
+                <Column
+                  field="billDetail.amountPayable"
+                  header="Amount Payable"
+                ></Column>
+                <Column field="billDetail.paid" header="Paid"></Column>
+                <Column field="billDetail.due" header="Due"></Column>
+                <Column body={actionBodyTemplate}></Column>
               </DataTable>
             </div>
           </TabPanel>

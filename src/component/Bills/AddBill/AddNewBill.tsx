@@ -10,7 +10,7 @@ import { NewItems } from "./NewItems";
 import { OldItems } from "./OldItems";
 import { Bill, BillDetails } from "../types";
 import { useToast } from "toasts";
-import { editBill, saveBill } from "api";
+import { editBill, saveBill, addBillToCustomer } from "api";
 import reducer, {
   amountPaidChanged,
   discountChanged,
@@ -76,6 +76,7 @@ export const AddNewBill: FC<AddNewBillProps> = ({
       ...bill,
       invoiceDate,
       customer: selectedCustomer,
+      customerId: selectedCustomer.id,
       newItems,
       oldItems,
       billDetail: billDetails,

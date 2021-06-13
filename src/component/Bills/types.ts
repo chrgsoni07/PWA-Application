@@ -30,6 +30,7 @@ export type Bill = {
   billNo: number;
   invoiceDate: Date;
   customer: CustomerType;
+  customerId: string;
   newItems: NewItem[];
   oldItems: OldItem[];
   billDetail: BillDetails;

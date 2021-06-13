@@ -51,7 +51,47 @@ export const saveBill = async (bill: Bill): Promise<Bill> => {
   const billNo = await getCounterValue();
   const savedBill: Bill = await save("bills", { ...bill, billNo });
   await increaseCounterValue();
+  await addBillToCustomer(savedBill.customerId, savedBill.id);
   return savedBill;
+};
+
+export const addBillToCustomer = async (
+  customerId: string,
+  billId: string
+): Promise<CustomerType> => {
+  let customer = <CustomerType>{};
+
+  await db
+    .collection("customers")
+    .doc(customerId)
+    .get()
+    .then((querySnapshot) => {
+      const data = querySnapshot.data() as CustomerType;
+      customer = data;
+      customer.id = customerId;
+      if (customer.billsId) {
+        customer.billsId.push(billId);
+      } else {
+        customer.billsId = [billId];
+      }
+    });
+  edit("customers", customer);
+  return customer;
+};
+
+export const getBillsByCustomerId = async (
+  customerId: String
+): Promise<Bill[]> => {
+  const allItems: Bill[] = [];
+  const collection = db
+    .collection("bills")
+    .where("customerId", "==", customerId);
+  const querySnapshot = await collection.get();
+  querySnapshot.forEach((item) => {
+    const itemData = item.data();
+    allItems.push({ ...itemData, id: item.id } as any);
+  });
+  return allItems;
 };
 
 export const get = async <T>(
