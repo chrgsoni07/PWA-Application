@@ -55,28 +55,12 @@ export const saveBill = async (bill: Bill): Promise<Bill> => {
   return savedBill;
 };
 
-export const addBillToCustomer = async (
-  customerId: string,
-  billId: string
-): Promise<CustomerType> => {
-  let customer = {} as CustomerType;
+export const addBillToCustomer = async (customerId: string, billId: string) => {
+  var customerdocument = db.collection("customers").doc(customerId);
 
-  await db
-    .collection("customers")
-    .doc(customerId)
-    .get()
-    .then((querySnapshot) => {
-      const data = querySnapshot.data() as CustomerType;
-      customer = data;
-      customer.id = customerId;
-      if (customer.billsId) {
-        customer.billsId.push(billId);
-      } else {
-        customer.billsId = [billId];
-      }
-    });
-  edit("customers", customer);
-  return customer;
+  await customerdocument.update({
+    billsId: firebase.firestore.FieldValue.arrayUnion(billId),
+  });
 };
 
 export const getBillsByCustomerId = async (
