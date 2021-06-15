@@ -5,11 +5,13 @@ export const bills: Bill[] = [
     billNo: 1,
     id: "testid",
     invoiceDate: new Date(1995, 11, 17),
+    customerId: "adharId",
     customer: {
       id: "adharId",
       mobile: "2020202020",
       name: "Chaupat Raja",
       place: "Andhar nagri",
+      billsId: ["abce"],
     },
     billDetail: {
       amountPayable: 35200,

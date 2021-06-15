@@ -16,6 +16,7 @@ export const getCustomers = async (): Promise<CustomerType[]> => {
       name: "Ramadhir",
       mobile: "9009009000",
       place: "Keer kheda",
+      billsId: ["bill01"],
     },
   ];
 };

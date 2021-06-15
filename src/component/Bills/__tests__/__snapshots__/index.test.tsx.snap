@@ -5,7 +5,7 @@ exports[`Bills should render bills table 1`] = `
 - First value
 + Second value
 
-@@ -261,18 +261,98 @@
+@@ -280,18 +280,98 @@
                         </thead>
                         <tbody
                           class=\\"p-datatable-tbody\\"
@@ -107,7 +107,7 @@ exports[`Bills should render bills table 1`] = `
                         </tbody>
                       </table>
                     </div>
-@@ -326,11 +406,11 @@
+@@ -345,11 +425,11 @@
                         />
                       </button>
                       <span

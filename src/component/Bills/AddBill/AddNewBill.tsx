@@ -53,19 +53,15 @@ export const AddNewBill: FC<AddNewBillProps> = ({
     dispatch(amountPaidChanged(paid));
 
   useEffect(() => {
-    if (bill.id) {
-      setInvoiceDate(
-        bill.invoiceDate ? new Date(bill.invoiceDate) : new Date()
-      );
-      setSelectedCustomer(bill.customer);
-      dispatch(
-        updateState({
-          newItems: bill.newItems || [],
-          oldItems: bill.oldItems || [],
-          billDetails: bill.billDetail || {},
-        })
-      );
-    }
+    setInvoiceDate(bill.invoiceDate ? new Date(bill.invoiceDate) : new Date());
+    setSelectedCustomer(bill.customer);
+    dispatch(
+      updateState({
+        newItems: bill.newItems || [],
+        oldItems: bill.oldItems || [],
+        billDetails: bill.billDetail || {},
+      })
+    );
   }, [bill]);
   useEffect(() => {
     dispatch(updateTotalAmount());
@@ -76,6 +72,7 @@ export const AddNewBill: FC<AddNewBillProps> = ({
       ...bill,
       invoiceDate,
       customer: selectedCustomer,
+      customerId: selectedCustomer.id,
       newItems,
       oldItems,
       billDetail: billDetails,
