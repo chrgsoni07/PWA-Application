@@ -13,7 +13,6 @@ import {
   AmountEditor,
   DeleteButton,
   FooterAmount,
-  HiddenLabel,
   ItemsTable,
   itemTypeBodyTemplate,
   ItemTypeEditor,
@@ -38,7 +37,10 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
     const id = `${props.rowIndex}_${props.field}`;
     return (
       <>
-        <HiddenLabel htmlFor={id}>{`Enter ${props.field}`}</HiddenLabel>
+        <label
+          htmlFor={id}
+          className="p-sr-only"
+        >{`Enter ${props.field}`}</label>
         <InputNumber
           inputId={id}
           value={props.rowData["purity"]}
@@ -69,7 +71,10 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
     const id = `${props.rowIndex}_${props.field}`;
     return (
       <>
-        <HiddenLabel htmlFor={id}>{`Enter ${props.field}`}</HiddenLabel>
+        <label
+          htmlFor={id}
+          className="p-sr-only"
+        >{`Enter ${props.field}`}</label>
         <InputNumber
           inputId={id}
           value={props.rowData["rate"]}
@@ -83,7 +88,10 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
     const id = `${props.rowIndex}_${props.field}`;
     return (
       <>
-        <HiddenLabel htmlFor={id}>{`Enter ${props.field}`}</HiddenLabel>
+        <label
+          htmlFor={id}
+          className="p-sr-only"
+        >{`Enter ${props.field}`}</label>
         <InputNumber
           inputId={id}
           value={props.rowData["grossWeight"]}

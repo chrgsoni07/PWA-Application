@@ -90,19 +90,8 @@ export const AmountEditor: FC<{
   const id = `${props.rowIndex}_${props.field}`;
   return (
     <>
-      <HiddenLabel htmlFor={id}>{`Enter ${props.field}`}</HiddenLabel>
+      <label htmlFor={id} className="p-sr-only">{`Enter ${props.field}`}</label>
       <InputNumber inputId={id} value={value} onValueChange={onValueChange} />
     </>
   );
 };
-
-export const HiddenLabel = styled.label`
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
-`;
