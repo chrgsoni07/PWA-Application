@@ -4,7 +4,8 @@ import {
 } from "primereact/inputnumber";
 
 export function InputNumber(props: InputNumberProps & { ariaLabel?: string }) {
-  const id = props.inputId || "id" + Math.random().toString(16).slice(2);
+  const id =
+    props.inputId || "id" + window.crypto.getRandomValues(new Uint32Array(1));
   if (props.mode === "currency") {
     props = { ...props, currency: "INR" };
   }
