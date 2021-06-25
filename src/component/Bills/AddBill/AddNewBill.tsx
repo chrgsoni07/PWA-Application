@@ -35,9 +35,7 @@ export const AddNewBill: FC<AddNewBillProps> = ({
   setDraftBills,
 }) => {
   const [invoiceDate, setInvoiceDate] = useState<Date>(new Date());
-  const [selectedCustomer, setSelectedCustomer] = useState<CustomerType>(
-    {} as CustomerType
-  );
+  const [selectedCustomer, setSelectedCustomer] = useState({} as CustomerType);
   const [{ newItems, oldItems, billDetails }, dispatch] = useReducer(reducer, {
     newItems: [],
     oldItems: [],

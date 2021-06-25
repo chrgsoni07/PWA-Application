@@ -6,3 +6,11 @@ import "@testing-library/jest-dom";
 import "snapshot-diff";
 import "snapshot-diff/extend-expect";
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
+
+// delete this line once ariaLabel is introduced in InputNumber
+const crypto = require("crypto");
+Object.defineProperty(global.self, "crypto", {
+  value: {
+    getRandomValues: (arr: any) => crypto.randomBytes(arr.length),
+  },
+});

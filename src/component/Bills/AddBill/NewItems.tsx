@@ -1,5 +1,5 @@
 import { Column } from "primereact/column";
-import { InputNumber } from "primereact/inputnumber";
+import { InputNumber } from "component/common/PrimeReactOverrides";
 import { InputText } from "primereact/inputtext";
 import {
   amountBodyTemplate,
@@ -39,26 +39,15 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
     />
   );
   const newItemNameEditor = (props: any) => inputTextEditorNew(props, "item");
-  const newMakingChargesEditor = (props: any) => {
-    const id = `${props.rowIndex}_${props.field}`;
-    return (
-      <>
-        <label
-          htmlFor={id}
-          className="p-sr-only"
-        >{`Enter ${props.field}`}</label>
-        <InputNumber
-          inputId={id}
-          value={props.rowData["makingCharges"]}
-          onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
-          mode="currency"
-          currency="INR"
-          locale="en-IN"
-          minFractionDigits={0}
-        />
-      </>
-    );
-  };
+  const newMakingChargesEditor = (props: any) => (
+    <InputNumber
+      ariaLabel={`Enter ${props.field}`}
+      value={props.rowData["makingCharges"]}
+      onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
+      mode="currency"
+      minFractionDigits={0}
+    />
+  );
   const newRateEditor = (props: any) => {
     const id = `${props.rowIndex}_${props.field}`;
     return (
@@ -175,7 +164,7 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
           bodyStyle={{
             textAlign: "center",
           }}
-        ></Column>
+        />
         <Column body={deleteNewItemRow} />
       </ItemsTable>
     </div>

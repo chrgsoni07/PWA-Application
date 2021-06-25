@@ -173,9 +173,9 @@ const ItemsPanel: FC<Props> = ({ category }) => {
           header="Id"
           sortable
           body={(_: any, prop: any) => prop.rowIndex + 1}
-        ></Column>
-        <Column field="name" header="Name" sortable></Column>
-        <Column body={actionBodyTemplate}></Column>
+        />
+        <Column field="name" header="Name" sortable />
+        <Column body={actionBodyTemplate} />
       </DataTable>
 
       <Dialog

@@ -107,11 +107,11 @@ const Rates = () => {
           header="Id"
           sortable
           body={(_: any, prop: any) => prop.rowIndex + 1}
-        ></Column>
-        <Column field="goldRate" header="Gold (10 gram)"></Column>
-        <Column field="silverRate" header="Silver (1 kg)"></Column>
-        <Column field="date" header="Date" body={dateTemplate}></Column>
-        <Column body={actionBodyTemplate}></Column>
+        />
+        <Column field="goldRate" header="Gold (10 gram)" />
+        <Column field="silverRate" header="Silver (1 kg)" />
+        <Column field="date" header="Date" body={dateTemplate} />
+        <Column body={actionBodyTemplate} />
       </DataTable>
 
       <Dialog
