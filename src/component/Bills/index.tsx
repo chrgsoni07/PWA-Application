@@ -206,7 +206,7 @@ const Bills = () => {
                   header="Id"
                   sortable
                   body={(_: any, prop: any) => prop.rowIndex + 1}
-                ></Column>
+                />
                 <Column
                   field="billNo"
                   header="Bill No"
@@ -215,7 +215,7 @@ const Bills = () => {
                   filter
                   sortable
                   filterPlaceholder="Search by bill no"
-                ></Column>
+                />
                 <Column
                   field="invoiceDate"
                   header="Date"
@@ -223,21 +223,21 @@ const Bills = () => {
                   filter
                   filterElement={dateFilter}
                   filterFunction={filterDate}
-                ></Column>
+                />
                 <Column
                   field="customer.name"
                   header="Customer"
                   filter
                   sortable
                   filterPlaceholder="Search by customer no"
-                ></Column>
+                />
                 <Column
                   field="billDetail.amountPayable"
                   header="Amount Payable"
-                ></Column>
-                <Column field="billDetail.paid" header="Paid"></Column>
-                <Column field="billDetail.due" header="Due"></Column>
-                <Column body={actionBodyTemplate}></Column>
+                />
+                <Column field="billDetail.paid" header="Paid" />
+                <Column field="billDetail.due" header="Due" />
+                <Column body={actionBodyTemplate} />
               </DataTable>
             </div>
           </TabPanel>
@@ -254,20 +254,20 @@ const Bills = () => {
                   header="Id"
                   sortable
                   body={(_: any, prop: any) => prop.rowIndex + 1}
-                ></Column>
+                />
                 <Column
                   field="invoiceDate"
                   header="Date"
                   body={draftInvoiceDateTemplate}
-                ></Column>
-                <Column field="customer.name" header="Customer"></Column>
+                />
+                <Column field="customer.name" header="Customer" />
                 <Column
                   field="billDetail.amountPayable"
                   header="Amount Payable"
-                ></Column>
-                <Column field="billDetail.paid" header="Paid"></Column>
-                <Column field="billDetail.due" header="Due"></Column>
-                <Column body={actionBodyTemplateDraft}></Column>
+                />
+                <Column field="billDetail.paid" header="Paid" />
+                <Column field="billDetail.due" header="Due" />
+                <Column body={actionBodyTemplateDraft} />
               </DataTable>
             </div>
           </TabPanel>
@@ -311,7 +311,7 @@ const Bills = () => {
                   header="Id"
                   sortable
                   body={(_: any, prop: any) => prop.rowIndex + 1}
-                ></Column>
+                />
                 <Column
                   field="billNo"
                   header="Bill No"
@@ -320,7 +320,7 @@ const Bills = () => {
                   filter
                   sortable
                   filterPlaceholder="Search by bill no"
-                ></Column>
+                />
 
                 <Column
                   field="customer.name"
@@ -328,14 +328,14 @@ const Bills = () => {
                   filter
                   sortable
                   filterPlaceholder="Search by customer no"
-                ></Column>
+                />
                 <Column
                   field="billDetail.amountPayable"
                   header="Amount Payable"
-                ></Column>
-                <Column field="billDetail.paid" header="Paid"></Column>
-                <Column field="billDetail.due" header="Due"></Column>
-                <Column body={actionBodyTemplate}></Column>
+                />
+                <Column field="billDetail.paid" header="Paid" />
+                <Column field="billDetail.due" header="Due" />
+                <Column body={actionBodyTemplate} />
               </DataTable>
             </div>
           </TabPanel>

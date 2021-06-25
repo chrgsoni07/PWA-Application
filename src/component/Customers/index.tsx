@@ -195,11 +195,11 @@ const Customers = () => {
             header="Id"
             sortable
             body={(_: any, prop: any) => prop.rowIndex + 1}
-          ></Column>
-          <Column field="name" header="Name"></Column>
-          <Column field="place" header="Place"></Column>
-          <Column field="mobile" header="Mobile no"></Column>
-          <Column body={actionBodyTemplate}></Column>
+          />
+          <Column field="name" header="Name" />
+          <Column field="place" header="Place" />
+          <Column field="mobile" header="Mobile no" />
+          <Column body={actionBodyTemplate} />
         </DataTable>
       </div>
 

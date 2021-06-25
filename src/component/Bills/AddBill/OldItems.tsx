@@ -146,7 +146,7 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
           bodyStyle={{
             textAlign: "center",
           }}
-        ></Column>
+        />
         <Column body={deleteOldItemRow} />
       </ItemsTable>
     </div>
