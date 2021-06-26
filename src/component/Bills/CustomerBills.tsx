@@ -1,14 +1,22 @@
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Dropdown } from "primereact/dropdown";
+import { CustomerType } from "component/Customers/types";
+import { useEffect, useState } from "react";
+import { getCustomers } from "api";
 
 const CustomerBills = ({
-  customers,
   onCustomerSelect,
   dt,
   billsByCustomerId,
   actionBodyTemplate,
 }: any) => {
+  const [customers, setCustomers] = useState<CustomerType[]>([]);
+
+  useEffect(() => {
+    getCustomers().then((allCustomers) => setCustomers(allCustomers));
+  }, []);
+
   return (
     <>
       <div className="p-formgrid p-grid">

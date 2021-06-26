@@ -26,17 +26,13 @@ const Bills = () => {
   const { toastSuccess, toastError } = useToast();
   const [selectedDate, setSelectedDate] = useState<Date>();
   const dt = useRef<DataTable>(null);
-  const [customers, setCustomers] = useState<CustomerType[]>([]);
+
   const [billsByCustomerId, setBillsByCustomerId] = useState<Bill[]>([]);
 
   useEffect(() => {
     getBills().then((bills) => setSavedBills(bills));
     let draftBills = JSON.parse(localStorage.getItem("draftBills") || "[]");
     setDraftBills(draftBills);
-  }, []);
-
-  useEffect(() => {
-    getCustomers().then((allCustomers) => setCustomers(allCustomers));
   }, []);
 
   const openNewBillDialog = () => {
@@ -206,7 +202,6 @@ const Bills = () => {
         </TabPanel>
         <TabPanel header="Search">
           <CustomerBills
-            customers={customers}
             onCustomerSelect={onCustomerSelect}
             dt={dt}
             billsByCustomerId={billsByCustomerId}
