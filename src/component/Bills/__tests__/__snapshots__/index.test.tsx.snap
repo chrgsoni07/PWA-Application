@@ -5,119 +5,119 @@ exports[`Bills should render bills table 1`] = `
 - First value
 + Second value
 
-@@ -280,18 +280,98 @@
-                        </thead>
-                        <tbody
-                          class=\\"p-datatable-tbody\\"
-                        >
-                          <tr
--                           class=\\"p-datatable-emptymessage\\"
-+                           class=\\"p-selectable-row\\"
-                            role=\\"row\\"
-+                           tabindex=\\"0\\"
-                          >
-                            <td
--                             colspan=\\"8\\"
-+                             class=\\"\\"
-                              role=\\"cell\\"
-                            >
--                             No records found
-+                             1
-+                           </td>
-+                           <td
-+                             class=\\"\\"
-+                             role=\\"cell\\"
-+                           >
-+                             1
-+                           </td>
-+                           <td
-+                             class=\\"\\"
-+                             role=\\"cell\\"
-+                           >
-+                             17/12/1995
-+                           </td>
-+                           <td
-+                             class=\\"\\"
-+                             role=\\"cell\\"
-+                           >
-+                             Chaupat Raja
-+                           </td>
-+                           <td
-+                             class=\\"\\"
-+                             role=\\"cell\\"
-+                           >
-+                             35200
-+                           </td>
-+                           <td
-+                             class=\\"\\"
-+                             role=\\"cell\\"
-+                           >
-+                             30000
-+                           </td>
-+                           <td
-+                             class=\\"\\"
-+                             role=\\"cell\\"
-+                           >
-+                             5200
-+                           </td>
-+                           <td
-+                             class=\\"\\"
-+                             role=\\"cell\\"
-+                           >
-+                             <button
-+                               aria-label=\\"viewBill\\"
-+                               class=\\"p-button p-component p-button-rounded p-button-help p-mr-2 p-button-icon-only\\"
-+                             >
-+                               <span
-+                                 class=\\"p-button-icon p-c pi pi-eye\\"
-+                               />
-+                               <span
-+                                 class=\\"p-button-label p-c\\"
-+                               >
-+                                  
-+                               </span>
-+                             </button>
-+                             <button
-+                               aria-label=\\"editBill\\"
-+                               class=\\"p-button p-component p-button-rounded p-button-success p-mr-2 p-button-icon-only\\"
-+                             >
-+                               <span
-+                                 class=\\"p-button-icon p-c pi pi-pencil\\"
-+                               />
-+                               <span
-+                                 class=\\"p-button-label p-c\\"
-+                               >
-+                                  
-+                               </span>
-+                             </button>
-+                             <button
-+                               class=\\"p-button p-component p-button-rounded p-button-warning p-button-icon-only\\"
-+                             >
-+                               <span
-+                                 class=\\"p-button-icon p-c pi pi-trash\\"
-+                               />
-+                               <span
-+                                 class=\\"p-button-label p-c\\"
-+                               >
-+                                  
-+                               </span>
-+                             </button>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-@@ -345,11 +425,11 @@
-                        />
-                      </button>
-                      <span
-                        class=\\"p-paginator-current\\"
-                      >
--                       Showing 0 to 0 of 0 items
-+                       Showing 1 to 1 of 1 items
-                      </span>
-                      <div
-                        class=\\"p-dropdown p-component p-inputwrapper p-inputwrapper-filled\\"
-                      >
-                        <div"
+@@ -277,18 +277,98 @@
+                </thead>
+                <tbody
+                  class=\\"p-datatable-tbody\\"
+                >
+                  <tr
+-                   class=\\"p-datatable-emptymessage\\"
++                   class=\\"p-selectable-row\\"
+                    role=\\"row\\"
++                   tabindex=\\"0\\"
+                  >
+                    <td
+-                     colspan=\\"8\\"
++                     class=\\"\\"
+                      role=\\"cell\\"
+                    >
+-                     No records found
++                     1
++                   </td>
++                   <td
++                     class=\\"\\"
++                     role=\\"cell\\"
++                   >
++                     1
++                   </td>
++                   <td
++                     class=\\"\\"
++                     role=\\"cell\\"
++                   >
++                     17/12/1995
++                   </td>
++                   <td
++                     class=\\"\\"
++                     role=\\"cell\\"
++                   >
++                     Chaupat Raja
++                   </td>
++                   <td
++                     class=\\"\\"
++                     role=\\"cell\\"
++                   >
++                     35200
++                   </td>
++                   <td
++                     class=\\"\\"
++                     role=\\"cell\\"
++                   >
++                     30000
++                   </td>
++                   <td
++                     class=\\"\\"
++                     role=\\"cell\\"
++                   >
++                     5200
++                   </td>
++                   <td
++                     class=\\"\\"
++                     role=\\"cell\\"
++                   >
++                     <button
++                       aria-label=\\"viewBill\\"
++                       class=\\"p-button p-component p-button-rounded p-button-help p-mr-2 p-button-icon-only\\"
++                     >
++                       <span
++                         class=\\"p-button-icon p-c pi pi-eye\\"
++                       />
++                       <span
++                         class=\\"p-button-label p-c\\"
++                       >
++                          
++                       </span>
++                     </button>
++                     <button
++                       aria-label=\\"editBill\\"
++                       class=\\"p-button p-component p-button-rounded p-button-success p-mr-2 p-button-icon-only\\"
++                     >
++                       <span
++                         class=\\"p-button-icon p-c pi pi-pencil\\"
++                       />
++                       <span
++                         class=\\"p-button-label p-c\\"
++                       >
++                          
++                       </span>
++                     </button>
++                     <button
++                       class=\\"p-button p-component p-button-rounded p-button-warning p-button-icon-only\\"
++                     >
++                       <span
++                         class=\\"p-button-icon p-c pi pi-trash\\"
++                       />
++                       <span
++                         class=\\"p-button-label p-c\\"
++                       >
++                          
++                       </span>
++                     </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+@@ -342,11 +422,11 @@
+                />
+              </button>
+              <span
+                class=\\"p-paginator-current\\"
+              >
+-               Showing 0 to 0 of 0 items
++               Showing 1 to 1 of 1 items
+              </span>
+              <div
+                class=\\"p-dropdown p-component p-inputwrapper p-inputwrapper-filled\\"
+              >
+                <div"
 `;
