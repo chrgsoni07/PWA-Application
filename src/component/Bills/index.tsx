@@ -15,6 +15,7 @@ import { Calendar, CalendarChangeParams } from "primereact/calendar";
 import { CustomerType } from "component/Customers/types";
 import { getCustomers } from "api";
 import { Dropdown } from "primereact/dropdown";
+import { Toolbar } from "primereact/toolbar";
 
 const Bills = () => {
   const [displayDialog, setDisplayDialog] = useState(false);
@@ -37,10 +38,6 @@ const Bills = () => {
   useEffect(() => {
     getCustomers().then((allCustomers) => setCustomers(allCustomers));
   }, []);
-
-  const header = () => {
-    <Button label="New" icon="pi pi-plus" className="p-button-sm" />;
-  };
 
   const openNewBillDialog = () => {
     setBill({} as Bill);
@@ -179,169 +176,155 @@ const Bills = () => {
 
   return (
     <>
-      <Card header={header}>
-        <Button
-          label="New"
-          icon="pi pi-plus"
-          className="p-button-success p-mr-2"
-          onClick={openNewBillDialog}
-        />
-        <TabView>
-          <TabPanel header="Previous Bills">
-            <div className="card">
-              <DataTable
-                ref={dt}
-                value={savedBills}
-                paginator
-                rows={10}
-                rowsPerPageOptions={[5, 10, 25]}
-                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} items"
-                selectionMode="single"
-                dataKey="id"
-                className="p-datatable-gridlines p-datatable-sm"
-              >
-                <Column
-                  field="id"
-                  header="Id"
-                  sortable
-                  body={(_: any, prop: any) => prop.rowIndex + 1}
-                />
-                <Column
-                  field="billNo"
-                  header="Bill No"
-                  data-testid="test"
-                  key="test3"
-                  filter
-                  sortable
-                  filterPlaceholder="Search by bill no"
-                />
-                <Column
-                  field="invoiceDate"
-                  header="Date"
-                  body={dateBodyTemplate}
-                  filter
-                  filterElement={dateFilter}
-                  filterFunction={filterDate}
-                />
-                <Column
-                  field="customer.name"
-                  header="Customer"
-                  filter
-                  sortable
-                  filterPlaceholder="Search by customer no"
-                />
-                <Column
-                  field="billDetail.amountPayable"
-                  header="Amount Payable"
-                />
-                <Column field="billDetail.paid" header="Paid" />
-                <Column field="billDetail.due" header="Due" />
-                <Column body={actionBodyTemplate} />
-              </DataTable>
+      <Toolbar
+        left={
+          <Button
+            label="New"
+            icon="pi pi-plus"
+            className="p-button-success p-mr-2"
+            onClick={openNewBillDialog}
+          />
+        }
+      />
+      <TabView>
+        <TabPanel header="Previous Bills">
+          <DataTable
+            ref={dt}
+            value={savedBills}
+            paginator
+            rows={10}
+            rowsPerPageOptions={[5, 10, 25]}
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} items"
+            selectionMode="single"
+            dataKey="id"
+            className="p-datatable-gridlines p-datatable-sm"
+          >
+            <Column
+              field="id"
+              header="Id"
+              sortable
+              body={(_: any, prop: any) => prop.rowIndex + 1}
+            />
+            <Column
+              field="billNo"
+              header="Bill No"
+              data-testid="test"
+              key="test3"
+              filter
+              sortable
+              filterPlaceholder="Search by bill no"
+            />
+            <Column
+              field="invoiceDate"
+              header="Date"
+              body={dateBodyTemplate}
+              filter
+              filterElement={dateFilter}
+              filterFunction={filterDate}
+            />
+            <Column
+              field="customer.name"
+              header="Customer"
+              filter
+              sortable
+              filterPlaceholder="Search by customer no"
+            />
+            <Column field="billDetail.amountPayable" header="Amount Payable" />
+            <Column field="billDetail.paid" header="Paid" />
+            <Column field="billDetail.due" header="Due" />
+            <Column body={actionBodyTemplate} />
+          </DataTable>
+        </TabPanel>
+        <TabPanel header="Draft">
+          <DataTable
+            value={draftBills}
+            selectionMode="single"
+            dataKey="id"
+            className="p-datatable-gridlines p-datatable-sm"
+          >
+            <Column
+              field="id"
+              header="Id"
+              sortable
+              body={(_: any, prop: any) => prop.rowIndex + 1}
+            />
+            <Column
+              field="invoiceDate"
+              header="Date"
+              body={draftInvoiceDateTemplate}
+            />
+            <Column field="customer.name" header="Customer" />
+            <Column field="billDetail.amountPayable" header="Amount Payable" />
+            <Column field="billDetail.paid" header="Paid" />
+            <Column field="billDetail.due" header="Due" />
+            <Column body={actionBodyTemplateDraft} />
+          </DataTable>
+        </TabPanel>
+        <TabPanel header="Search">
+          <div className="p-formgrid p-grid">
+            <div className="p-field p-col-12">
+              <label htmlFor="customerSelect">Select customer</label>
+              <Dropdown
+                disabled={!customers.length}
+                ariaLabel="Select customer"
+                inputId="customerSelect"
+                options={customers}
+                onChange={(e) => onCustomerSelect(e.value || {})}
+                optionLabel="name"
+                filter
+                showClear
+                filterBy="name"
+                placeholder="Select customer"
+                style={{
+                  width: "100%",
+                }}
+              />
             </div>
-          </TabPanel>
-          <TabPanel header="Draft">
-            <div className="card">
-              <DataTable
-                value={draftBills}
-                selectionMode="single"
-                dataKey="id"
-                className="p-datatable-gridlines p-datatable-sm"
-              >
-                <Column
-                  field="id"
-                  header="Id"
-                  sortable
-                  body={(_: any, prop: any) => prop.rowIndex + 1}
-                />
-                <Column
-                  field="invoiceDate"
-                  header="Date"
-                  body={draftInvoiceDateTemplate}
-                />
-                <Column field="customer.name" header="Customer" />
-                <Column
-                  field="billDetail.amountPayable"
-                  header="Amount Payable"
-                />
-                <Column field="billDetail.paid" header="Paid" />
-                <Column field="billDetail.due" header="Due" />
-                <Column body={actionBodyTemplateDraft} />
-              </DataTable>
-            </div>
-          </TabPanel>
-          <TabPanel header="Search">
-            <div className="p-formgrid p-grid">
-              <div className="p-field p-col-12">
-                <label htmlFor="customerSelect">Select customer</label>
-                <Dropdown
-                  disabled={!customers.length}
-                  ariaLabel="Select customer"
-                  inputId="customerSelect"
-                  options={customers}
-                  onChange={(e) => onCustomerSelect(e.value || {})}
-                  optionLabel="name"
-                  filter
-                  showClear
-                  filterBy="name"
-                  placeholder="Select a customer"
-                  style={{
-                    width: "100%",
-                  }}
-                />
-              </div>
-            </div>
+          </div>
 
-            <div className="card">
-              <DataTable
-                ref={dt}
-                value={billsByCustomerId}
-                paginator
-                rows={10}
-                rowsPerPageOptions={[5, 10, 25]}
-                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} items"
-                selectionMode="single"
-                dataKey="id"
-                className="p-datatable-gridlines p-datatable-sm"
-              >
-                <Column
-                  field="id"
-                  header="Id"
-                  sortable
-                  body={(_: any, prop: any) => prop.rowIndex + 1}
-                />
-                <Column
-                  field="billNo"
-                  header="Bill No"
-                  data-testid="test"
-                  key="test3"
-                  filter
-                  sortable
-                  filterPlaceholder="Search by bill no"
-                />
+          <DataTable
+            ref={dt}
+            value={billsByCustomerId}
+            paginator
+            rows={10}
+            rowsPerPageOptions={[5, 10, 25]}
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} items"
+            selectionMode="single"
+            dataKey="id"
+            className="p-datatable-gridlines p-datatable-sm"
+          >
+            <Column
+              field="id"
+              header="Id"
+              sortable
+              body={(_: any, prop: any) => prop.rowIndex + 1}
+            />
+            <Column
+              field="billNo"
+              header="Bill No"
+              data-testid="test"
+              key="test3"
+              filter
+              sortable
+              filterPlaceholder="Search by bill no"
+            />
 
-                <Column
-                  field="customer.name"
-                  header="Customer"
-                  filter
-                  sortable
-                  filterPlaceholder="Search by customer no"
-                />
-                <Column
-                  field="billDetail.amountPayable"
-                  header="Amount Payable"
-                />
-                <Column field="billDetail.paid" header="Paid" />
-                <Column field="billDetail.due" header="Due" />
-                <Column body={actionBodyTemplate} />
-              </DataTable>
-            </div>
-          </TabPanel>
-        </TabView>
-      </Card>
-
+            <Column
+              field="customer.name"
+              header="Customer"
+              filter
+              sortable
+              filterPlaceholder="Search by customer no"
+            />
+            <Column field="billDetail.amountPayable" header="Amount Payable" />
+            <Column field="billDetail.paid" header="Paid" />
+            <Column field="billDetail.due" header="Due" />
+            <Column body={actionBodyTemplate} />
+          </DataTable>
+        </TabPanel>
+      </TabView>
       <AddNewBill
         bill={bill}
         displayDialog={displayDialog}
