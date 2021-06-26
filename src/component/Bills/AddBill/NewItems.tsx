@@ -1,5 +1,5 @@
 import { Column } from "primereact/column";
-import { InputNumber } from "component/common/PrimeReactOverrides";
+import { Weight, Currency } from "component/common/PrimeReactOverrides";
 import { InputText } from "primereact/inputtext";
 import {
   amountBodyTemplate,
@@ -40,75 +40,37 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
   );
   const newItemNameEditor = (props: any) => inputTextEditorNew(props, "item");
   const newMakingChargesEditor = (props: any) => (
-    <InputNumber
+    <Currency
       ariaLabel={`Enter ${props.field}`}
       value={props.rowData["makingCharges"]}
       onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
-      mode="currency"
-      minFractionDigits={0}
     />
   );
-  const newRateEditor = (props: any) => {
-    const id = `${props.rowIndex}_${props.field}`;
-    return (
-      <>
-        <label
-          htmlFor={id}
-          className="p-sr-only"
-        >{`Enter ${props.field}`}</label>
-        <InputNumber
-          inputId={id}
-          value={props.rowData["rate"]}
-          onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
-          locale="en-IN"
-        />
-      </>
-    );
-  };
+  const newRateEditor = (props: any) => (
+    <Currency
+      ariaLabel={`Enter ${props.field}`}
+      value={props.rowData["rate"]}
+      onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
+    />
+  );
 
-  const newWeightEditor = (props: any) => {
-    const id = `${props.rowIndex}_${props.field}`;
-    return (
-      <>
-        <label
-          htmlFor={id}
-          className="p-sr-only"
-        >{`Enter ${props.field}`}</label>
-        <InputNumber
-          inputId={id}
-          value={props.rowData["weight"]}
-          onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
-          locale="en-IN"
-          mode="decimal"
-          minFractionDigits={1}
-          maxFractionDigits={3}
-        />
-      </>
-    );
-  };
+  const newWeightEditor = (props: any) => (
+    <Weight
+      ariaLabel={`Enter ${props.field}`}
+      value={props.rowData["weight"]}
+      onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
+    />
+  );
 
   const makingChargesTemplate = ({ makingCharges }: any) =>
     formatCurrencyNoFraction(makingCharges);
-  const newOtherChargesEditor = (props: any) => {
-    const id = `${props.rowIndex}_${props.field}`;
-    return (
-      <>
-        <label
-          htmlFor={id}
-          className="p-sr-only"
-        >{`Enter ${props.field}`}</label>
-        <InputNumber
-          inputId={id}
-          value={props.rowData["otherCharges"]}
-          onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
-          mode="currency"
-          currency="INR"
-          locale="en-IN"
-          minFractionDigits={0}
-        />
-      </>
-    );
-  };
+  const newOtherChargesEditor = (props: any) => (
+    <Currency
+      ariaLabel={`Enter ${props.field}`}
+      value={props.rowData["otherCharges"]}
+      onValueChange={(e) => onEditorValueChangeNew(props, e.value)}
+    />
+  );
 
   const newItemAmountEditor = (props: any) => (
     <AmountEditor

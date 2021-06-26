@@ -1,5 +1,9 @@
 import { Column } from "primereact/column";
-import { InputNumber } from "primereact/inputnumber";
+import {
+  InputNumber,
+  Currency,
+  Weight,
+} from "component/common/PrimeReactOverrides";
 import {
   amountBodyTemplate,
   formatCurrency,
@@ -34,20 +38,13 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
     />
   );
   const oldPurityEditor = (props: any) => {
-    const id = `${props.rowIndex}_${props.field}`;
     return (
-      <>
-        <label
-          htmlFor={id}
-          className="p-sr-only"
-        >{`Enter ${props.field}`}</label>
-        <InputNumber
-          inputId={id}
-          value={props.rowData["purity"]}
-          onChange={(e) => onEditorValueChangeOld(props, e.value)}
-          suffix="%"
-        />
-      </>
+      <InputNumber
+        ariaLabel={`Enter ${props.field}`}
+        value={props.rowData["purity"]}
+        onChange={(e) => onEditorValueChangeOld(props, e.value)}
+        suffix="%"
+      />
     );
   };
 
@@ -68,40 +65,21 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
   const oldItemEditor = (props: any) => inputTextEditorOld(props, "item");
 
   const oldRateEditor = (props: any) => {
-    const id = `${props.rowIndex}_${props.field}`;
     return (
-      <>
-        <label
-          htmlFor={id}
-          className="p-sr-only"
-        >{`Enter ${props.field}`}</label>
-        <InputNumber
-          inputId={id}
-          value={props.rowData["rate"]}
-          onValueChange={(e) => onEditorValueChangeOld(props, e.value)}
-          locale="en-IN"
-        />
-      </>
+      <Currency
+        ariaLabel={`Enter ${props.field}`}
+        value={props.rowData["rate"]}
+        onValueChange={(e) => onEditorValueChangeOld(props, e.value)}
+      />
     );
   };
   const oldGrossWeightEditor = (props: any) => {
-    const id = `${props.rowIndex}_${props.field}`;
     return (
-      <>
-        <label
-          htmlFor={id}
-          className="p-sr-only"
-        >{`Enter ${props.field}`}</label>
-        <InputNumber
-          inputId={id}
-          value={props.rowData["grossWeight"]}
-          onValueChange={(e) => onEditorValueChangeOld(props, e.value)}
-          locale="en-IN"
-          mode="decimal"
-          minFractionDigits={1}
-          maxFractionDigits={3}
-        />
-      </>
+      <Weight
+        ariaLabel={`Enter ${props.field}`}
+        value={props.rowData["grossWeight"]}
+        onValueChange={(e) => onEditorValueChangeOld(props, e.value)}
+      />
     );
   };
 

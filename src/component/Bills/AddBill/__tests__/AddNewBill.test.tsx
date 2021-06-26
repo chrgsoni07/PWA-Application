@@ -99,13 +99,15 @@ describe("Add new bill component", () => {
     addOldItemsRow(bill.oldItems[1], bill.oldItems.length + 1);
     deleteRow(bill.oldItems.length + 1);
 
-    expect(screen.getByLabelText("Total new")).toHaveValue(bill.totalNew);
-    expect(screen.getByLabelText("Total old")).toHaveValue(bill.totalOld);
-    expect(screen.getByLabelText("Old New Difference")).toHaveValue(bill.diff);
+    expect(screen.getByLabelText("Total new")).toHaveValue(`₹${bill.totalNew}`);
+    expect(screen.getByLabelText("Total old")).toHaveValue(`₹${bill.totalOld}`);
+    expect(screen.getByLabelText("Difference")).toHaveValue(`₹${bill.diff}`);
     userEvent.type(screen.getByLabelText("Discount"), bill.discount);
-    expect(screen.getByLabelText("Amount payable")).toHaveValue(bill.payable);
+    expect(screen.getByLabelText("Amount payable")).toHaveValue(
+      `₹${bill.payable}`
+    );
     userEvent.type(screen.getByLabelText("Amount paid"), bill.paid);
-    expect(screen.getByLabelText("Due")).toHaveValue(bill.due);
+    expect(screen.getByLabelText("Due")).toHaveValue(`₹${bill.due}`);
     userEvent.click(screen.getByRole("button", { name: /save/i }));
   });
 

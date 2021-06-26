@@ -3,14 +3,12 @@ import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
 import { DataTable, DataTableProps } from "primereact/datatable";
 import { Dropdown, DropdownProps } from "primereact/dropdown";
-import {
-  InputNumber,
-  InputNumberValueChangeParams,
-} from "primereact/inputnumber";
+import { InputNumberValueChangeParams } from "primereact/inputnumber";
 import { Row } from "primereact/row";
 import { Toolbar } from "primereact/toolbar";
 import { FC } from "react";
 import { itemType } from "../commonData";
+import { Currency } from "component/common/PrimeReactOverrides";
 
 export const DeleteButton: FC<ButtonProps> = ({ onClick }) => (
   <Button
@@ -86,11 +84,11 @@ export const AmountEditor: FC<{
 }> = ({ props, onValueChange }: any) => {
   if (props.rowData["type"] !== "fixed") return null;
   const value = props.rowData["amount"] || null;
-  const id = `${props.rowIndex}_${props.field}`;
   return (
-    <>
-      <label htmlFor={id} className="p-sr-only">{`Enter ${props.field}`}</label>
-      <InputNumber inputId={id} value={value} onValueChange={onValueChange} />
-    </>
+    <Currency
+      ariaLabel={`Enter ${props.field}`}
+      value={value}
+      onValueChange={onValueChange}
+    />
   );
 };
