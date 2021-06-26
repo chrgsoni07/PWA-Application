@@ -184,7 +184,7 @@ const Bills = () => {
           label="New"
           icon="pi pi-plus"
           className="p-button-success p-mr-2"
-          onClick={() => openNewBillDialog()}
+          onClick={openNewBillDialog}
         />
         <TabView>
           <TabPanel header="Previous Bills">

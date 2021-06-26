@@ -91,9 +91,8 @@ const ItemsPanel: FC<Props> = ({ category }) => {
     </>
   );
 
-  const openNew = () => {
-    setShowDialog(true);
-  };
+  const openNew = () => setShowDialog(true);
+  const hideDialog = () => setShowDialog(false);
 
   useEffect(() => {
     getItems(category).then((allItems) => setItems(allItems));
@@ -136,10 +135,6 @@ const ItemsPanel: FC<Props> = ({ category }) => {
     } catch (err) {
       toastError("Error saving item " + err.message);
     }
-  };
-
-  const hideDialog = () => {
-    setShowDialog(false);
   };
 
   const itemDialogFooter = (

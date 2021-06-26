@@ -28,28 +28,24 @@ const Customers = () => {
     setSelectedCustomer(rowData);
   };
 
-  const actionBodyTemplate = (rowData: any) => {
-    return (
-      <>
-        <Button
-          aria-label="Edit customer"
-          icon="pi pi-pencil"
-          className="p-button-rounded p-button-success p-mr-2"
-          onClick={() => editSelectedCustomer(rowData)}
-        />
-        <Button
-          aria-label="Delete customer"
-          icon="pi pi-trash"
-          className="p-button-rounded p-button-warning"
-          onClick={() => confirmDeleteProduct(rowData)}
-        />
-      </>
-    );
-  };
+  const actionBodyTemplate = (rowData: any) => (
+    <>
+      <Button
+        aria-label="Edit customer"
+        icon="pi pi-pencil"
+        className="p-button-rounded p-button-success p-mr-2"
+        onClick={() => editSelectedCustomer(rowData)}
+      />
+      <Button
+        aria-label="Delete customer"
+        icon="pi pi-trash"
+        className="p-button-rounded p-button-warning"
+        onClick={() => confirmDeleteProduct(rowData)}
+      />
+    </>
+  );
 
-  const openNew = () => {
-    setShowDialog(true);
-  };
+  const openNew = () => setShowDialog(true);
 
   const header = (
     <div className="table-header">

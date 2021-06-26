@@ -14,24 +14,20 @@ export function InputNumber(props: InputNumberProps & { ariaLabel?: string }) {
   );
 }
 
-export function Currency(props: InputNumberProps & { ariaLabel?: string }) {
-  return (
-    <InputNumber
-      {...props}
-      mode="currency"
-      currency="INR"
-      minFractionDigits={0}
-    />
-  );
-}
+export const Currency = (props: InputNumberProps & { ariaLabel?: string }) => (
+  <InputNumber
+    {...props}
+    mode="currency"
+    currency="INR"
+    minFractionDigits={0}
+  />
+);
 
-export function Weight(props: InputNumberProps & { ariaLabel?: string }) {
-  return (
-    <InputNumber
-      {...props}
-      mode="decimal"
-      minFractionDigits={1}
-      maxFractionDigits={3}
-    />
-  );
-}
+export const Weight = (props: InputNumberProps & { ariaLabel?: string }) => (
+  <InputNumber
+    {...props}
+    mode="decimal"
+    minFractionDigits={1}
+    maxFractionDigits={3}
+  />
+);
