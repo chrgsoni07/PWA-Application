@@ -1,4 +1,3 @@
-import { AnyRecord } from "dns";
 import {
   InputNumberProps,
   InputNumber as InputNumberOriginal,
