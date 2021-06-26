@@ -187,141 +187,30 @@ const Bills = () => {
       />
       <TabView>
         <TabPanel header="Previous Bills">
-          <DataTable
-            ref={dt}
-            value={savedBills}
-            paginator
-            rows={10}
-            rowsPerPageOptions={[5, 10, 25]}
-            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} items"
-            selectionMode="single"
-            dataKey="id"
-            className="p-datatable-gridlines p-datatable-sm"
-          >
-            <Column
-              field="id"
-              header="Id"
-              sortable
-              body={(_: any, prop: any) => prop.rowIndex + 1}
-            />
-            <Column
-              field="billNo"
-              header="Bill No"
-              data-testid="test"
-              key="test3"
-              filter
-              sortable
-              filterPlaceholder="Search by bill no"
-            />
-            <Column
-              field="invoiceDate"
-              header="Date"
-              body={dateBodyTemplate}
-              filter
-              filterElement={dateFilter}
-              filterFunction={filterDate}
-            />
-            <Column
-              field="customer.name"
-              header="Customer"
-              filter
-              sortable
-              filterPlaceholder="Search by customer no"
-            />
-            <Column field="billDetail.amountPayable" header="Amount Payable" />
-            <Column field="billDetail.paid" header="Paid" />
-            <Column field="billDetail.due" header="Due" />
-            <Column body={actionBodyTemplate} />
-          </DataTable>
+          <PreviousBills
+            dt={dt}
+            savedBills={savedBills}
+            dateBodyTemplate={dateBodyTemplate}
+            dateFilter={dateFilter}
+            filterDate={filterDate}
+            actionBodyTemplate={actionBodyTemplate}
+          />
         </TabPanel>
         <TabPanel header="Draft">
-          <DataTable
-            value={draftBills}
-            selectionMode="single"
-            dataKey="id"
-            className="p-datatable-gridlines p-datatable-sm"
-          >
-            <Column
-              field="id"
-              header="Id"
-              sortable
-              body={(_: any, prop: any) => prop.rowIndex + 1}
-            />
-            <Column
-              field="invoiceDate"
-              header="Date"
-              body={draftInvoiceDateTemplate}
-            />
-            <Column field="customer.name" header="Customer" />
-            <Column field="billDetail.amountPayable" header="Amount Payable" />
-            <Column field="billDetail.paid" header="Paid" />
-            <Column field="billDetail.due" header="Due" />
-            <Column body={actionBodyTemplateDraft} />
-          </DataTable>
+          <DraftBills
+            draftBills={draftBills}
+            draftInvoiceDateTemplate={draftInvoiceDateTemplate}
+            actionBodyTemplateDraft={actionBodyTemplateDraft}
+          />
         </TabPanel>
         <TabPanel header="Search">
-          <div className="p-formgrid p-grid">
-            <div className="p-field p-col-12">
-              <label htmlFor="customerSelect">Select customer</label>
-              <Dropdown
-                disabled={!customers.length}
-                ariaLabel="Select customer"
-                inputId="customerSelect"
-                options={customers}
-                onChange={(e) => onCustomerSelect(e.value || {})}
-                optionLabel="name"
-                filter
-                showClear
-                filterBy="name"
-                placeholder="Select customer"
-                style={{
-                  width: "100%",
-                }}
-              />
-            </div>
-          </div>
-
-          <DataTable
-            ref={dt}
-            value={billsByCustomerId}
-            paginator
-            rows={10}
-            rowsPerPageOptions={[5, 10, 25]}
-            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} items"
-            selectionMode="single"
-            dataKey="id"
-            className="p-datatable-gridlines p-datatable-sm"
-          >
-            <Column
-              field="id"
-              header="Id"
-              sortable
-              body={(_: any, prop: any) => prop.rowIndex + 1}
-            />
-            <Column
-              field="billNo"
-              header="Bill No"
-              data-testid="test"
-              key="test3"
-              filter
-              sortable
-              filterPlaceholder="Search by bill no"
-            />
-
-            <Column
-              field="customer.name"
-              header="Customer"
-              filter
-              sortable
-              filterPlaceholder="Search by customer no"
-            />
-            <Column field="billDetail.amountPayable" header="Amount Payable" />
-            <Column field="billDetail.paid" header="Paid" />
-            <Column field="billDetail.due" header="Due" />
-            <Column body={actionBodyTemplate} />
-          </DataTable>
+          <CustomerBills
+            customers={customers}
+            onCustomerSelect={onCustomerSelect}
+            dt={dt}
+            billsByCustomerId={billsByCustomerId}
+            actionBodyTemplate={actionBodyTemplate}
+          />
         </TabPanel>
       </TabView>
       <AddNewBill
@@ -352,3 +241,168 @@ const Bills = () => {
 };
 
 export default Bills;
+
+function PreviousBills({
+  dt,
+  savedBills,
+  dateBodyTemplate,
+  dateFilter,
+  filterDate,
+  actionBodyTemplate,
+}: any) {
+  return (
+    <DataTable
+      ref={dt}
+      value={savedBills}
+      paginator
+      rows={10}
+      rowsPerPageOptions={[5, 10, 25]}
+      paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} items"
+      selectionMode="single"
+      dataKey="id"
+      className="p-datatable-gridlines p-datatable-sm"
+    >
+      <Column
+        field="id"
+        header="Id"
+        sortable
+        body={(_: any, prop: any) => prop.rowIndex + 1}
+      />
+      <Column
+        field="billNo"
+        header="Bill No"
+        data-testid="test"
+        key="test3"
+        filter
+        sortable
+        filterPlaceholder="Search by bill no"
+      />
+      <Column
+        field="invoiceDate"
+        header="Date"
+        body={dateBodyTemplate}
+        filter
+        filterElement={dateFilter}
+        filterFunction={filterDate}
+      />
+      <Column
+        field="customer.name"
+        header="Customer"
+        filter
+        sortable
+        filterPlaceholder="Search by customer no"
+      />
+      <Column field="billDetail.amountPayable" header="Amount Payable" />
+      <Column field="billDetail.paid" header="Paid" />
+      <Column field="billDetail.due" header="Due" />
+      <Column body={actionBodyTemplate} />
+    </DataTable>
+  );
+}
+
+function DraftBills({
+  draftBills,
+  draftInvoiceDateTemplate,
+  actionBodyTemplateDraft,
+}: any) {
+  return (
+    <DataTable
+      value={draftBills}
+      selectionMode="single"
+      dataKey="id"
+      className="p-datatable-gridlines p-datatable-sm"
+    >
+      <Column
+        field="id"
+        header="Id"
+        sortable
+        body={(_: any, prop: any) => prop.rowIndex + 1}
+      />
+      <Column
+        field="invoiceDate"
+        header="Date"
+        body={draftInvoiceDateTemplate}
+      />
+      <Column field="customer.name" header="Customer" />
+      <Column field="billDetail.amountPayable" header="Amount Payable" />
+      <Column field="billDetail.paid" header="Paid" />
+      <Column field="billDetail.due" header="Due" />
+      <Column body={actionBodyTemplateDraft} />
+    </DataTable>
+  );
+}
+
+function CustomerBills({
+  customers,
+  onCustomerSelect,
+  dt,
+  billsByCustomerId,
+  actionBodyTemplate,
+}: any) {
+  return (
+    <>
+      <div className="p-formgrid p-grid">
+        <div className="p-field p-col-12">
+          <label htmlFor="customerSelect">Select customer</label>
+          <Dropdown
+            disabled={!customers.length}
+            ariaLabel="Select customer"
+            inputId="customerSelect"
+            options={customers}
+            onChange={(e) => onCustomerSelect(e.value || {})}
+            optionLabel="name"
+            filter
+            showClear
+            filterBy="name"
+            placeholder="Select customer"
+            style={{
+              width: "100%",
+            }}
+          />
+        </div>
+      </div>
+
+      <DataTable
+        ref={dt}
+        value={billsByCustomerId}
+        paginator
+        rows={10}
+        rowsPerPageOptions={[5, 10, 25]}
+        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} items"
+        selectionMode="single"
+        dataKey="id"
+        className="p-datatable-gridlines p-datatable-sm"
+      >
+        <Column
+          field="id"
+          header="Id"
+          sortable
+          body={(_: any, prop: any) => prop.rowIndex + 1}
+        />
+        <Column
+          field="billNo"
+          header="Bill No"
+          data-testid="test"
+          key="test3"
+          filter
+          sortable
+          filterPlaceholder="Search by bill no"
+        />
+
+        <Column
+          field="customer.name"
+          header="Customer"
+          filter
+          sortable
+          filterPlaceholder="Search by customer no"
+        />
+        <Column field="billDetail.amountPayable" header="Amount Payable" />
+        <Column field="billDetail.paid" header="Paid" />
+        <Column field="billDetail.due" header="Due" />
+        <Column body={actionBodyTemplate} />
+      </DataTable>
+    </>
+  );
+}
