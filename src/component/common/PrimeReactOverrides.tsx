@@ -4,11 +4,7 @@ import {
 } from "primereact/inputnumber";
 
 export function InputNumber(props: InputNumberProps & { ariaLabel?: string }) {
-  const id =
-    props.inputId || "id" + window.crypto.getRandomValues(new Uint32Array(1));
-  if (props.mode === "currency") {
-    props = { ...props, currency: "INR" };
-  }
+  const id = getID(props.inputId);
   return (
     <>
       {!props.inputId ? (
@@ -20,3 +16,48 @@ export function InputNumber(props: InputNumberProps & { ariaLabel?: string }) {
     </>
   );
 }
+
+export function Currency(props: InputNumberProps & { ariaLabel?: string }) {
+  const id = getID(props.inputId);
+  return (
+    <>
+      {!props.inputId ? (
+        <label htmlFor={id} className="p-sr-only">
+          {props.ariaLabel}
+        </label>
+      ) : null}
+      <InputNumberOriginal
+        inputId={id}
+        {...props}
+        locale="en-IN"
+        mode="currency"
+        currency="INR"
+        minFractionDigits={0}
+      />
+    </>
+  );
+}
+
+export function Weight(props: InputNumberProps & { ariaLabel?: string }) {
+  const id = getID(props.inputId);
+  return (
+    <>
+      {!props.inputId ? (
+        <label htmlFor={id} className="p-sr-only">
+          {props.ariaLabel}
+        </label>
+      ) : null}
+      <InputNumberOriginal
+        inputId={id}
+        {...props}
+        locale="en-IN"
+        mode="decimal"
+        minFractionDigits={1}
+        maxFractionDigits={3}
+      />
+    </>
+  );
+}
+
+const getID = (id?: string): string =>
+  id || "id" + window.crypto.getRandomValues(new Uint32Array(1));
