@@ -1,7 +1,6 @@
 import { AddNewBill } from "./AddBill/AddNewBill";
 import ViewBill from "./ViewBill";
 import { Button } from "primereact/button";
-import { Card } from "primereact/card";
 import { TabView, TabPanel } from "primereact/tabview";
 import React, { useState, useEffect, useRef } from "react";
 import "./DataTableDemo.css";
@@ -60,17 +59,17 @@ const Bills = () => {
   };
 
   const actionBodyTemplate = (rowData: any) => {
-    function viewBill(rowData: any): void {
+    function viewBill(): void {
       setBill({ ...rowData, invoiceDate: dateBodyTemplate(rowData) });
       setDisplayViewDialog(true);
     }
 
-    function editBill(rowData: any): void {
+    function editBill(): void {
       setBill({ ...rowData, invoiceDate: rowData.invoiceDate });
       setDisplayDialog(true);
     }
 
-    function confirmDeleteBill(rowData: any): void {
+    function confirmDeleteBill(): void {
       deleteBill(rowData.id)
         .then(() => {
           toastSuccess("bill successfully deleted");
@@ -87,18 +86,18 @@ const Bills = () => {
           aria-label="viewBill"
           icon="pi pi-eye"
           className="p-button-rounded p-button-help p-mr-2"
-          onClick={() => viewBill(rowData)}
+          onClick={viewBill}
         />
         <Button
           aria-label="editBill"
           icon="pi pi-pencil"
           className="p-button-rounded p-button-success p-mr-2"
-          onClick={() => editBill(rowData)}
+          onClick={editBill}
         />
         <Button
           icon="pi pi-trash"
           className="p-button-rounded p-button-warning"
-          onClick={() => confirmDeleteBill(rowData)}
+          onClick={confirmDeleteBill}
         />
       </>
     );
