@@ -9,27 +9,30 @@ export function BillTotals({
   return (
     <div className="p-fluid p-formgrid p-grid">
       <div className="p-field p-col">
-        <label htmlFor="totalNew"> Total new </label>
+        <label htmlFor="totalNew">Total new</label>
         <InputNumber
           inputId="totalNew"
           value={defaultNum(billDetails.newTotal)}
           locale="en-In"
+          readOnly
         />
       </div>
 
       <div className="p-field p-col">
-        <label htmlFor="totalOld">Total old </label>
+        <label htmlFor="totalOld">Total old</label>
         <InputNumber
           inputId="totalOld"
           value={defaultNum(billDetails.oldTotal)}
+          readOnly
         />
       </div>
 
       <div className="p-field p-col">
-        <label htmlFor="oldNewDifference"> Old New Difference </label>
+        <label htmlFor="oldNewDifference">Difference</label>
         <InputNumber
           inputId="oldNewDifference"
           value={defaultNum(billDetails.oldNewDifference)}
+          readOnly
         />
       </div>
 
@@ -43,15 +46,16 @@ export function BillTotals({
       </div>
 
       <div className="p-field p-col">
-        <label htmlFor="amountPayable"> Amount payable </label>
+        <label htmlFor="amountPayable">Amount payable</label>
         <InputNumber
           inputId="amountPayable"
           value={defaultNum(billDetails.amountPayable)}
+          readOnly
         />
       </div>
 
       <div className="p-field p-col">
-        <label htmlFor="paid"> Amount paid </label>
+        <label htmlFor="paid">Amount paid</label>
         <InputNumber
           inputId="paid"
           value={defaultNum(billDetails.paid)}
@@ -60,8 +64,12 @@ export function BillTotals({
       </div>
 
       <div className="p-field p-col">
-        <label htmlFor="due"> Due </label>
-        <InputNumber inputId="due" value={defaultNum(billDetails.due)} />
+        <label htmlFor="due">Due</label>
+        <InputNumber
+          inputId="due"
+          value={defaultNum(billDetails.due)}
+          readOnly
+        />
       </div>
     </div>
   );
