@@ -3,19 +3,22 @@ import { Column } from "primereact/column";
 import { Dropdown } from "primereact/dropdown";
 import { CustomerType } from "component/Customers/types";
 import { useEffect, useState } from "react";
-import { getCustomers } from "api";
+import { getBillsByCustomerId, getCustomers } from "api";
+import { Bill } from "./types";
 
-const CustomerBills = ({
-  onCustomerSelect,
-  dt,
-  billsByCustomerId,
-  actionBodyTemplate,
-}: any) => {
+const CustomerBills = ({ dt, actionBodyTemplate }: any) => {
   const [customers, setCustomers] = useState<CustomerType[]>([]);
+  const [billsByCustomerId, setBillsByCustomerId] = useState<Bill[]>([]);
 
   useEffect(() => {
     getCustomers().then((allCustomers) => setCustomers(allCustomers));
   }, []);
+
+  const onCustomerSelect = (selectedCustomer: CustomerType) => {
+    getBillsByCustomerId(selectedCustomer.id).then((allBills) =>
+      setBillsByCustomerId(allBills)
+    );
+  };
 
   return (
     <>

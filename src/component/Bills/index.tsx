@@ -27,8 +27,6 @@ const Bills = () => {
   const [selectedDate, setSelectedDate] = useState<Date>();
   const dt = useRef<DataTable>(null);
 
-  const [billsByCustomerId, setBillsByCustomerId] = useState<Bill[]>([]);
-
   useEffect(() => {
     getBills().then((bills) => setSavedBills(bills));
     let draftBills = JSON.parse(localStorage.getItem("draftBills") || "[]");
@@ -164,12 +162,6 @@ const Bills = () => {
     );
   };
 
-  const onCustomerSelect = (selectedCustomer: CustomerType) => {
-    getBillsByCustomerId(selectedCustomer.id).then((allBills) =>
-      setBillsByCustomerId(allBills)
-    );
-  };
-
   return (
     <>
       <Toolbar
@@ -201,12 +193,7 @@ const Bills = () => {
           />
         </TabPanel>
         <TabPanel header="Search">
-          <CustomerBills
-            onCustomerSelect={onCustomerSelect}
-            dt={dt}
-            billsByCustomerId={billsByCustomerId}
-            actionBodyTemplate={actionBodyTemplate}
-          />
+          <CustomerBills dt={dt} actionBodyTemplate={actionBodyTemplate} />
         </TabPanel>
       </TabView>
       <AddNewBill
