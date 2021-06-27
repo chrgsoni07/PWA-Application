@@ -8,13 +8,10 @@ import "./DataTableDemo.css";
 import { Bill } from "./types";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import { deleteBill, getBills, getBillsByCustomerId } from "api";
+import { deleteBill, getBills } from "api";
 import { Dialog } from "primereact/dialog";
 import { useToast } from "toasts";
 import { Calendar, CalendarChangeParams } from "primereact/calendar";
-import { CustomerType } from "component/Customers/types";
-import { getCustomers } from "api";
-import { Dropdown } from "primereact/dropdown";
 import { Toolbar } from "primereact/toolbar";
 
 const Bills = () => {
