@@ -6,7 +6,7 @@ import { TabView, TabPanel } from "primereact/tabview";
 import React, { useState, useEffect, useRef } from "react";
 import "./DataTableDemo.css";
 import { Bill } from "./types";
-import { Column } from "primereact/column";
+import { Column, ColumnBodyType } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { deleteBill, getBills } from "api";
 import { Dialog } from "primereact/dialog";
@@ -97,7 +97,7 @@ const Bills = () => {
         <TabPanel header="Draft">
           <DraftBills
             draftBills={draftBills}
-            actionBodyTemplateDraft={(rowData: any, { rowIndex }: any) => (
+            actionBodyTemplate={(rowData: any, { rowIndex }: any) => (
               <RowActions
                 onEdit={() => editBill(rowData)}
                 onDelete={() => deleteDraft(rowIndex)}
@@ -140,9 +140,13 @@ export default Bills;
 
 const PreviousBills = ({
   savedBills,
-  dateBodyTemplate,
   actionBodyTemplate,
-}: any) => {
+  dateBodyTemplate,
+}: {
+  savedBills: Bill[];
+  actionBodyTemplate: ColumnBodyType;
+  dateBodyTemplate(rowData: any): string;
+}) => {
   const [selectedDate, setSelectedDate] = useState<Date>();
   const dt = useRef<DataTable>(null);
 
@@ -230,7 +234,13 @@ const PreviousBills = ({
   );
 };
 
-const DraftBills = ({ draftBills, actionBodyTemplateDraft }: any) => {
+const DraftBills = ({
+  draftBills,
+  actionBodyTemplate,
+}: {
+  draftBills: Bill[];
+  actionBodyTemplate: ColumnBodyType;
+}) => {
   const draftInvoiceDateTemplate = (rowData: any) => {
     var invoiceDate = new Date(rowData.invoiceDate);
     return invoiceDate.toLocaleDateString("en-IN");
@@ -258,7 +268,7 @@ const DraftBills = ({ draftBills, actionBodyTemplateDraft }: any) => {
       <Column field="billDetail.amountPayable" header="Amount Payable" />
       <Column field="billDetail.paid" header="Paid" />
       <Column field="billDetail.due" header="Due" />
-      <Column body={actionBodyTemplateDraft} />
+      <Column body={actionBodyTemplate} />
     </DataTable>
   );
 };
