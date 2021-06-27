@@ -23,7 +23,7 @@ const Rates = () => {
 
   const dateTemplate = (rowData: RateType) => {
     var date = new Date(rowData.date);
-    return date.toLocaleDateString("en-In");
+    return date.toLocaleDateString("en-IN");
   };
 
   useEffect(() => {

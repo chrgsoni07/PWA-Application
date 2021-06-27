@@ -35,15 +35,9 @@ const Bills = () => {
     setBill({} as Bill);
   };
 
-  const dateBodyTemplate = (rowData: any) => {
-    var invoiceDate = rowData.invoiceDate;
-    return invoiceDate.toLocaleDateString("en-In");
-  };
+  const dateBodyTemplate = (rowData: any) =>
+    rowData.invoiceDate.toLocaleDateString("en-IN");
 
-  const draftInvoiceDateTemplate = (rowData: any) => {
-    var invoiceDate = new Date(rowData.invoiceDate);
-    return invoiceDate.toLocaleDateString("en-In");
-  };
   function viewBill(rowData: any): void {
     setBill({ ...rowData, invoiceDate: dateBodyTemplate(rowData) });
     setDisplayViewDialog(true);
@@ -61,7 +55,7 @@ const Bills = () => {
   }
 
   const editBill = (rowData: any) => {
-    setBill({ ...rowData, invoiceDate: rowData.invoiceDate });
+    setBill({ ...rowData });
     toggleDisplayDialog();
   };
 
@@ -103,7 +97,6 @@ const Bills = () => {
         <TabPanel header="Draft">
           <DraftBills
             draftBills={draftBills}
-            draftInvoiceDateTemplate={draftInvoiceDateTemplate}
             actionBodyTemplateDraft={(rowData: any, { rowIndex }: any) => (
               <RowActions
                 onEdit={() => editBill(rowData)}
@@ -145,11 +138,11 @@ const Bills = () => {
 
 export default Bills;
 
-function PreviousBills({
+const PreviousBills = ({
   savedBills,
   dateBodyTemplate,
   actionBodyTemplate,
-}: any) {
+}: any) => {
   const [selectedDate, setSelectedDate] = useState<Date>();
   const dt = useRef<DataTable>(null);
 
@@ -172,7 +165,7 @@ function PreviousBills({
     }
 
     return (
-      value.toLocaleDateString("en-In") === filter.toLocaleDateString("en-In")
+      value.toLocaleDateString("en-IN") === filter.toLocaleDateString("en-IN")
     );
   };
 
@@ -235,13 +228,14 @@ function PreviousBills({
       <Column body={actionBodyTemplate} />
     </DataTable>
   );
-}
+};
 
-function DraftBills({
-  draftBills,
-  draftInvoiceDateTemplate,
-  actionBodyTemplateDraft,
-}: any) {
+const DraftBills = ({ draftBills, actionBodyTemplateDraft }: any) => {
+  const draftInvoiceDateTemplate = (rowData: any) => {
+    var invoiceDate = new Date(rowData.invoiceDate);
+    return invoiceDate.toLocaleDateString("en-IN");
+  };
+
   return (
     <DataTable
       value={draftBills}
@@ -267,4 +261,4 @@ function DraftBills({
       <Column body={actionBodyTemplateDraft} />
     </DataTable>
   );
-}
+};
