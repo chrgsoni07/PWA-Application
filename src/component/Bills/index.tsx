@@ -20,10 +20,8 @@ const Bills = () => {
   const [displayViewDialog, setDisplayViewDialog] = useState(false);
   const [savedBills, setSavedBills] = useState<Bill[]>([]);
   const [draftBills, setDraftBills] = useState<Bill[]>([]);
-  const [bill, setBill] = useState<Bill>({} as Bill);
+  const [bill, setBill] = useState({} as Bill);
   const { toastSuccess, toastError } = useToast();
-  const [selectedDate, setSelectedDate] = useState<Date>();
-  const dt = useRef<DataTable>(null);
 
   useEffect(() => {
     getBills().then((bills) => setSavedBills(bills));
@@ -123,38 +121,6 @@ const Bills = () => {
     );
   };
 
-  const onDateChange = (e: CalendarChangeParams) => {
-    dt.current?.filter(e.value, "invoiceDate", "custom");
-    setSelectedDate(e.value as any);
-  };
-
-  const dateFilter = (
-    <Calendar
-      value={selectedDate}
-      onChange={onDateChange}
-      dateFormat="dd/mm/yy"
-      className="p-column-filter"
-      placeholder="Search by date"
-    />
-  );
-  const filterDate = (value: any, filter: any) => {
-    if (
-      filter === undefined ||
-      filter === null ||
-      (typeof filter === "string" && filter.trim() === "")
-    ) {
-      return true;
-    }
-
-    if (value === undefined || value === null) {
-      return false;
-    }
-
-    return (
-      value.toLocaleDateString("en-In") === filter.toLocaleDateString("en-In")
-    );
-  };
-
   return (
     <>
       <Toolbar
@@ -170,11 +136,8 @@ const Bills = () => {
       <TabView>
         <TabPanel header="Previous Bills">
           <PreviousBills
-            dt={dt}
             savedBills={savedBills}
             dateBodyTemplate={dateBodyTemplate}
-            dateFilter={dateFilter}
-            filterDate={filterDate}
             actionBodyTemplate={actionBodyTemplate}
           />
         </TabPanel>
@@ -186,7 +149,7 @@ const Bills = () => {
           />
         </TabPanel>
         <TabPanel header="Search">
-          <CustomerBills dt={dt} actionBodyTemplate={actionBodyTemplate} />
+          <CustomerBills actionBodyTemplate={actionBodyTemplate} />
         </TabPanel>
       </TabView>
       <AddNewBill
@@ -211,13 +174,46 @@ const Bills = () => {
 export default Bills;
 
 function PreviousBills({
-  dt,
   savedBills,
   dateBodyTemplate,
-  dateFilter,
-  filterDate,
   actionBodyTemplate,
 }: any) {
+  const [selectedDate, setSelectedDate] = useState<Date>();
+  const dt = useRef<DataTable>(null);
+
+  const onDateChange = (e: CalendarChangeParams) => {
+    dt.current?.filter(e.value, "invoiceDate", "custom");
+    setSelectedDate(e.value as any);
+  };
+
+  const filterDate = (value: any, filter: any) => {
+    if (
+      filter === undefined ||
+      filter === null ||
+      (typeof filter === "string" && filter.trim() === "")
+    ) {
+      return true;
+    }
+
+    if (value === undefined || value === null) {
+      return false;
+    }
+
+    return (
+      value.toLocaleDateString("en-In") === filter.toLocaleDateString("en-In")
+    );
+  };
+
+  const dateFilter = (
+    <Calendar
+      value={selectedDate}
+      onChange={onDateChange}
+      dateFormat="dd/mm/yy"
+      className="p-column-filter"
+      placeholder="Search by date"
+    />
+  );
+
   return (
     <DataTable
       ref={dt}
