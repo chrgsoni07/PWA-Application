@@ -17,7 +17,7 @@ import RowActions from "component/common/RowActions";
 
 const Bills = () => {
   const [displayDialog, toggleDisplayDialog] = useToggle(false);
-  const [displayViewDialog, setDisplayViewDialog] = useState(false);
+  const [displayViewDialog, toggleViewDialog] = useToggle(false);
   const [savedBills, setSavedBills] = useState<Bill[]>([]);
   const [draftBills, setDraftBills] = useState<Bill[]>([]);
   const [bill, setBill] = useState({} as Bill);
@@ -37,12 +37,12 @@ const Bills = () => {
   const dateBodyTemplate = (rowData: any) =>
     rowData.invoiceDate.toLocaleDateString("en-IN");
 
-  function viewBill(rowData: any): void {
+  const viewBill = (rowData: any) => {
     setBill({ ...rowData, invoiceDate: dateBodyTemplate(rowData) });
-    setDisplayViewDialog(true);
-  }
+    toggleViewDialog();
+  };
 
-  function deleteSavedBill(rowData: any): void {
+  const deleteSavedBill = (rowData: any) => {
     deleteBill(rowData.id)
       .then(() => {
         toastSuccess("bill successfully deleted");
@@ -51,7 +51,7 @@ const Bills = () => {
       .catch((error: Error) => {
         toastError("Error deleting bill" + error.message);
       });
-  }
+  };
 
   const editBill = (rowData: any) => {
     setBill({ ...rowData });
@@ -125,7 +125,7 @@ const Bills = () => {
       />
       <Dialog
         visible={displayViewDialog}
-        onHide={() => setDisplayViewDialog(false)}
+        onHide={toggleViewDialog}
         header="View bill"
         modal
       >
