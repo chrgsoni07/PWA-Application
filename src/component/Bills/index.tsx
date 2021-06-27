@@ -13,9 +13,10 @@ import { Dialog } from "primereact/dialog";
 import { useToast } from "toasts";
 import { Calendar, CalendarChangeParams } from "primereact/calendar";
 import { Toolbar } from "primereact/toolbar";
+import useToggle from "hooks/useToggle";
 
 const Bills = () => {
-  const [displayDialog, setDisplayDialog] = useState(false);
+  const [displayDialog, toggleDisplayDialog] = useToggle(false);
   const [displayViewDialog, setDisplayViewDialog] = useState(false);
   const [savedBills, setSavedBills] = useState<Bill[]>([]);
   const [draftBills, setDraftBills] = useState<Bill[]>([]);
@@ -32,11 +33,11 @@ const Bills = () => {
 
   const openNewBillDialog = () => {
     setBill({} as Bill);
-    setDisplayDialog(true);
+    toggleDisplayDialog();
   };
 
   const hideDialog = () => {
-    setDisplayDialog(false);
+    toggleDisplayDialog();
     setBill({} as Bill);
   };
 
@@ -58,7 +59,7 @@ const Bills = () => {
 
     function editBill(): void {
       setBill({ ...rowData, invoiceDate: rowData.invoiceDate });
-      setDisplayDialog(true);
+      toggleDisplayDialog();
     }
 
     function confirmDeleteBill(): void {
@@ -98,7 +99,7 @@ const Bills = () => {
   const actionBodyTemplateDraft = (rowData: any, { rowIndex }: any) => {
     function editBill(): void {
       setBill({ ...rowData, invoiceDate: rowData.invoiceDate });
-      setDisplayDialog(true);
+      toggleDisplayDialog();
     }
 
     function confirmDeleteBill(): void {
@@ -205,14 +206,6 @@ const Bills = () => {
         onHide={() => setDisplayViewDialog(false)}
         header="View bill"
         modal
-        breakpoints={{
-          "960px": "75vw",
-          "640px": "100vw",
-        }}
-        style={{
-          width: "50vw",
-        }}
-        maximized={true}
       >
         <ViewBill bill={bill} />
       </Dialog>
