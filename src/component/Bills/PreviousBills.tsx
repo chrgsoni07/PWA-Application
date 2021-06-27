@@ -4,15 +4,17 @@ import { DataTable } from "primereact/datatable";
 import { useRef, useState } from "react";
 import { Calendar, CalendarChangeParams } from "primereact/calendar";
 
+type Props = {
+  savedBills: Bill[];
+  actionBodyTemplate: ColumnBodyType;
+  dateBodyTemplate(rowData: any): string;
+};
+
 const PreviousBills = ({
   savedBills,
   actionBodyTemplate,
   dateBodyTemplate,
-}: {
-  savedBills: Bill[];
-  actionBodyTemplate: ColumnBodyType;
-  dateBodyTemplate(rowData: any): string;
-}) => {
+}: Props) => {
   const [selectedDate, setSelectedDate] = useState<Date>();
   const dt = useRef<DataTable>(null);
 
