@@ -67,6 +67,13 @@ const Bills = () => {
     setDraftBills(localStoredBills);
   };
 
+  const actionBodyTemplate = (rowData: any) => (
+    <RowActions
+      onView={() => viewBill(rowData)}
+      onEdit={() => editBill(rowData)}
+      onDelete={() => deleteSavedBill(rowData)}
+    />
+  );
   return (
     <>
       <Toolbar
@@ -84,13 +91,7 @@ const Bills = () => {
           <PreviousBills
             savedBills={savedBills}
             dateBodyTemplate={dateBodyTemplate}
-            actionBodyTemplate={(rowData: any) => (
-              <RowActions
-                onView={() => viewBill(rowData)}
-                onEdit={() => editBill(rowData)}
-                onDelete={() => deleteSavedBill(rowData)}
-              />
-            )}
+            actionBodyTemplate={actionBodyTemplate}
           />
         </TabPanel>
         <TabPanel header="Draft">
@@ -105,15 +106,7 @@ const Bills = () => {
           />
         </TabPanel>
         <TabPanel header="Search">
-          <CustomerBills
-            actionBodyTemplate={(rowData: any) => (
-              <RowActions
-                onView={() => viewBill(rowData)}
-                onEdit={() => editBill(rowData)}
-                onDelete={() => deleteSavedBill(rowData)}
-              />
-            )}
-          />
+          <CustomerBills actionBodyTemplate={actionBodyTemplate} />
         </TabPanel>
       </TabView>
       <AddNewBill
