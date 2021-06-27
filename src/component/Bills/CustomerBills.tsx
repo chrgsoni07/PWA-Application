@@ -36,9 +36,7 @@ const CustomerBills = ({ dt, actionBodyTemplate }: any) => {
             showClear
             filterBy="name"
             placeholder="Select customer"
-            style={{
-              width: "100%",
-            }}
+            style={{ width: "100%" }}
           />
         </div>
       </div>
@@ -70,7 +68,6 @@ const CustomerBills = ({ dt, actionBodyTemplate }: any) => {
           sortable
           filterPlaceholder="Search by bill no"
         />
-
         <Column
           field="customer.name"
           header="Customer"
