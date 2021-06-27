@@ -31,12 +31,7 @@ const Bills = () => {
     setDraftBills(draftBills);
   }, []);
 
-  const openNewBillDialog = () => {
-    setBill({} as Bill);
-    toggleDisplayDialog();
-  };
-
-  const hideDialog = () => {
+  const resetDialog = () => {
     toggleDisplayDialog();
     setBill({} as Bill);
   };
@@ -168,7 +163,7 @@ const Bills = () => {
             label="New"
             icon="pi pi-plus"
             className="p-button-success p-mr-2"
-            onClick={openNewBillDialog}
+            onClick={resetDialog}
           />
         }
       />
@@ -197,7 +192,7 @@ const Bills = () => {
       <AddNewBill
         bill={bill}
         displayDialog={displayDialog}
-        hideDialog={hideDialog}
+        hideDialog={resetDialog}
         setSavedBills={setSavedBills}
         setDraftBills={setDraftBills}
       />
