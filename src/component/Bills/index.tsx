@@ -14,6 +14,7 @@ import { useToast } from "toasts";
 import { Calendar, CalendarChangeParams } from "primereact/calendar";
 import { Toolbar } from "primereact/toolbar";
 import useToggle from "hooks/useToggle";
+import RowActions from "component/common/RowActions";
 
 const Bills = () => {
   const [displayDialog, toggleDisplayDialog] = useToggle(false);
@@ -43,82 +44,34 @@ const Bills = () => {
     var invoiceDate = new Date(rowData.invoiceDate);
     return invoiceDate.toLocaleDateString("en-In");
   };
+  function viewBill(rowData: any): void {
+    setBill({ ...rowData, invoiceDate: dateBodyTemplate(rowData) });
+    setDisplayViewDialog(true);
+  }
 
-  const actionBodyTemplate = (rowData: any) => {
-    function viewBill(): void {
-      setBill({ ...rowData, invoiceDate: dateBodyTemplate(rowData) });
-      setDisplayViewDialog(true);
-    }
+  function deleteSavedBill(rowData: any): void {
+    deleteBill(rowData.id)
+      .then(() => {
+        toastSuccess("bill successfully deleted");
+        setSavedBills(savedBills.filter((i) => i.id !== rowData.id));
+      })
+      .catch((error: Error) => {
+        toastError("Error deleting bill" + error.message);
+      });
+  }
 
-    function editBill(): void {
-      setBill({ ...rowData, invoiceDate: rowData.invoiceDate });
-      toggleDisplayDialog();
-    }
-
-    function confirmDeleteBill(): void {
-      deleteBill(rowData.id)
-        .then(() => {
-          toastSuccess("bill successfully deleted");
-          setSavedBills(savedBills.filter((i) => i.id !== rowData.id));
-        })
-        .catch((error: Error) => {
-          toastError("Error deleting bill" + error.message);
-        });
-    }
-
-    return (
-      <>
-        <Button
-          aria-label="viewBill"
-          icon="pi pi-eye"
-          className="p-button-rounded p-button-help p-mr-2"
-          onClick={viewBill}
-        />
-        <Button
-          aria-label="editBill"
-          icon="pi pi-pencil"
-          className="p-button-rounded p-button-success p-mr-2"
-          onClick={editBill}
-        />
-        <Button
-          icon="pi pi-trash"
-          className="p-button-rounded p-button-warning"
-          onClick={confirmDeleteBill}
-        />
-      </>
-    );
+  const editBill = (rowData: any) => {
+    setBill({ ...rowData, invoiceDate: rowData.invoiceDate });
+    toggleDisplayDialog();
   };
 
-  const actionBodyTemplateDraft = (rowData: any, { rowIndex }: any) => {
-    function editBill(): void {
-      setBill({ ...rowData, invoiceDate: rowData.invoiceDate });
-      toggleDisplayDialog();
-    }
-
-    function confirmDeleteBill(): void {
-      let localStoredBills: Bill[] = JSON.parse(
-        localStorage.getItem("draftBills") || "[]"
-      );
-      localStoredBills.splice(rowIndex, 1);
-      localStorage.setItem("draftBills", JSON.stringify(localStoredBills));
-      setDraftBills(localStoredBills);
-    }
-
-    return (
-      <>
-        <Button
-          aria-label="editBill"
-          icon="pi pi-pencil"
-          className="p-button-rounded p-button-success p-mr-2"
-          onClick={editBill}
-        />
-        <Button
-          icon="pi pi-trash"
-          className="p-button-rounded p-button-warning"
-          onClick={confirmDeleteBill}
-        />
-      </>
+  const deleteDraft = (rowIndex: number) => {
+    let localStoredBills: Bill[] = JSON.parse(
+      localStorage.getItem("draftBills") || "[]"
     );
+    localStoredBills.splice(rowIndex, 1);
+    localStorage.setItem("draftBills", JSON.stringify(localStoredBills));
+    setDraftBills(localStoredBills);
   };
 
   return (
@@ -138,18 +91,37 @@ const Bills = () => {
           <PreviousBills
             savedBills={savedBills}
             dateBodyTemplate={dateBodyTemplate}
-            actionBodyTemplate={actionBodyTemplate}
+            actionBodyTemplate={(rowData: any) => (
+              <RowActions
+                onView={() => viewBill(rowData)}
+                onEdit={() => editBill(rowData)}
+                onDelete={() => deleteSavedBill(rowData)}
+              />
+            )}
           />
         </TabPanel>
         <TabPanel header="Draft">
           <DraftBills
             draftBills={draftBills}
             draftInvoiceDateTemplate={draftInvoiceDateTemplate}
-            actionBodyTemplateDraft={actionBodyTemplateDraft}
+            actionBodyTemplateDraft={(rowData: any, { rowIndex }: any) => (
+              <RowActions
+                onEdit={() => editBill(rowData)}
+                onDelete={() => deleteDraft(rowIndex)}
+              />
+            )}
           />
         </TabPanel>
         <TabPanel header="Search">
-          <CustomerBills actionBodyTemplate={actionBodyTemplate} />
+          <CustomerBills
+            actionBodyTemplate={(rowData: any) => (
+              <RowActions
+                onView={() => viewBill(rowData)}
+                onEdit={() => editBill(rowData)}
+                onDelete={() => deleteSavedBill(rowData)}
+              />
+            )}
+          />
         </TabPanel>
       </TabView>
       <AddNewBill
