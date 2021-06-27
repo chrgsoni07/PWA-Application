@@ -8,7 +8,7 @@ type Props = {
 };
 
 const DraftBills = ({ draftBills, actionBodyTemplate }: Props) => {
-  const draftInvoiceDateTemplate = (rowData: any) => {
+  const dateTemplate = (rowData: any) => {
     var invoiceDate = new Date(rowData.invoiceDate);
     return invoiceDate.toLocaleDateString("en-IN");
   };
@@ -26,11 +26,7 @@ const DraftBills = ({ draftBills, actionBodyTemplate }: Props) => {
         sortable
         body={(_: any, prop: any) => prop.rowIndex + 1}
       />
-      <Column
-        field="invoiceDate"
-        header="Date"
-        body={draftInvoiceDateTemplate}
-      />
+      <Column field="invoiceDate" header="Date" body={dateTemplate} />
       <Column field="customer.name" header="Customer" />
       <Column field="billDetail.amountPayable" header="Amount Payable" />
       <Column field="billDetail.paid" header="Paid" />
