@@ -18,6 +18,7 @@ import reducer, {
   updateTotalAmount,
 } from "./slice";
 import { updateList } from "utils/state.utils";
+import { ButtonGroup } from "component/common/styles";
 
 type AddNewBillProps = {
   displayDialog: boolean;
@@ -130,27 +131,15 @@ export const AddNewBill: FC<AddNewBillProps> = ({
   };
 
   const footer = (
-    <span
-      style={{
-        display: "table",
-        margin: "0 auto",
-      }}
-    >
-      <Button
-        label="Save"
-        icon="pi pi-save"
-        style={{
-          marginRight: ".25em",
-        }}
-        onClick={onSave}
-      />
+    <ButtonGroup justifyContent="center">
+      <Button label="Save" icon="pi pi-save" onClick={onSave} />
       <Button
         label="Draft"
         icon="pi pi-check"
         className="p-button-secondary"
         onClick={saveToDraft}
       />
-    </span>
+    </ButtonGroup>
   );
   return (
     <Dialog

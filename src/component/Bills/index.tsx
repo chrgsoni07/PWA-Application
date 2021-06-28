@@ -3,17 +3,16 @@ import PreviousBills from "./PreviousBills";
 import CustomerBills from "./CustomerBills";
 import { AddNewBill } from "./AddBill/AddNewBill";
 import ViewBill from "./ViewBill";
-import { Button } from "primereact/button";
 import { TabView, TabPanel } from "primereact/tabview";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./DataTableDemo.css";
 import { Bill } from "./types";
 import { deleteBill, getBills } from "api";
 import { Dialog } from "primereact/dialog";
 import { useToast } from "toasts";
-import { Toolbar } from "primereact/toolbar";
 import useToggle from "hooks/useToggle";
 import RowActions from "component/common/RowActions";
+import TableToolbar from "component/common/TableToolbar";
 
 const Bills = () => {
   const [displayDialog, toggleDisplayDialog] = useToggle(false);
@@ -76,16 +75,7 @@ const Bills = () => {
   );
   return (
     <>
-      <Toolbar
-        left={
-          <Button
-            label="New"
-            icon="pi pi-plus"
-            className="p-button-success p-mr-2"
-            onClick={resetDialog}
-          />
-        }
-      />
+      <TableToolbar onClick={resetDialog} />
       <TabView>
         <TabPanel header="Previous Bills">
           <PreviousBills

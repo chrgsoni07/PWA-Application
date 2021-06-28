@@ -11,6 +11,7 @@ import { updateList } from "utils/state.utils";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { FormikInputText } from "component/common/FormikFields";
+import { ButtonGroup } from "component/common/styles";
 
 const Customers = () => {
   const [globalFilter, setGlobalFilter] = useState("");
@@ -29,11 +30,11 @@ const Customers = () => {
   };
 
   const actionBodyTemplate = (rowData: any) => (
-    <>
+    <ButtonGroup>
       <Button
         aria-label="Edit customer"
         icon="pi pi-pencil"
-        className="p-button-rounded p-button-success p-mr-2"
+        className="p-button-rounded p-button-success"
         onClick={() => editSelectedCustomer(rowData)}
       />
       <Button
@@ -42,7 +43,7 @@ const Customers = () => {
         className="p-button-rounded p-button-warning"
         onClick={() => confirmDeleteProduct(rowData)}
       />
-    </>
+    </ButtonGroup>
   );
 
   const openNew = () => setShowDialog(true);

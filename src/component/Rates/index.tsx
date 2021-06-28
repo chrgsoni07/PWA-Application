@@ -9,6 +9,8 @@ import { deleteFromDB, getRates } from "api";
 import { useToast } from "toasts";
 import RateForm from "./RateForm";
 import { updateList } from "utils/state.utils";
+import { ButtonGroup } from "component/common/styles";
+import TableToolbar from "component/common/TableToolbar";
 
 const Rates = () => {
   const [rates, setRates] = useState<RateType[]>([]);
@@ -31,11 +33,11 @@ const Rates = () => {
   }, []);
 
   const actionBodyTemplate = (rowData: RateType) => (
-    <>
+    <ButtonGroup>
       <Button
         aria-label="editRate"
         icon="pi pi-pencil"
-        className="p-button-rounded p-button-success p-mr-2"
+        className="p-button-rounded p-button-success"
         onClick={() => editSelectedRate(rowData)}
       />
       <Button
@@ -44,16 +46,7 @@ const Rates = () => {
         className="p-button-rounded p-button-warning"
         onClick={() => confirmDeleteSelected(rowData)}
       />
-    </>
-  );
-
-  const leftToolbarTemplate = () => (
-    <Button
-      label="New"
-      icon="pi pi-plus"
-      className="p-button-success p-mr-2"
-      onClick={openNew}
-    />
+    </ButtonGroup>
   );
 
   const confirmDeleteSelected = (rowData: RateType) => {
@@ -88,7 +81,8 @@ const Rates = () => {
 
   return (
     <>
-      <Toolbar left={leftToolbarTemplate}></Toolbar>
+      <TableToolbar onClick={openNew} />
+
       <DataTable
         value={rates}
         paginator

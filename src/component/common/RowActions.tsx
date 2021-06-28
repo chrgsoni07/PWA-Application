@@ -1,4 +1,5 @@
 import { Button } from "primereact/button";
+import { ButtonGroup } from "component/common/styles";
 
 type Props = {
   onView?(): void;
@@ -7,12 +8,12 @@ type Props = {
 };
 
 const RowActions = ({ onDelete, onEdit, onView }: Props) => (
-  <>
+  <ButtonGroup>
     {onView && (
       <Button
         aria-label="viewBill"
         icon="pi pi-eye"
-        className="p-button-rounded p-button-help p-mr-2"
+        className="p-button-rounded p-button-help"
         onClick={onView}
       />
     )}
@@ -20,7 +21,7 @@ const RowActions = ({ onDelete, onEdit, onView }: Props) => (
       <Button
         aria-label="editBill"
         icon="pi pi-pencil"
-        className="p-button-rounded p-button-success p-mr-2"
+        className="p-button-rounded p-button-success"
         onClick={onEdit}
       />
     )}
@@ -31,7 +32,7 @@ const RowActions = ({ onDelete, onEdit, onView }: Props) => (
         onClick={onDelete}
       />
     )}
-  </>
+  </ButtonGroup>
 );
 
 export default RowActions;
