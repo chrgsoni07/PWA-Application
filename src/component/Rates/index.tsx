@@ -1,9 +1,8 @@
 import { Button } from "primereact/button";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { RateType } from "./types";
 import { deleteFromDB, getRates } from "api";
 import { useToast } from "toasts";
