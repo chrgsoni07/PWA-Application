@@ -17,13 +17,13 @@ function App() {
         <Route path="/customers">
           <Customers />
         </Route>
-        <Route path="/bills">
+        <Route path="/">
           <Bills />
         </Route>
         <Route path="/rates">
           <Rates />
         </Route>
-        <Route path="/">
+        <Route path="/items">
           <Items />
         </Route>
       </Switch>
