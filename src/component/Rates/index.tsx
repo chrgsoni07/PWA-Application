@@ -67,9 +67,7 @@ const Rates = () => {
       });
   };
 
-  const openNew = () => {
-    setShowDialog(true);
-  };
+  const openNew = () => setShowDialog(true);
 
   const hideDialog = () => {
     setShowDialog(false);

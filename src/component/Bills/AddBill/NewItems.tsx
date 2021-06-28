@@ -17,7 +17,7 @@ import {
 } from "./common";
 import { addNewItem, deleteNewItem, updateNewItemField } from "./slice";
 
-export function NewItems({ newItems, billDetails, dispatch }: any) {
+export const NewItems = ({ newItems, billDetails, dispatch }: any) => {
   const onEditorValueChangeNew = ({ rowIndex, field }: any, value: any) =>
     dispatch(updateNewItemField({ index: rowIndex, value, field }));
   const inputTextEditorNew = (props: any, field: string) => (
@@ -131,4 +131,4 @@ export function NewItems({ newItems, billDetails, dispatch }: any) {
       </ItemsTable>
     </div>
   );
-}
+};

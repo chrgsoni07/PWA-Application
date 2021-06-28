@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Bills should render bills table 1`] = `
+exports[`should render bills table 1`] = `
 "Snapshot Diff:
 - First value
 + Second value

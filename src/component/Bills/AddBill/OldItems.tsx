@@ -21,7 +21,7 @@ import {
   itemTypeBodyTemplate,
   ItemTypeEditor,
 } from "./common";
-export function OldItems({ oldItems, billDetails, dispatch }: any) {
+export const OldItems = ({ oldItems, billDetails, dispatch }: any) => {
   const onEditorValueChangeOld = ({ rowIndex, field }: any, value: any) =>
     dispatch(updateOldItemField({ index: rowIndex, value, field }));
 
@@ -37,16 +37,14 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
       onChange={(e) => onEditorValueChangeOld(props, e.currentTarget.value)}
     />
   );
-  const oldPurityEditor = (props: any) => {
-    return (
-      <InputNumber
-        ariaLabel={`Enter ${props.field}`}
-        value={props.rowData["purity"]}
-        onChange={(e) => onEditorValueChangeOld(props, e.value)}
-        suffix="%"
-      />
-    );
-  };
+  const oldPurityEditor = (props: any) => (
+    <InputNumber
+      ariaLabel={`Enter ${props.field}`}
+      value={props.rowData["purity"]}
+      onChange={(e) => onEditorValueChangeOld(props, e.value)}
+      suffix="%"
+    />
+  );
 
   const oldItemTypeEditor = (props: any) => (
     <ItemTypeEditor
@@ -64,24 +62,20 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
   );
   const oldItemEditor = (props: any) => inputTextEditorOld(props, "item");
 
-  const oldRateEditor = (props: any) => {
-    return (
-      <Currency
-        ariaLabel={`Enter ${props.field}`}
-        value={props.rowData["rate"]}
-        onValueChange={(e) => onEditorValueChangeOld(props, e.value)}
-      />
-    );
-  };
-  const oldGrossWeightEditor = (props: any) => {
-    return (
-      <Weight
-        ariaLabel={`Enter ${props.field}`}
-        value={props.rowData["grossWeight"]}
-        onValueChange={(e) => onEditorValueChangeOld(props, e.value)}
-      />
-    );
-  };
+  const oldRateEditor = (props: any) => (
+    <Currency
+      ariaLabel={`Enter ${props.field}`}
+      value={props.rowData["rate"]}
+      onValueChange={(e) => onEditorValueChangeOld(props, e.value)}
+    />
+  );
+  const oldGrossWeightEditor = (props: any) => (
+    <Weight
+      ariaLabel={`Enter ${props.field}`}
+      value={props.rowData["grossWeight"]}
+      onValueChange={(e) => onEditorValueChangeOld(props, e.value)}
+    />
+  );
 
   return (
     <div className="card">
@@ -129,4 +123,4 @@ export function OldItems({ oldItems, billDetails, dispatch }: any) {
       </ItemsTable>
     </div>
   );
-}
+};

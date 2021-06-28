@@ -76,42 +76,38 @@ const Customers = () => {
     hideDialog();
   };
 
-  const FormikComponent = () => {
-    return (
-      <Formik
-        initialValues={
-          selectedCustomer ||
-          ({ name: "", place: "", mobile: "" } as CustomerType)
-        }
-        validateOnChange={false}
-        validateOnBlur={false}
-        onSubmit={(data) => {
-          saveOrUpdateCustomer(data);
-        }}
-        validationSchema={Yup.object({
-          name: Yup.string().required("name is required"),
-          place: Yup.string().required("place  is required"),
-        })}
-      >
-        <Form className="p-fluid" id="customerForm">
-          <div className="p-field">
-            <label htmlFor="name">Name</label>
-            <FormikInputText id="name" name="name" autoFocus />
-          </div>
+  const FormikComponent = () => (
+    <Formik
+      initialValues={
+        selectedCustomer ||
+        ({ name: "", place: "", mobile: "" } as CustomerType)
+      }
+      validateOnChange={false}
+      validateOnBlur={false}
+      onSubmit={(data) => saveOrUpdateCustomer(data)}
+      validationSchema={Yup.object({
+        name: Yup.string().required("name is required"),
+        place: Yup.string().required("place  is required"),
+      })}
+    >
+      <Form className="p-fluid" id="customerForm">
+        <div className="p-field">
+          <label htmlFor="name">Name</label>
+          <FormikInputText id="name" name="name" autoFocus />
+        </div>
 
-          <div className="p-field">
-            <label htmlFor="place">Place</label>
-            <FormikInputText id="place" name="place" />
-          </div>
+        <div className="p-field">
+          <label htmlFor="place">Place</label>
+          <FormikInputText id="place" name="place" />
+        </div>
 
-          <div className="p-field">
-            <label htmlFor="mobile">Mobile</label>
-            <FormikInputText id="mobile" name="mobile" />
-          </div>
-        </Form>
-      </Formik>
-    );
-  };
+        <div className="p-field">
+          <label htmlFor="mobile">Mobile</label>
+          <FormikInputText id="mobile" name="mobile" />
+        </div>
+      </Form>
+    </Formik>
+  );
 
   const saveCustomerToFireStore = async (data: CustomerType) => {
     save("customers", data)
@@ -208,7 +204,7 @@ const Customers = () => {
         footer={itemDialogFooter}
         onHide={hideDialog}
       >
-        <FormikComponent></FormikComponent>
+        <FormikComponent />
       </Dialog>
     </>
   );

@@ -40,9 +40,7 @@ export const ItemTypeEditor: FC<DropdownProps> = (props) => (
     optionValue="value"
     style={{ width: "100%" }}
     placeholder="Select a item type"
-    itemTemplate={(option) => {
-      return <span>{option.label}</span>;
-    }}
+    itemTemplate={(option) => <span>{option.label}</span>}
   />
 );
 

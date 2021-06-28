@@ -3,7 +3,9 @@ import {
   InputNumber as InputNumberOriginal,
 } from "primereact/inputnumber";
 
-export function InputNumber(props: InputNumberProps & { ariaLabel?: string }) {
+export const InputNumber = (
+  props: InputNumberProps & { ariaLabel?: string }
+) => {
   const id =
     props.inputId || "id" + window.crypto.getRandomValues(new Uint32Array(8));
   return (
@@ -12,7 +14,7 @@ export function InputNumber(props: InputNumberProps & { ariaLabel?: string }) {
       <InputNumberOriginal inputId={id} locale="en-IN" {...props} />
     </>
   );
-}
+};
 
 export const Currency = (props: InputNumberProps & { ariaLabel?: string }) => (
   <InputNumber

@@ -53,17 +53,13 @@ const ItemsPanel: FC<Props> = ({ category }) => {
     },
   });
 
-  const isFormFieldValid = (name: keyof ItemType) => {
-    return !!(formik.touched[name] && formik.errors[name]);
-  };
+  const isFormFieldValid = (name: keyof ItemType) =>
+    !!(formik.touched[name] && formik.errors[name]);
 
-  const getFormErrorMessage = (name: keyof ItemType) => {
-    return (
-      isFormFieldValid(name) && (
-        <small className="p-error">{formik.errors[name]}</small>
-      )
+  const getFormErrorMessage = (name: keyof ItemType) =>
+    isFormFieldValid(name) && (
+      <small className="p-error">{formik.errors[name]}</small>
     );
-  };
 
   const confirmDeleteItem = (rowData: ItemType) => {
     deleteFromDB(category, rowData.id)
