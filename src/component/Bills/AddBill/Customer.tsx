@@ -3,7 +3,7 @@ import { CustomerType } from "component/Customers/types";
 import { Dropdown } from "primereact/dropdown";
 import { useEffect, useState } from "react";
 
-function Customer({ selectedCustomer, setSelectedCustomer }: any) {
+const Customer = ({ selectedCustomer, setSelectedCustomer }: any) => {
   const [customers, setCustomers] = useState<CustomerType[]>([]);
   useEffect(() => {
     getCustomers().then((allCustomers) => setCustomers(allCustomers));
@@ -50,5 +50,6 @@ function Customer({ selectedCustomer, setSelectedCustomer }: any) {
       </div>
     </div>
   );
-}
+};
+
 export default Customer;

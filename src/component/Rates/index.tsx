@@ -1,14 +1,15 @@
 import { Button } from "primereact/button";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { RateType } from "./types";
 import { deleteFromDB, getRates } from "api";
 import { useToast } from "toasts";
 import RateForm from "./RateForm";
 import { updateList } from "utils/state.utils";
+import { ButtonGroup } from "component/common/styles";
+import TableToolbar from "component/common/TableToolbar";
 
 const Rates = () => {
   const [rates, setRates] = useState<RateType[]>([]);
@@ -23,7 +24,7 @@ const Rates = () => {
 
   const dateTemplate = (rowData: RateType) => {
     var date = new Date(rowData.date);
-    return date.toLocaleDateString("en-In");
+    return date.toLocaleDateString("en-IN");
   };
 
   useEffect(() => {
@@ -31,11 +32,11 @@ const Rates = () => {
   }, []);
 
   const actionBodyTemplate = (rowData: RateType) => (
-    <>
+    <ButtonGroup>
       <Button
         aria-label="editRate"
         icon="pi pi-pencil"
-        className="p-button-rounded p-button-success p-mr-2"
+        className="p-button-rounded p-button-success"
         onClick={() => editSelectedRate(rowData)}
       />
       <Button
@@ -44,16 +45,7 @@ const Rates = () => {
         className="p-button-rounded p-button-warning"
         onClick={() => confirmDeleteSelected(rowData)}
       />
-    </>
-  );
-
-  const leftToolbarTemplate = () => (
-    <Button
-      label="New"
-      icon="pi pi-plus"
-      className="p-button-success p-mr-2"
-      onClick={openNew}
-    />
+    </ButtonGroup>
   );
 
   const confirmDeleteSelected = (rowData: RateType) => {
@@ -67,9 +59,7 @@ const Rates = () => {
       });
   };
 
-  const openNew = () => {
-    setShowDialog(true);
-  };
+  const openNew = () => setShowDialog(true);
 
   const hideDialog = () => {
     setShowDialog(false);
@@ -90,7 +80,8 @@ const Rates = () => {
 
   return (
     <>
-      <Toolbar left={leftToolbarTemplate}></Toolbar>
+      <TableToolbar onClick={openNew} />
+
       <DataTable
         value={rates}
         paginator

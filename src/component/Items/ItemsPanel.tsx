@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
-import { Toolbar } from "primereact/toolbar";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
@@ -12,6 +11,8 @@ import { useToast } from "toasts";
 import { updateList } from "utils/state.utils";
 import { FormikErrors, useFormik } from "formik";
 import { classNames } from "primereact/utils";
+import { ButtonGroup } from "component/common/styles";
+import TableToolbar from "component/common/TableToolbar";
 
 const categoryMap = {
   goldItems: "Gold",
@@ -53,17 +54,13 @@ const ItemsPanel: FC<Props> = ({ category }) => {
     },
   });
 
-  const isFormFieldValid = (name: keyof ItemType) => {
-    return !!(formik.touched[name] && formik.errors[name]);
-  };
+  const isFormFieldValid = (name: keyof ItemType) =>
+    !!(formik.touched[name] && formik.errors[name]);
 
-  const getFormErrorMessage = (name: keyof ItemType) => {
-    return (
-      isFormFieldValid(name) && (
-        <small className="p-error">{formik.errors[name]}</small>
-      )
+  const getFormErrorMessage = (name: keyof ItemType) =>
+    isFormFieldValid(name) && (
+      <small className="p-error">{formik.errors[name]}</small>
     );
-  };
 
   const confirmDeleteItem = (rowData: ItemType) => {
     deleteFromDB(category, rowData.id)
@@ -77,10 +74,10 @@ const ItemsPanel: FC<Props> = ({ category }) => {
   };
 
   const actionBodyTemplate = (rowData: any) => (
-    <>
+    <ButtonGroup>
       <Button
         icon="pi pi-pencil"
-        className="p-button-rounded p-button-success p-mr-2"
+        className="p-button-rounded p-button-success"
         onClick={() => editItem(rowData)}
       />
       <Button
@@ -88,25 +85,16 @@ const ItemsPanel: FC<Props> = ({ category }) => {
         className="p-button-rounded p-button-warning"
         onClick={() => confirmDeleteItem(rowData)}
       />
-    </>
+    </ButtonGroup>
   );
 
-  const openNew = () => {
-    setShowDialog(true);
-  };
+  const openNew = () => setShowDialog(true);
+  const hideDialog = () => setShowDialog(false);
 
   useEffect(() => {
     getItems(category).then((allItems) => setItems(allItems));
   }, [category]);
 
-  const leftToolbarTemplate = () => (
-    <Button
-      label="New"
-      icon="pi pi-plus"
-      className="p-button-success p-mr-2"
-      onClick={openNew}
-    />
-  );
   const saveOrUpdateItemName = (data: ItemType) => {
     if (data?.id) {
       editItemToFireStore(data);
@@ -138,10 +126,6 @@ const ItemsPanel: FC<Props> = ({ category }) => {
     }
   };
 
-  const hideDialog = () => {
-    setShowDialog(false);
-  };
-
   const itemDialogFooter = (
     <>
       <Button
@@ -156,7 +140,7 @@ const ItemsPanel: FC<Props> = ({ category }) => {
 
   return (
     <>
-      <Toolbar left={leftToolbarTemplate}></Toolbar>
+      <TableToolbar onClick={openNew} />
       <DataTable
         value={items}
         paginator

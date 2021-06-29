@@ -1,6 +1,5 @@
-export const amountBodyTemplate = (rowData: any) => {
-  return formatCurrencyNoFraction(rowData.amount);
-};
+export const amountBodyTemplate = (rowData: any) =>
+  formatCurrencyNoFraction(rowData.amount);
 
 export const formatCurrency = (value: any) => {
   if (!value || isNaN(value)) {
@@ -32,26 +31,19 @@ export const netWeightTemplate = ({ netWeight }: any) => {
   }).format(netWeight);
 };
 
-export const weightTemplate = ({ weight }: any) => {
-  return isInvalid(weight) ? "-" : `${weight} ग्राम `;
-};
+export const weightTemplate = ({ weight }: any) =>
+  isInvalid(weight) ? "-" : `${weight} ग्राम `;
 
-export const grossWeightTemplate = ({ grossWeight }: any) => {
-  return isInvalid(grossWeight) ? "-" : `${grossWeight} ग्राम `;
-};
+export const grossWeightTemplate = ({ grossWeight }: any) =>
+  isInvalid(grossWeight) ? "-" : `${grossWeight} ग्राम `;
 
-export const viewNetWeightTemplate = ({ netWeight }: any) => {
-  return isInvalid(netWeight) ? "-" : `${netWeight} ग्राम `;
-};
+export const viewNetWeightTemplate = ({ netWeight }: any) =>
+  isInvalid(netWeight) ? "-" : `${netWeight} ग्राम `;
 
-export const makingChargeTemplate = ({ makingCharges }: any) => {
-  return isInvalid(makingCharges) ? "-" : `${makingCharges}/ग्राम `;
-};
+export const makingChargeTemplate = ({ makingCharges }: any) =>
+  isInvalid(makingCharges) ? "-" : `${makingCharges}/ग्राम `;
 
-export const purityTemplate = ({ purity }: any) => {
-  return isInvalid(purity) ? "-" : `${purity}%`;
-};
+export const purityTemplate = ({ purity }: any) =>
+  isInvalid(purity) ? "-" : `${purity}%`;
 
-const isInvalid = (value: any) => {
-  return value === null || !value || isNaN(value);
-};
+const isInvalid = (value: any) => value === null || !value || isNaN(value);

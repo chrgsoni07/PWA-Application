@@ -59,9 +59,7 @@ const RateForm: FC<RateFormProps> = ({
       }
       validateOnChange={false}
       validateOnBlur={false}
-      onSubmit={(data) => {
-        saveOrUpdateRate(data);
-      }}
+      onSubmit={(data) => saveOrUpdateRate(data)}
       validationSchema={Yup.object({
         goldRate: Yup.number()
           .transform((value) => (isNaN(value) || 0 ? undefined : value))

@@ -11,6 +11,7 @@ import { updateList } from "utils/state.utils";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { FormikInputText } from "component/common/FormikFields";
+import { ButtonGroup } from "component/common/styles";
 
 const Customers = () => {
   const [globalFilter, setGlobalFilter] = useState("");
@@ -28,28 +29,24 @@ const Customers = () => {
     setSelectedCustomer(rowData);
   };
 
-  const actionBodyTemplate = (rowData: any) => {
-    return (
-      <>
-        <Button
-          aria-label="Edit customer"
-          icon="pi pi-pencil"
-          className="p-button-rounded p-button-success p-mr-2"
-          onClick={() => editSelectedCustomer(rowData)}
-        />
-        <Button
-          aria-label="Delete customer"
-          icon="pi pi-trash"
-          className="p-button-rounded p-button-warning"
-          onClick={() => confirmDeleteProduct(rowData)}
-        />
-      </>
-    );
-  };
+  const actionBodyTemplate = (rowData: any) => (
+    <ButtonGroup>
+      <Button
+        aria-label="Edit customer"
+        icon="pi pi-pencil"
+        className="p-button-rounded p-button-success"
+        onClick={() => editSelectedCustomer(rowData)}
+      />
+      <Button
+        aria-label="Delete customer"
+        icon="pi pi-trash"
+        className="p-button-rounded p-button-warning"
+        onClick={() => confirmDeleteProduct(rowData)}
+      />
+    </ButtonGroup>
+  );
 
-  const openNew = () => {
-    setShowDialog(true);
-  };
+  const openNew = () => setShowDialog(true);
 
   const header = (
     <div className="table-header">
@@ -80,42 +77,38 @@ const Customers = () => {
     hideDialog();
   };
 
-  const FormikComponent = () => {
-    return (
-      <Formik
-        initialValues={
-          selectedCustomer ||
-          ({ name: "", place: "", mobile: "" } as CustomerType)
-        }
-        validateOnChange={false}
-        validateOnBlur={false}
-        onSubmit={(data) => {
-          saveOrUpdateCustomer(data);
-        }}
-        validationSchema={Yup.object({
-          name: Yup.string().required("name is required"),
-          place: Yup.string().required("place  is required"),
-        })}
-      >
-        <Form className="p-fluid" id="customerForm">
-          <div className="p-field">
-            <label htmlFor="name">Name</label>
-            <FormikInputText id="name" name="name" autoFocus />
-          </div>
+  const FormikComponent = () => (
+    <Formik
+      initialValues={
+        selectedCustomer ||
+        ({ name: "", place: "", mobile: "" } as CustomerType)
+      }
+      validateOnChange={false}
+      validateOnBlur={false}
+      onSubmit={(data) => saveOrUpdateCustomer(data)}
+      validationSchema={Yup.object({
+        name: Yup.string().required("name is required"),
+        place: Yup.string().required("place  is required"),
+      })}
+    >
+      <Form className="p-fluid" id="customerForm">
+        <div className="p-field">
+          <label htmlFor="name">Name</label>
+          <FormikInputText id="name" name="name" autoFocus />
+        </div>
 
-          <div className="p-field">
-            <label htmlFor="place">Place</label>
-            <FormikInputText id="place" name="place" />
-          </div>
+        <div className="p-field">
+          <label htmlFor="place">Place</label>
+          <FormikInputText id="place" name="place" />
+        </div>
 
-          <div className="p-field">
-            <label htmlFor="mobile">Mobile</label>
-            <FormikInputText id="mobile" name="mobile" />
-          </div>
-        </Form>
-      </Formik>
-    );
-  };
+        <div className="p-field">
+          <label htmlFor="mobile">Mobile</label>
+          <FormikInputText id="mobile" name="mobile" />
+        </div>
+      </Form>
+    </Formik>
+  );
 
   const saveCustomerToFireStore = async (data: CustomerType) => {
     save("customers", data)
@@ -212,7 +205,7 @@ const Customers = () => {
         footer={itemDialogFooter}
         onHide={hideDialog}
       >
-        <FormikComponent></FormikComponent>
+        <FormikComponent />
       </Dialog>
     </>
   );

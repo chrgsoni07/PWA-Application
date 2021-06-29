@@ -133,37 +133,33 @@ const ViewBill: FC<ViewBillProps> = ({
 
 export default ViewBill;
 
-function Header({ icon, text }: any) {
-  return (
-    <Divider align="left">
-      <div className="p-d-inline-flex p-ai-center">
-        <i className={`pi ${icon} p-mr-2`}></i>
-        <b>{text}</b>
-      </div>
-    </Divider>
-  );
-}
+const Header = ({ icon, text }: any) => (
+  <Divider align="left">
+    <div className="p-d-inline-flex p-ai-center">
+      <i className={`pi ${icon} p-mr-2`}></i>
+      <b>{text}</b>
+    </div>
+  </Divider>
+);
 
-function CustomerDetails({ customer }: { customer: CustomerType }) {
-  return (
-    <>
-      <Header icon="pi-user" text="ग्राहक" />
-      <Table>
+const CustomerDetails = ({ customer }: { customer: CustomerType }) => (
+  <>
+    <Header icon="pi-user" text="ग्राहक" />
+    <Table>
+      <Row>
+        <Cell>नाम:</Cell>
+        <Cell>{customer?.name}</Cell>
+      </Row>
+      <Row>
+        <Cell>निवासी:</Cell>
+        <Cell>{customer?.place}</Cell>
+      </Row>
+      {customer?.mobile && (
         <Row>
-          <Cell>नाम:</Cell>
-          <Cell>{customer?.name}</Cell>
+          <Cell>मोबाइल:</Cell>
+          <Cell>{customer?.mobile}</Cell>
         </Row>
-        <Row>
-          <Cell>निवासी:</Cell>
-          <Cell>{customer?.place}</Cell>
-        </Row>
-        {customer?.mobile && (
-          <Row>
-            <Cell>मोबाइल:</Cell>
-            <Cell>{customer?.mobile}</Cell>
-          </Row>
-        )}
-      </Table>
-    </>
-  );
-}
+      )}
+    </Table>
+  </>
+);
