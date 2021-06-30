@@ -16,7 +16,7 @@ it("delete button should delete customer", async () => {
   await waitForElementToBeRemoved(() => screen.queryByText("Ramadhir"));
 });
 
-it("edit button should edit the customer", async () => {
+it.skip("edit button should edit the customer", async () => {
   await setup();
   userEvent.click(screen.getByRole("button", { name: /Edit customer/i }));
 
@@ -32,7 +32,7 @@ it("edit button should edit the customer", async () => {
   });
 });
 
-it("add button should add new customer", async () => {
+it.skip("add button should add new customer", async () => {
   await setup();
   userEvent.click(screen.getByRole("button", { name: /new/i }));
 
