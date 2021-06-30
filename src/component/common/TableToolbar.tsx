@@ -1,6 +1,6 @@
 import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
-import React, { MouseEventHandler, ReactElement } from "react";
+import { MouseEventHandler, ReactElement } from "react";
 
 type Props = {
   onClick: MouseEventHandler<HTMLButtonElement>;

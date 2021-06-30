@@ -5,9 +5,9 @@ import { MenuItem } from "primereact/components/menuitem/MenuItem";
 const NavigationBar = () => {
   const history = useHistory();
   const items: MenuItem[] | undefined = [
-    { label: "Item", command: () => history.push("/") },
+    { label: "Item", command: () => history.push("/items") },
     { label: "Customers", command: () => history.push("/customers") },
-    { label: "Bills", command: () => history.push("/bills") },
+    { label: "Bills", command: () => history.push("/") },
     { label: "Gold/Silver Rate", command: () => history.push("/rates") },
   ];
   return (
