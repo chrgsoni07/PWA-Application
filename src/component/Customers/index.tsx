@@ -10,7 +10,10 @@ import { useToast } from "toasts";
 import { updateList } from "utils/state.utils";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import { FormikInputText } from "component/common/FormikFields";
+import {
+  FormikInputText,
+  FormikTransliterate,
+} from "component/common/FormikFields";
 import { ButtonGroup } from "component/common/styles";
 
 const Customers = () => {
@@ -94,7 +97,8 @@ const Customers = () => {
       <Form className="p-fluid" id="customerForm">
         <div className="p-field">
           <label htmlFor="name">Name</label>
-          <FormikInputText id="name" name="name" autoFocus />
+          <FormikTransliterate id="name" name="name" />
+          {/* <FormikInputText id="name" name="name" autoFocus /> */}
         </div>
 
         <div className="p-field">
