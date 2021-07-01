@@ -17,14 +17,14 @@ function App() {
         <Route path="/customers">
           <Customers />
         </Route>
-        <Route path="/">
-          <Bills />
-        </Route>
         <Route path="/rates">
           <Rates />
         </Route>
         <Route path="/items">
           <Items />
+        </Route>
+        <Route path="/">
+          <Bills />
         </Route>
       </Switch>
     </Router>
