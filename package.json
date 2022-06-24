@@ -7,7 +7,7 @@
     "@emotion/styled": "^11.3.0",
     "@reduxjs/toolkit": "^1.6.0",
     "axios": "^0.21.1",
-    "firebase": "^8.7.0",
+    "firebase": "^9.8.4",
     "formik": "^2.2.9",
     "primeflex": "^2.0.0",
     "primeicons": "^4.1.0",
